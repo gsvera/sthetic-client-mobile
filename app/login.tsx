@@ -1,0 +1,237 @@
+import { ThemedText } from "@/components/ThemedText";
+import {
+  Container,
+  GlobalColors,
+  loginStyle,
+  ThemeColorsSthetic,
+} from "@/constants/Colors";
+import { Link, useNavigation } from "expo-router";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import {
+  Button,
+  Image,
+  ImageBackground,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useMutation } from "@tanstack/react-query";
+import { apiUser } from "@/api/User";
+import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
+import { KEY_STORE, setStoreSession } from "@/hooks/StoreDataSecure";
+import { useApiProvider } from "@/provider/InterceptorProvider";
+import ContentKeyboardAutoScroll from "@/components/Shared/ContentKeyboardAutoScroll";
+import { parsePasswordEncrypt } from "@/utils/GeneralUtils";
+import { loginData } from "@/constants/GeneralTypes";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  ButtonGeneralStyle,
+  MarginStyle,
+  TextStyle,
+} from "@/constants/StyleComponents";
+import GeneralButton from "@/components/Shared/GeneralButton";
+
+const schema = yup.object({
+  username: yup.string().required("Ingrese un usuario valid"),
+  password: yup.string().required("Ingrese su contraseña"),
+});
+
+export default function Login() {
+  const navigation = useNavigation();
+  const { setToken } = useApiProvider();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const [hiddenPass, setHiddenPass] = useState(true);
+
+  const { mutate: login } = useMutation({
+    mutationFn: (data: loginData) => apiUser.login(data),
+    onSuccess: (data: ResponseAPi) => handleSuccessLogin(data.data),
+    onError: (error: any) => handleError(error),
+  });
+
+  const handleSuccessLogin = (data: ObjectResponse) => {
+    if (data.error) {
+      ErrorAlertMessage({ message: data.message });
+      return;
+    }
+    setStoreSession({
+      key: KEY_STORE.userToken,
+      value: data.items?.token,
+    });
+    setStoreSession({
+      key: KEY_STORE.idUser,
+      value: data.items?.idUser,
+    });
+    setToken(data.items?.token);
+    navigation.navigate("(tabs)" as never);
+  };
+
+  const handleError = (error: any) => {
+    ErrorAlertMessage({
+      message:
+        "Hubo un problema al querer inciar sesión, por favor intentelo mas tarde",
+    });
+  };
+
+  useEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  }, [navigation]);
+
+  const imageBg = require("@/assets/images/background.webp");
+
+  const onSubmit = (data: loginData) => {
+    setToken(null);
+    const passwordEncrypt = parsePasswordEncrypt(data.password);
+    login({ ...data, password: passwordEncrypt, isProvider: true });
+  };
+
+  return (
+    <SafeAreaView style={Container.containerLogin}>
+      <ImageBackground source={imageBg} style={styles.imgBg}>
+        <ContentKeyboardAutoScroll>
+          <View
+            style={{
+              justifyContent: "center",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <View>
+              <View style={styles.imgContainer}>
+                <Image
+                  source={require("@/assets/images/react-logo.png")}
+                  style={styles.logo}
+                />
+              </View>
+              <ThemedText style={styles.title}>Sthetic Services</ThemedText>
+              <View style={styles.centerInput}>
+                <Controller
+                  control={control}
+                  name="username"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      style={loginStyle.input}
+                      placeholder="Ingrese su usuario"
+                      keyboardType="email-address"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                />
+                {errors.username && (
+                  <ThemedText style={{ color: ThemeColorsSthetic.dangerColor }}>
+                    {errors.username.message}
+                  </ThemedText>
+                )}
+              </View>
+              <View style={styles.centerInput}>
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <View style={{ flexDirection: "row" }}>
+                      <TextInput
+                        style={loginStyle.input}
+                        placeholder="Ingrese su password"
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                        secureTextEntry={hiddenPass}
+                      />
+                      <TouchableOpacity
+                        style={styles.icon}
+                        onPress={() => setHiddenPass((prev) => !prev)}
+                      >
+                        <Ionicons
+                          name={hiddenPass ? "eye-off" : "eye"}
+                          size={24}
+                          color="gray"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                />
+              </View>
+              <View
+                style={{
+                  ...loginStyle.centerInput,
+                  ...loginStyle.buttonSubmit,
+                }}
+              >
+                <GeneralButton
+                  textBtn="Iniciar sesión"
+                  styleBtn={ButtonGeneralStyle.btnSaveSthetic}
+                  styleText={TextStyle.fontBoldWhite}
+                  handleOnPress={handleSubmit(onSubmit)}
+                />
+                <View style={MarginStyle.marginT20}>
+                  <ThemedText style={styles.textInteraction} onPress={() => {}}>
+                    ¿Has olvidado la contraseña?
+                  </ThemedText>
+                  <Link href="/newaccount" asChild>
+                    <Pressable>
+                      <ThemedText style={styles.textInteraction}>
+                        ¿No tiene una cuenta? Cree una.
+                      </ThemedText>
+                    </Pressable>
+                  </Link>
+                </View>
+              </View>
+            </View>
+          </View>
+        </ContentKeyboardAutoScroll>
+      </ImageBackground>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  imgContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  imgBg: {
+    width: "100%",
+    height: "100%",
+  },
+  logo: {
+    height: 100,
+    width: 100,
+    marginTop: 100,
+  },
+  title: {
+    paddingTop: 20,
+    marginBottom: 60,
+    textAlign: "center",
+    fontSize: 30,
+    color: ThemeColorsSthetic.primary,
+  },
+  centerInput: {
+    justifyContent: "center",
+    flexDirection: "row",
+    marginTop: 15,
+  },
+  icon: {
+    position: "absolute",
+    marginVertical: "auto",
+    top: 5,
+    right: 10,
+  },
+  textInteraction: {
+    textAlign: "center",
+    color: ThemeColorsSthetic.primary,
+    marginBottom: 10,
+  },
+});
