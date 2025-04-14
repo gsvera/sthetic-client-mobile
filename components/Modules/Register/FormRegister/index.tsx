@@ -9,12 +9,12 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { apiLada } from "@/api/Lada";
 import {
-  Button,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
+  Pressable,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as yup from "yup";
@@ -22,6 +22,9 @@ import { apiUser } from "@/api/User";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import { ThemedText } from "@/components/ThemedText";
+import Checkbox from "expo-checkbox";
+import { ThemeColorsSthetic } from "@/constants/Colors";
+import PoliticsAndConditionsModal from "../PoliticsAndConditions";
 
 const schema = yup.object().shape({
   firstName: yup
@@ -62,11 +65,6 @@ const schema = yup.object().shape({
     .oneOf([yup.ref("password")], "Las contraseñas deben coincidir"),
 });
 
-type PropsFormRegister = {
-  personalInformation: FormInputs | null;
-  handlePersonalInformation: (data: FormInputs) => void;
-};
-
 export type FormInputs = {
   firstName: string;
   lastName: string;
@@ -77,12 +75,23 @@ export type FormInputs = {
   confirmPassword: string;
 };
 
+type PropsFormRegister = {
+  agreeConditions: boolean;
+  handleAgreeConditions: () => void;
+  personalInformation: FormInputs | null;
+  handlePersonalInformation: (data: FormInputs) => void;
+};
+
 export const FormRegister = ({
   personalInformation,
   handlePersonalInformation,
+  agreeConditions,
+  handleAgreeConditions,
 }: PropsFormRegister) => {
   const [hiddenPass, setHiddenPass] = useState(true);
   const [hiddenConfirmPass, setHiddenConfirmPass] = useState(true);
+  const [openAgreeContitionsModal, setOpenAgreeConditionsModal] =
+    useState(false);
 
   const {
     control,
@@ -124,6 +133,11 @@ export const FormRegister = ({
 
   const handleSavePersonalData = async (data: FormInputs) => {
     try {
+      if (!agreeConditions) {
+        return ErrorAlertMessage({
+          message: "Debe aceptar los terminos y condiciones",
+        });
+      }
       const searchUser: ResponseAPi = await apiUser.findDuplicateUser(
         data.email,
         data.phone
@@ -143,11 +157,6 @@ export const FormRegister = ({
   return (
     <ContentKeyboardAutoScroll>
       <View style={localStyles.ContentForm}>
-        <View>
-          <ThemedText style={TextStyle.titleRegister}>
-            Ingrese sus datos
-          </ThemedText>
-        </View>
         <View style={localStyles.contentInput}>
           <Text style={localStyles.label}>* Nombre(s)</Text>
           <Controller
@@ -335,6 +344,17 @@ export const FormRegister = ({
             </Text>
           )}
         </View>
+        <View style={localStyles.contentCheck}>
+          <Checkbox
+            value={agreeConditions}
+            onValueChange={handleAgreeConditions}
+          />
+          <Pressable onPress={() => setOpenAgreeConditionsModal((v) => !v)}>
+            <ThemedText style={localStyles.textAgree}>
+              Aceptar terminos y condiciones
+            </ThemedText>
+          </Pressable>
+        </View>
         <View style={localStyles.contentButton}>
           <GeneralButton
             textBtn="Confirmar datos"
@@ -344,6 +364,10 @@ export const FormRegister = ({
           />
         </View>
       </View>
+      <PoliticsAndConditionsModal
+        open={openAgreeContitionsModal}
+        handleCloseModal={() => setOpenAgreeConditionsModal((v) => !v)}
+      />
     </ContentKeyboardAutoScroll>
   );
 };
@@ -351,8 +375,6 @@ export const FormRegister = ({
 const localStyles = StyleSheet.create({
   ContentForm: {
     alignItems: "center",
-    // marginTop: 30,
-    // height: "100%",
   },
   contentInput: {
     justifyContent: "center",
@@ -385,6 +407,19 @@ const localStyles = StyleSheet.create({
   contentButton: {
     marginVertical: 15,
     width: "80%",
+  },
+  textAgree: {
+    color: ThemeColorsSthetic.textLabels,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+  contentCheck: {
+    marginVertical: 10,
+    paddingLeft: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    width: "85%",
+    marginHorizontal: "auto",
   },
 });
 

@@ -1,15 +1,9 @@
 import { ThemedText } from "@/components/ThemedText";
-import {
-  Container,
-  GlobalColors,
-  loginStyle,
-  ThemeColorsSthetic,
-} from "@/constants/Colors";
+import { Container, loginStyle, ThemeColorsSthetic } from "@/constants/Colors";
 import { Link, useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-  Button,
   Image,
   ImageBackground,
   Pressable,
@@ -36,6 +30,7 @@ import {
   TextStyle,
 } from "@/constants/StyleComponents";
 import GeneralButton from "@/components/Shared/GeneralButton";
+import { useColorScheme } from "@/hooks/useColorScheme.web";
 
 const schema = yup.object({
   username: yup.string().required("Ingrese un usuario valid"),
@@ -44,6 +39,7 @@ const schema = yup.object({
 
 export default function Login() {
   const navigation = useNavigation();
+  const colorScheme = useColorScheme();
   const { setToken } = useApiProvider();
   const {
     control,
@@ -93,111 +89,129 @@ export default function Login() {
   const onSubmit = (data: loginData) => {
     setToken(null);
     const passwordEncrypt = parsePasswordEncrypt(data.password);
-    login({ ...data, password: passwordEncrypt, isProvider: true });
+    login({ ...data, password: passwordEncrypt });
   };
 
   return (
-    <SafeAreaView style={Container.containerLogin}>
-      <ImageBackground source={imageBg} style={styles.imgBg}>
-        <ContentKeyboardAutoScroll>
-          <View
-            style={{
-              justifyContent: "center",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <View>
-              <View style={styles.imgContainer}>
-                <Image
-                  source={require("@/assets/images/react-logo.png")}
-                  style={styles.logo}
-                />
-              </View>
-              <ThemedText style={styles.title}>Sthetic Services</ThemedText>
-              <View style={styles.centerInput}>
-                <Controller
-                  control={control}
-                  name="username"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
-                      style={loginStyle.input}
-                      placeholder="Ingrese su usuario"
-                      keyboardType="email-address"
-                      onBlur={onBlur}
-                      onChangeText={onChange}
-                      value={value}
-                    />
-                  )}
-                />
-                {errors.username && (
-                  <ThemedText style={{ color: ThemeColorsSthetic.dangerColor }}>
-                    {errors.username.message}
-                  </ThemedText>
-                )}
-              </View>
-              <View style={styles.centerInput}>
-                <Controller
-                  control={control}
-                  name="password"
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <View style={{ flexDirection: "row" }}>
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor:
+          colorScheme === "dark"
+            ? ThemeColorsSthetic.backgroundStrong
+            : ThemeColorsSthetic.backgroundLigth,
+      }}
+    >
+      <SafeAreaView style={Container.containerLogin}>
+        <ImageBackground source={imageBg} style={styles.imgBg}>
+          <ContentKeyboardAutoScroll>
+            <View
+              style={{
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View>
+                <View style={styles.imgContainer}>
+                  <Image
+                    source={require("@/assets/images/react-logo.png")}
+                    style={styles.logo}
+                  />
+                </View>
+                <ThemedText style={styles.title}>Sthetic Services</ThemedText>
+                <View style={styles.centerInput}>
+                  <Controller
+                    control={control}
+                    name="username"
+                    render={({ field: { onChange, onBlur, value } }) => (
                       <TextInput
                         style={loginStyle.input}
-                        placeholder="Ingrese su password"
+                        placeholder="Ingrese su usuario"
+                        keyboardType="email-address"
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
-                        secureTextEntry={hiddenPass}
                       />
-                      <TouchableOpacity
-                        style={styles.icon}
-                        onPress={() => setHiddenPass((prev) => !prev)}
-                      >
-                        <Ionicons
-                          name={hiddenPass ? "eye-off" : "eye"}
-                          size={24}
-                          color="gray"
-                        />
-                      </TouchableOpacity>
-                    </View>
+                    )}
+                  />
+                  {errors.username && (
+                    <ThemedText
+                      style={{ color: ThemeColorsSthetic.dangerColor }}
+                    >
+                      {errors.username.message}
+                    </ThemedText>
                   )}
-                />
-              </View>
-              <View
-                style={{
-                  ...loginStyle.centerInput,
-                  ...loginStyle.buttonSubmit,
-                }}
-              >
-                <GeneralButton
-                  textBtn="Iniciar sesión"
-                  styleBtn={ButtonGeneralStyle.btnSaveSthetic}
-                  styleText={TextStyle.fontBoldWhite}
-                  handleOnPress={handleSubmit(onSubmit)}
-                />
-                <View style={MarginStyle.marginT20}>
-                  <ThemedText style={styles.textInteraction} onPress={() => {}}>
-                    ¿Has olvidado la contraseña?
-                  </ThemedText>
-                  <Link href="/newaccount" asChild>
-                    <Pressable>
-                      <ThemedText style={styles.textInteraction}>
-                        ¿No tiene una cuenta? Cree una.
-                      </ThemedText>
-                    </Pressable>
-                  </Link>
+                </View>
+                <View style={styles.centerInput}>
+                  <Controller
+                    control={control}
+                    name="password"
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <View style={{ flexDirection: "row" }}>
+                        <TextInput
+                          style={loginStyle.input}
+                          placeholder="Ingrese su password"
+                          onBlur={onBlur}
+                          onChangeText={onChange}
+                          value={value}
+                          secureTextEntry={hiddenPass}
+                        />
+                        <TouchableOpacity
+                          style={styles.icon}
+                          onPress={() => setHiddenPass((prev) => !prev)}
+                        >
+                          <Ionicons
+                            name={hiddenPass ? "eye-off" : "eye"}
+                            size={24}
+                            color="gray"
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  />
+                </View>
+                <View
+                  style={{
+                    ...loginStyle.centerInput,
+                    ...loginStyle.buttonSubmit,
+                  }}
+                >
+                  <GeneralButton
+                    textBtn="Iniciar sesión"
+                    styleBtn={ButtonGeneralStyle.btnSaveSthetic}
+                    styleText={TextStyle.fontBoldWhite}
+                    handleOnPress={handleSubmit(onSubmit)}
+                  />
+                  <View style={MarginStyle.marginT20}>
+                    <ThemedText
+                      style={styles.textInteraction}
+                      onPress={() => {}}
+                    >
+                      ¿Has olvidado la contraseña?
+                    </ThemedText>
+                    <Link href="/newaccount" asChild>
+                      <Pressable>
+                        <ThemedText style={styles.textInteraction}>
+                          ¿No tiene una cuenta? Cree una.
+                        </ThemedText>
+                      </Pressable>
+                    </Link>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </ContentKeyboardAutoScroll>
-      </ImageBackground>
-    </SafeAreaView>
+          </ContentKeyboardAutoScroll>
+        </ImageBackground>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   imgContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -215,7 +229,8 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     marginBottom: 60,
     textAlign: "center",
-    fontSize: 30,
+    fontSize: 35,
+    fontWeight: "bold",
     color: ThemeColorsSthetic.primary,
   },
   centerInput: {

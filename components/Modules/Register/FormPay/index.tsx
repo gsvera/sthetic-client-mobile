@@ -25,6 +25,11 @@ type formPayProps = {
   handlePay: () => void;
 };
 
+/**
+ * No se usa para cliente
+ * @deprecated
+ * @returns
+ */
 export const FormPay = ({
   plan,
   totalToPay,

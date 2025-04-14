@@ -1,19 +1,29 @@
 import { ThemedText } from "@/components/ThemedText";
-import { ScrollView, StyleSheet, View } from "react-native";
-import Checkbox from "expo-checkbox";
+import { Modal, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { ThemeColorsSthetic } from "@/constants/Colors";
+import { modalCustomProps } from "@/constants/GeneralTypes";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
-type PoliticstAndConditionsProps = {
-  stateCheck: boolean;
-  handleAgreeTerms: (isChecked: boolean) => void;
-};
-
-export default function PoliticsAndConditions({
-  stateCheck,
-  handleAgreeTerms,
-}: PoliticstAndConditionsProps) {
+export default function PoliticsAndConditionsModal({
+  open,
+  handleCloseModal,
+}: modalCustomProps) {
   return (
-    <View style={localStyles.contentPolitics}>
+    <Modal
+      style={localStyles.contentPolitics}
+      animationType="slide"
+      transparent={false}
+      visible={open}
+    >
+      <View style={localStyles.contentBtnClose}>
+        <Pressable onPress={handleCloseModal}>
+          <SimpleLineIcons
+            name="close"
+            size={24}
+            color={ThemeColorsSthetic.accentReverse}
+          />
+        </Pressable>
+      </View>
       <View style={localStyles.contentSubtitle}>
         <ThemedText type="title" style={localStyles.subtitle}>
           Terminos y condiciones
@@ -58,16 +68,7 @@ export default function PoliticsAndConditions({
           accusamus suscipit dolorem quaerat.
         </ThemedText>
       </ScrollView>
-      <View style={localStyles.contentCheck}>
-        <Checkbox
-          value={stateCheck}
-          onValueChange={(even) => handleAgreeTerms(even)}
-        />
-        <ThemedText style={localStyles.textAgree}>
-          Aceptar terminos y condiciones
-        </ThemedText>
-      </View>
-    </View>
+    </Modal>
   );
 }
 
@@ -107,5 +108,10 @@ export const localStyles = StyleSheet.create({
     alignItems: "center",
     width: "85%",
     marginHorizontal: "auto",
+  },
+  contentBtnClose: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    margin: 15,
   },
 });

@@ -7,6 +7,11 @@ type arrowBackProps = {
   handleReturn: (value: number) => void;
 };
 
+/**
+ * No se usa para cliente
+ * @deprecated
+ * @returns
+ */
 export const ArrowBack = ({ view, handleReturn }: arrowBackProps) => {
   return (
     <TouchableOpacity

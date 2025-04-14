@@ -10,6 +10,11 @@ type PlanProps = {
   selectedPlan: (idPlan: PlanCardProps) => void;
 };
 
+/**
+ * No se usa para cliente
+ * @deprecated
+ * @returns
+ */
 export const Plan = ({ selectedPlan }: PlanProps) => {
   const handleSelectedPlan = (plan: PlanCardProps) => {
     selectedPlan(plan);
