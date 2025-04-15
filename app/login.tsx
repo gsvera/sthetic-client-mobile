@@ -89,7 +89,7 @@ export default function Login() {
   const onSubmit = (data: loginData) => {
     setToken(null);
     const passwordEncrypt = parsePasswordEncrypt(data.password);
-    login({ ...data, password: passwordEncrypt });
+    login({ ...data, password: passwordEncrypt, isClient: true });
   };
 
   return (

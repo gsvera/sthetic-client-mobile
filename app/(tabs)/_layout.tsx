@@ -5,13 +5,9 @@ import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import {
-  getStoreSession,
-  KEY_STORE,
-  setStoreSession,
-} from "@/hooks/StoreDataSecure";
+import { getStoreSession, KEY_STORE } from "@/hooks/StoreDataSecure";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useApiProvider } from "@/provider/InterceptorProvider";
 
 export default function TabLayout() {
@@ -72,13 +68,13 @@ export default function TabLayout() {
             }}
           />
           <Tabs.Screen
-            name="calendar"
+            name="reservation"
             options={{
-              title: "Calendario",
+              title: "Reservación",
               tabBarLabelStyle: { fontSize: 14, fontWeight: "bold" },
               tabBarIcon: ({ color, focused }) => (
-                <AntDesign
-                  name="calendar"
+                <FontAwesome
+                  name="calendar-check-o"
                   size={28}
                   color={
                     focused

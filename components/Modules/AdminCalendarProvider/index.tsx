@@ -38,6 +38,11 @@ import { ThemeColorsSthetic } from "@/constants/Colors";
 
 dayjs.locale("es"); // Esta config se debera establecer a futuro para ingles tambien
 
+/**
+ * No se usa para cliente
+ * @deprecated
+ * @returns
+ */
 export const AdminCalendarProvider = () => {
   const { handleNotification } = useNotificationProvider();
   const [openForm, setOpenForm] = useState(false);

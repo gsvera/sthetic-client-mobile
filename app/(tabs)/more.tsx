@@ -100,34 +100,9 @@ export default function More() {
         );
       case COMPONENTS_SETINGS.CHANGE_PASSWORD:
         return <ChangePassword returnBack={() => handleView("")} />;
-      case COMPONENTS_SETINGS.MY_LOCATION:
-        return (
-          <MyLocation returnBack={() => handleView("")} idUser={dataUser?.id} />
-        );
       case COMPONENTS_SETINGS.PROFILE_PICTURE:
         return (
           <CameraCustom
-            returnBack={() => handleView("")}
-            idUser={dataUser?.id}
-          />
-        );
-      case COMPONENTS_SETINGS.TYPE_SERVICES:
-        return (
-          <TypeServices
-            idUser={dataUser?.id}
-            returnBack={() => handleView("")}
-          />
-        );
-      case COMPONENTS_SETINGS.SERVICES_CATALOG:
-        return (
-          <ServicesCatalog
-            returnBack={() => handleView("")}
-            idUser={dataUser?.id}
-          />
-        );
-      case COMPONENTS_SETINGS.MY_SUBSCRIPTION:
-        return (
-          <MySupscription
             returnBack={() => handleView("")}
             idUser={dataUser?.id}
           />
@@ -208,30 +183,6 @@ export default function More() {
                 </ThemedText>
               </View>
             </Pressable>
-            <Pressable
-              style={localStyle.itemMenu}
-              onPress={() => handleView(COMPONENTS_SETINGS.MY_LOCATION)}
-            >
-              <View style={localStyle.itemMenuText}>
-                <Entypo name="location" style={localStyle.iconItem} />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Mi ubicación
-                </ThemedText>
-              </View>
-            </Pressable>
-            <Pressable
-              style={localStyle.itemMenu}
-              onPress={() => handleView(COMPONENTS_SETINGS.MY_SUBSCRIPTION)}
-            >
-              <View style={localStyle.itemMenuText}>
-                <AntDesign name="idcard" style={localStyle.iconItem} />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Mi subscripción
-                </ThemedText>
-              </View>
-            </Pressable>
           </View>
           <View style={localStyle.contentDivisor}>
             <Pressable style={localStyle.itemMenu} onPress={() => {}}>
@@ -240,33 +191,6 @@ export default function More() {
                 <ThemedText darkColor="black">
                   {"    "}
                   Notificaciones xxxx
-                </ThemedText>
-              </View>
-            </Pressable>
-            <Pressable
-              style={localStyle.itemMenu}
-              onPress={() => handleView(COMPONENTS_SETINGS.TYPE_SERVICES)}
-            >
-              <View style={localStyle.itemMenuText}>
-                <MaterialIcons name="style" style={localStyle.iconItem} />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Tipo de servicios
-                </ThemedText>
-              </View>
-            </Pressable>
-            <Pressable
-              style={localStyle.itemMenu}
-              onPress={() => handleView(COMPONENTS_SETINGS.SERVICES_CATALOG)}
-            >
-              <View style={localStyle.itemMenuText}>
-                <MaterialCommunityIcons
-                  name="book-open-page-variant-outline"
-                  style={localStyle.iconItem}
-                />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Catálogo de servicios
                 </ThemedText>
               </View>
             </Pressable>

@@ -35,6 +35,11 @@ const defaultCoordinate = {
   longitude: -86.85164049267769,
 };
 
+/**
+ * No se usa para cliente
+ * @deprecated
+ * @returns
+ */
 export const MyLocation = ({ idUser, returnBack }: myLocationProps) => {
   const { handleNotification } = useNotificationProvider();
   const [loadingLocation, setLoadingLocation] = useState(false);

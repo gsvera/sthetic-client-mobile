@@ -20,6 +20,11 @@ import LoadingView from "@/components/Shared/LoadingView";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import GeneralButton from "@/components/Shared/GeneralButton";
 
+/**
+ * No se usa para cliente
+ * @deprecated
+ * @returns
+ */
 export const TypeServices = ({ returnBack, idUser }: functionServicesType) => {
   const { handleNotification } = useNotificationProvider();
   const [selectedKeys, setSelectedKeys] = useState<number[]>([]);

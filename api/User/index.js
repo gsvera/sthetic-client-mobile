@@ -33,6 +33,8 @@ export const apiUser = {
     return axiosInstance.post(`${AUTH_BASE_URL}/logout`);
   },
   deleteAccount: function (idUser) {
-    return axiosInstance.delete(`${AUTH_BASE_URL}/delete-account/${idUser}`);
+    return axiosInstance.delete(
+      `${AUTH_BASE_URL}/delete-client-account/${idUser}`
+    );
   },
 };

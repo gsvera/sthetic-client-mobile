@@ -23,8 +23,8 @@ import GeneralButton from "@/components/Shared/GeneralButton";
 import { Feather } from "@expo/vector-icons";
 
 /**
- * ESTE ARCHIVO TIENE COMENTADO LAS OPCIONES PARA SUBIR VIDEO PARA UN FUTURO
- * @param param0
+ * No se usa para cliente
+ * @deprecated
  * @returns
  */
 

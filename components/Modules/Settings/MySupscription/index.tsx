@@ -18,6 +18,11 @@ import {
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import GeneralButton from "@/components/Shared/GeneralButton";
 
+/**
+ * No se usa para cliente
+ * @deprecated
+ * @returns
+ */
 export const MySupscription = ({
   idUser,
   returnBack,
