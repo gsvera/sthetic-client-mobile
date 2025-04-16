@@ -33,5 +33,8 @@ export const REACT_QUERY_KEYS = {
         calendarException: {
             getByUser: (key:string) => `get-calendar-exception-by-user-${key}`
         }
+    },
+    provider: {
+        searchProvider: (key:string) => `search-provider-by-filter-${key}`
     }
 }

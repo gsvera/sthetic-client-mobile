@@ -18,10 +18,19 @@ export type modalCustomProps = {
     idUser?: string;
   };
 
-/**
- *  OBJECTS
- */
+export type InfoCompanyType = {
+    id: number;
+    idUser: string;
+    companyName: string;
+    generalDescription: string;
+    companyPicture: string;
+    typesServices: string;
+}
 
+
+/**
+ * @deprecated no se usa por que el cliente no adquiere un plan
+ */
 export type CatalogPlanDTO = {
     id: number;
     active: boolean;
@@ -30,6 +39,9 @@ export type CatalogPlanDTO = {
     price: number;
 }
 
+/**
+ * @deprecated no se usa por que el cliente no adquiere un plan
+ */
 export type UserPlan = {
     id: number;
     idUser: string;

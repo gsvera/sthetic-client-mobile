@@ -37,4 +37,7 @@ export const apiUser = {
       `${AUTH_BASE_URL}/delete-client-account/${idUser}`
     );
   },
+  searchProvider: function () {
+    return axiosInstance.get(`${BASE_URL}/get-provider-available`);
+  },
 };

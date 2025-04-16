@@ -56,7 +56,7 @@ export default function TabLayout() {
               tabBarLabelStyle: { fontSize: 14, fontWeight: "bold" },
               tabBarIcon: ({ color, focused }) => (
                 <MaterialIcons
-                  name="schedule-send"
+                  name="person-search"
                   size={28}
                   color={
                     focused
