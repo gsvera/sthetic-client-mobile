@@ -27,6 +27,14 @@ export type InfoCompanyType = {
     typesServices: string;
 }
 
+export type TypesServicesType = {
+    id: number;
+    typeServiceNameEs: string;
+    descriptionEs: string;
+}
+
+export type weekDays = 'Lunes' | 'Martes' | 'Miércoles' | 'Jueves' | 'Viernes' | 'Sábado' | 'Domingo';
+
 
 /**
  * @deprecated no se usa por que el cliente no adquiere un plan
@@ -52,5 +60,3 @@ export type UserPlan = {
     isActive: boolean;
     catalogPlanDTO: CatalogPlanDTO;
 }
-
-export type weekDays = 'Lunes' | 'Martes' | 'Miércoles' | 'Jueves' | 'Viernes' | 'Sábado' | 'Domingo';

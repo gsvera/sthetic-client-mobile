@@ -392,7 +392,7 @@ const localStyles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: ThemeColorsSthetic.muted,
     borderRadius: 5,
     paddingHorizontal: 10,
   },

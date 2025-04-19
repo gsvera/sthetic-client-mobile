@@ -61,7 +61,7 @@ export const CardProfileProvider = ({
           handleOnPress={() => {}}
         />
         <GeneralButton
-          textBtn="Ver portafolio"
+          textBtn="Ver más"
           styleText={{ ...TextStyle.fontBoldWhite, ...localStyle.btnText }}
           styleBtn={{
             ...ButtonGeneralStyle.btnActionSthetic,
@@ -78,7 +78,7 @@ const localStyle = StyleSheet.create({
   card: {
     width: "100%",
     backgroundColor: ThemeColorsSthetic.textLight,
-    marginBottom: 12,
+    marginBottom: 10,
     paddingVertical: 10,
   },
   title: {
