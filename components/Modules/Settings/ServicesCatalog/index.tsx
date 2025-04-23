@@ -5,18 +5,17 @@ import { ThemedText } from "@/components/ThemedText";
 import { GlobalColors, ThemeColorsSthetic } from "@/constants/Colors";
 import { functionServicesType } from "../types";
 import { useCallback, useState } from "react";
-import { OptionUploadModal } from "./OptionUploadModal";
 import { UploadImageModal } from "./OptionUploadModal/UploadImageModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import apiCatalogUserService from "@/api/CatalogUserService";
-import PreviewCard, { previewCardProps } from "@/components/Shared/PreviewCard";
+import PreviewCard from "@/components/Shared/PreviewCard";
 import LoadingView from "@/components/Shared/LoadingView";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import { TYPE_STATUS } from "@/constants/Constants";
 import { useNotificationProvider } from "@/provider/NotificationProvider";
 import ModalConfirm from "@/components/Shared/ModalConfirm";
-import { fileTypes } from "@/constants/GeneralTypes";
+import { fileTypes, ProjectType } from "@/constants/GeneralTypes";
 import UploadVideoModal from "./OptionUploadModal/UploadVideoModal";
 import { ButtonGeneralStyle } from "@/constants/StyleComponents";
 import GeneralButton from "@/components/Shared/GeneralButton";
@@ -170,18 +169,19 @@ export const ServicesCatalog = ({
       ) : (
         <ScrollView style={localStyle.scrollViewGallery}>
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-            {listCatalogServices?.map((item: previewCardProps) => (
-              <PreviewCard
-                key={item.id}
-                id={item.id}
-                nameService={item.nameService}
-                minPrice={item.minPrice}
-                maxPrice={item.maxPrice}
-                totalElement={item.totalElement}
-                catalogUserServiceDetailDTO={item.catalogUserServiceDetailDTO}
-                deleteProject={handleSelectDeleteProject}
-                editProject={openEditProject}
-              />
+            {listCatalogServices?.map((item: ProjectType) => (
+              // <PreviewCard
+              // key={item.id}
+              // id={item.id}
+              // nameService={item.nameService}
+              // minPrice={item.minPrice}
+              // maxPrice={item.maxPrice}
+              // totalElement={item.totalElement}
+              // catalogUserServiceDetailDTO={item.catalogUserServiceDetailDTO}
+              // deleteProject={handleSelectDeleteProject}
+              // editProject={openEditProject}
+              // />
+              <></>
             ))}
           </View>
         </ScrollView>

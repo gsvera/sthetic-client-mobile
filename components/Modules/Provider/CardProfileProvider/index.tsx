@@ -2,12 +2,14 @@ import { ThemedText } from "@/components/ThemedText";
 import { InfoCompanyType } from "@/constants/GeneralTypes";
 import { ButtonGeneralStyle, TextStyle } from "@/constants/StyleComponents";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { useMemo, useState } from "react";
 import Badge from "@/components/Shared/Badge";
 import GeneralButton from "@/components/Shared/GeneralButton";
 
+type cardProfileProviderProps = InfoCompanyType & {
+  handleSelectProfile: (id: string) => void;
+};
 export const CardProfileProvider = ({
   id,
   idUser,
@@ -15,8 +17,9 @@ export const CardProfileProvider = ({
   companyPicture,
   generalDescription,
   typesServices,
-}: InfoCompanyType) => {
-  const [showTex, setShowText] = useState(false);
+  handleSelectProfile,
+}: cardProfileProviderProps) => {
+  const [showText, setShowText] = useState(false);
   const typeServicesArr = useMemo(
     () => typesServices?.split(","),
     [typesServices]
@@ -35,13 +38,13 @@ export const CardProfileProvider = ({
       <View style={localStyle.contentDescription}>
         <ThemedText
           style={localStyle.description}
-          numberOfLines={showTex ? undefined : 2}
+          numberOfLines={showText ? undefined : 2}
         >
           {generalDescription}
         </ThemedText>
         <TouchableOpacity onPress={() => setShowText((v) => !v)}>
           <ThemedText style={localStyle.toggleText}>
-            {showTex ? "Ver menos ▲" : "Ver más ▼"}
+            {showText ? "Ver menos ▲" : "Ver más ▼"}
           </ThemedText>
         </TouchableOpacity>
       </View>
@@ -55,7 +58,7 @@ export const CardProfileProvider = ({
           textBtn="Agendar cita"
           styleText={{ ...TextStyle.fontBoldWhite, ...localStyle.btnText }}
           styleBtn={{
-            ...ButtonGeneralStyle.btnUpdateSthetic,
+            ...ButtonGeneralStyle.btnSaveSthetic,
             ...localStyle.btn,
           }}
           handleOnPress={() => {}}
@@ -67,7 +70,7 @@ export const CardProfileProvider = ({
             ...ButtonGeneralStyle.btnActionSthetic,
             ...localStyle.btn,
           }}
-          handleOnPress={() => {}}
+          handleOnPress={() => handleSelectProfile(idUser)}
         />
       </View>
     </View>
@@ -120,7 +123,6 @@ const localStyle = StyleSheet.create({
     fontSize: 17,
   },
   toggleText: {
-    marginTop: 8,
     color: ThemeColorsSthetic.accentReverse,
     fontWeight: "bold",
   },

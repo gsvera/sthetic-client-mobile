@@ -19,8 +19,9 @@ export const REACT_QUERY_KEYS = {
             getAll: (key:string) => `get-all-catalogs-type-services-${key}`
         },
         services: {
-            getByUserId: (key:string) => `get-catalog-user-service-by-id-${key}`,
-            getToEdit: (key:number) => `get-catalog-user-service-to-edit-${key}`
+            getByUserId: (key:string | number | undefined) => `get-catalog-user-service-by-id-${key}`,
+            getToEdit: (key:number) => `get-catalog-user-service-to-edit-${key}`,
+            getById: (key: number) => `get-catalog-user-service-by-id-${key}`
         },
         coupon: {
             getByCode: (key:string) => `get-coupon-by-code-${key}`
@@ -35,6 +36,7 @@ export const REACT_QUERY_KEYS = {
         }
     },
     provider: {
-        searchProvider: (key:string) => `search-provider-by-filter-${key}`
+        searchProvider: (key:string) => `search-provider-by-filter-${key}`,
+        findProviderByUserId: (key:string | number | undefined) => `find-provider-by-user-id-${key}`
     }
 }

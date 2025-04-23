@@ -18,7 +18,7 @@ const localStyle = StyleSheet.create({
   badge: {
     paddingVertical: 2,
     paddingHorizontal: 4,
-    backgroundColor: ThemeColorsSthetic.accent,
+    backgroundColor: ThemeColorsSthetic.accentReverse,
     borderRadius: 5,
     margin: 3,
   },

@@ -1,78 +1,56 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeColorsSthetic } from "@/constants/Colors";
-import { ButtonGeneralStyle, TextStyle } from "@/constants/StyleComponents";
+import {
+  ButtonGeneralStyle,
+  GridStyle,
+  TextStyle,
+} from "@/constants/StyleComponents";
 import { convertCurrency } from "@/utils/GeneralUtils";
-import { StyleSheet, View } from "react-native";
-import ImageWithOptions from "../ImageWithOptions";
-import VideoWithOptions from "../VideoWithOptions";
+import { Image, StyleSheet, View } from "react-native";
 import GeneralButton from "../GeneralButton";
+import { ProjectType } from "@/constants/GeneralTypes";
 
-type detailPrevieCardType = {
-  id: number;
-  fileBase64: string;
+type previeCardProps = {
+  element: ProjectType;
+  handleShowGallery: (element: ProjectType) => void;
 };
 
-export type previewCardProps = {
-  id: number;
-  nameService: string;
-  minPrice?: number;
-  maxPrice?: number;
-  totalElement: number;
-  catalogUserServiceDetailDTO: detailPrevieCardType;
-  editProject: (id: number) => void;
-  deleteProject: (id: number) => void;
-};
-
-/**
- *  ESTE ARCHIVO TIENE COMENTADO LOS COMPONENTE PARA VIDEO QUE SE UTILIZARAN EN UN FUTURO
- * @param element
- * @returns
- */
-export const PreviewCard = (element: previewCardProps) => {
-  const handleDeleteProject = () => {
-    element.deleteProject(element.id);
+export const PreviewCard = ({
+  element,
+  handleShowGallery,
+}: previeCardProps) => {
+  const handleShowMore = () => {
+    handleShowGallery(element);
   };
-
-  const handleEditProject = () => {
-    element.editProject(element.id);
-  };
-
   return (
     <View style={localStyle.previewCard}>
-      {/* {element.catalogUserServiceDetailDTO.fileBase64.includes("image") ? ( */}
-      <ImageWithOptions
-        id={element.id}
-        uri={element.catalogUserServiceDetailDTO.fileBase64}
-        deleteAction={handleDeleteProject}
-        iconDelete="trash"
-        styleImg={localStyle.previewCardImage}
+      <Image
+        style={localStyle.previewCardImage}
+        source={{ uri: element?.catalogUserServiceDetailDTO?.fileBase64 }}
       />
-      {/* ) : (
-        <VideoWithOptions
-          id={element.id}
-          uri={element.catalogUserServiceDetailDTO.fileBase64}
-          deleteAction={deleteProject}
-          iconDelete="trash"
-          styleImg={localStyle.previewCardImage}
-          loop
-        />
-      )} */}
-
       <ThemedText style={localStyle.titlePreviewCard}>
         {element.nameService}
       </ThemedText>
-      <ThemedText style={localStyle.label}>Archivos:</ThemedText>
-      <ThemedText style={localStyle.value}>{element.totalElement}</ThemedText>
-      <ThemedText style={localStyle.label}>Rango de precios:</ThemedText>
-      <ThemedText style={localStyle.value}>
-        {element.minPrice && convertCurrency(element.minPrice)} -{" "}
-        {element.maxPrice && convertCurrency(element.maxPrice)}
-      </ThemedText>
+      <View style={localStyle.rowAttributes}>
+        <View>
+          <ThemedText style={localStyle.label}>Archivos:</ThemedText>
+          <ThemedText style={localStyle.value}>
+            {element.totalElement}
+          </ThemedText>
+        </View>
+        <View>
+          <ThemedText style={localStyle.label}>Rango de precios:</ThemedText>
+          <ThemedText style={localStyle.value}>
+            {element.minPrice && convertCurrency(element.minPrice)} -{" "}
+            {element.maxPrice && convertCurrency(element.maxPrice)}
+          </ThemedText>
+        </View>
+      </View>
       <GeneralButton
         styleBtn={localStyle.btnEdit}
-        textBtn="Actualizar datos"
+        textBtn="Ver mas"
         styleText={TextStyle.fontBoldWhite}
-        handleOnPress={handleEditProject}
+        handleOnPress={handleShowMore}
       />
     </View>
   );
@@ -80,15 +58,16 @@ export const PreviewCard = (element: previewCardProps) => {
 
 const localStyle = StyleSheet.create({
   previewCard: {
-    width: "50%",
+    width: "100%",
     marginVertical: 10,
+    backgroundColor: "white",
+    paddingBottom: 15,
   },
-  previewCardImage: {
-    width: 150,
-    height: 150,
-  },
+  previewCardImage: { width: "100%", height: 250, marginBottom: 7 },
   titlePreviewCard: {
     color: ThemeColorsSthetic.text,
+    fontWeight: "bold",
+    paddingHorizontal: 10,
   },
   label: {
     ...TextStyle.bold,
@@ -96,12 +75,17 @@ const localStyle = StyleSheet.create({
   },
   value: {
     color: ThemeColorsSthetic.text,
+    textAlign: "center",
   },
   btnEdit: {
     ...ButtonGeneralStyle.btnActionSthetic,
-    width: "80%",
-    marginVertical: 5,
+    width: "60%",
+    marginTop: 10,
     marginHorizontal: "auto",
+  },
+  rowAttributes: {
+    ...GridStyle.rowSpaceBetween,
+    paddingHorizontal: 10,
   },
 });
 

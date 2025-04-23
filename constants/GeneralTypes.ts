@@ -15,7 +15,7 @@ export type fileTypes = 'image' | 'video' | null;
 export type modalCustomProps = {
     open: boolean;
     handleCloseModal: () => void;    
-    idUser?: string;
+    idUser?: string | number;
   };
 
 export type InfoCompanyType = {
@@ -25,6 +25,9 @@ export type InfoCompanyType = {
     generalDescription: string;
     companyPicture: string;
     typesServices: string;
+    facebook?: string;
+    instagram?: string;
+    webPage?: string;
 }
 
 export type TypesServicesType = {
@@ -32,6 +35,41 @@ export type TypesServicesType = {
     typeServiceNameEs: string;
     descriptionEs: string;
 }
+
+export type UserLocationType = {
+    id: string;
+    latitude: number;
+    longitude: number;
+}
+
+export type ProviderType = {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    lada: string;
+    phone: string;
+    profilePictureB64?: string;
+    infoCompanyDTO: InfoCompanyType;
+    userLocationDTO: UserLocationType;
+    typeServices?: string
+}
+
+
+export type DetailProjectType = {
+  id: number;
+  fileBase64: string;
+};
+
+export type ProjectType = {
+  id: number;
+  nameService: string;
+  minPrice?: number;
+  maxPrice?: number;
+  totalElement?: number;
+  catalogUserServiceDetailDTO?: DetailProjectType;
+};
+
 
 export type weekDays = 'Lunes' | 'Martes' | 'Miércoles' | 'Jueves' | 'Viernes' | 'Sábado' | 'Domingo';
 

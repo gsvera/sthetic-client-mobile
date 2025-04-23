@@ -2,6 +2,7 @@ import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import apiTypeService from "@/api/TypeService";
 import { apiUser } from "@/api/User";
 import CardProfileProvider from "@/components/Modules/Provider/CardProfileProvider";
+import { ProfileProviderModal } from "@/components/Modules/Provider/ProfileProviderModal";
 import SearchModal from "@/components/Modules/Provider/SearchModal";
 import LoadingView from "@/components/Shared/LoadingView";
 import { ThemedText } from "@/components/ThemedText";
@@ -24,6 +25,9 @@ export default function Home() {
   const [dataListProvider, setDataListProvider] = useState<any[]>([]);
   const [page, setPage] = useState(0);
   const [openSearchModal, setOpenSearchModal] = useState(false);
+  const [openProfileProviderModal, setOpenProfileProviderModal] =
+    useState(false);
+  const [profileSelected, setProfileSelected] = useState("");
 
   const {
     data: listProvider = [],
@@ -90,6 +94,16 @@ export default function Home() {
     refetchListprovider();
   };
 
+  const handleOnSelectProfile = (idUser: string) => {
+    setProfileSelected(idUser);
+    setOpenProfileProviderModal(true);
+  };
+
+  const handleCloseProfileProviderModal = () => {
+    setProfileSelected("");
+    setOpenProfileProviderModal(false);
+  };
+
   return (
     <View>
       <View style={localStyle.header}>
@@ -123,11 +137,12 @@ export default function Home() {
               <CardProfileProvider
                 key={item.id}
                 id={item.id}
-                idUser={item.idUser}
+                idUser={item.userDTO.id}
                 companyName={item.companyName}
                 generalDescription={item.generalDescription}
                 companyPicture={item.companyPicture}
                 typesServices={item.typesServices}
+                handleSelectProfile={handleOnSelectProfile}
               />
             );
           }}
@@ -142,6 +157,11 @@ export default function Home() {
         listType={listType}
         handleFilter={handleSearch}
         handleClearFilter={handleClearFilter}
+      />
+      <ProfileProviderModal
+        open={openProfileProviderModal}
+        handleCloseModal={handleCloseProfileProviderModal}
+        idUser={profileSelected}
       />
     </View>
   );

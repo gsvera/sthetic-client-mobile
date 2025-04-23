@@ -45,4 +45,7 @@ export const apiUser = {
       }${typeService && "&type-service=" + typeService}`
     );
   },
+  findProviderByUser: function (idUser) {
+    return axiosInstance.get(`${BASE_URL}/get-provider-by-id/${idUser}`);
+  },
 };
