@@ -1,4 +1,5 @@
 import { ThemedText } from "@/components/ThemedText";
+import { ButtonGeneralStyle } from "@/constants/StyleComponents";
 import { TouchableOpacity } from "react-native";
 
 type generalButtonProps = {
@@ -18,7 +19,7 @@ export const GeneralButton = ({
 }: generalButtonProps) => {
   return (
     <TouchableOpacity
-      style={styleBtn}
+      style={!disabledBtn ? styleBtn : ButtonGeneralStyle.btnDisabledSthetic}
       onPress={handleOnPress}
       disabled={disabledBtn}
     >

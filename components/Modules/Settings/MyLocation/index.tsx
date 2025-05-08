@@ -14,6 +14,7 @@ import { TYPE_STATUS } from "@/constants/Constants";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import GeneralButton from "@/components/Shared/GeneralButton";
+import { ResponseApi } from "@/api/responseApi";
 
 type myLocationProps = {
   idUser: string;
@@ -54,17 +55,17 @@ export const MyLocation = ({ idUser, returnBack }: myLocationProps) => {
     queryKey: [REACT_QUERY_KEYS.userConfig.getLocationByUser(idUser)],
     queryFn: () => apiUserConfig.getLocationByUser(idUser),
     ...{
-      select: (data: ResponseAPi) => data?.data,
+      select: (data: ResponseApi) => data?.data,
     },
   });
 
   const { mutate: saveLocation } = useMutation({
     mutationFn: (data: dataLocationType) => apiUserConfig.saveLocation(data),
-    onSuccess: (response: ResponseAPi) => handleSaveResponse(response),
+    onSuccess: (response: ResponseApi) => handleSaveResponse(response),
     onError: (err) => ErrorAlertMessage,
   });
 
-  const handleSaveResponse = (data: ResponseAPi) => {
+  const handleSaveResponse = (data: ResponseApi) => {
     setRequiredLocation(false);
     setEnableBtn(false);
     if (!data.data.error) {

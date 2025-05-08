@@ -19,14 +19,16 @@ import PersonalInformation, {
 import { Image } from "react-native";
 import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import ChangePassword from "@/components/Modules/Settings/ChangePassword";
-import MyLocation from "@/components/Modules/Settings/MyLocation";
+// import MyLocation from "@/components/Modules/Settings/MyLocation";
 import CameraCustom from "@/components/Modules/Settings/CameraCustom";
-import ServicesCatalog from "@/components/Modules/Settings/ServicesCatalog";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import TypeServices from "@/components/Modules/Settings/TypeServices";
-import MySupscription from "@/components/Modules/Settings/MySupscription";
+// import ServicesCatalog from "@/components/Modules/Settings/ServicesCatalog";
+// import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+// import TypeServices from "@/components/Modules/Settings/TypeServices";
+// import MySupscription from "@/components/Modules/Settings/MySupscription";
 import ModalConfirm from "@/components/Shared/ModalConfirm";
 import { TextStyle } from "@/constants/StyleComponents";
+import { ObjectResponse, ResponseApi } from "@/api/responseApi";
+import LoadingView from "@/components/Shared/LoadingView";
 
 export default function More() {
   const navigation = useNavigation();
@@ -36,23 +38,23 @@ export default function More() {
   const [openModaloLogout, setOpenModalLogout] = useState(false);
   // const [openModal, setOpenModal] = useState(false);
 
-  const { data: dataUser, isFetching: loadingData } = useQuery({
+  const { data: dataUser, isFetching: isFetchingData } = useQuery({
     queryKey: [REACT_QUERY_KEYS.user.getDataUser("personal-information")],
     queryFn: () => apiUser.getDataUser(),
     ...{
-      select: (data: ResponseAPi) => data.data.items,
+      select: (data: ResponseApi) => data.data.items,
     },
   });
 
   const { mutate: logoutSession } = useMutation({
     mutationFn: () => apiUser.logout(),
-    onSuccess: (data: ResponseAPi) => handleSuccessLogout(data),
+    onSuccess: (data: ResponseApi) => handleSuccessLogout(data),
     onError: (err) => handleErrorLogout(err),
   });
 
   const { mutate: deleteAccount } = useMutation({
     mutationFn: () => apiUser.deleteAccount(dataUser?.id),
-    onSuccess: (data: ResponseAPi) => handleSuccessDeleteAccount(data.data),
+    onSuccess: (data: ResponseApi) => handleSuccessDeleteAccount(data.data),
     onError: (err) => ErrorAlertMessage,
   });
 
@@ -61,7 +63,7 @@ export default function More() {
     deleteSession();
   };
 
-  const handleSuccessLogout = async (data: ResponseAPi) => {
+  const handleSuccessLogout = async (data: ResponseApi) => {
     if (!data.data.error) {
       deleteSession();
     }
@@ -141,19 +143,27 @@ export default function More() {
               <Image
                 source={
                   !dataUser?.profilePictureB64
-                    ? require("@/assets/images/react-logo.png")
+                    ? require("@/assets/images/me-logo.png")
                     : { uri: dataUser?.profilePictureB64 }
                 }
-                style={localStyle.avatar}
+                style={
+                  !dataUser?.profilePictureB64
+                    ? localStyle.avatarMeredith
+                    : localStyle.avatar
+                }
               />
             </TouchableOpacity>
             <View style={{ marginLeft: 10 }}>
               <ThemedText style={{ color: ThemeColorsSthetic.textOre }}>
                 Bienvenido!
               </ThemedText>
-              <ThemedText style={localStyle.name}>
-                {dataUser?.firstName} {dataUser?.lastName}
-              </ThemedText>
+              {isFetchingData ? (
+                <LoadingView />
+              ) : (
+                <ThemedText style={localStyle.name}>
+                  {dataUser?.firstName} {dataUser?.lastName}
+                </ThemedText>
+              )}
             </View>
           </View>
           <View style={localStyle.contentDivisor}>
@@ -296,6 +306,11 @@ const localStyle = StyleSheet.create({
   avatar: {
     width: 50,
     height: 50,
+    borderRadius: 50, // Hace que la imagen sea circular
+  },
+  avatarMeredith: {
+    width: 80,
+    height: 80,
     borderRadius: 50, // Hace que la imagen sea circular
   },
   name: {

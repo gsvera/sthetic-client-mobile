@@ -1,6 +1,8 @@
+import ButtonCloseModal from "@/components/Shared/ButtonCloseModal";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeColorsSthetic } from "@/constants/Colors";
+import { PLATFORM_TYPE } from "@/constants/Constants";
 import {
   modalCustomProps,
   selectOptionType,
@@ -12,13 +14,14 @@ import Checkbox from "expo-checkbox";
 import { useMemo, useState } from "react";
 import {
   Modal,
-  Pressable,
+  Platform,
   ScrollView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type searchModalProps = modalCustomProps & {
   listType: TypesServicesType[];
@@ -33,6 +36,8 @@ export const SearchModal = ({
   handleFilter,
   handleClearFilter,
 }: searchModalProps) => {
+  const insets = useSafeAreaInsets();
+  const platform = Platform.OS;
   const [textSearch, setTextSearch] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<number[]>([]);
 
@@ -86,6 +91,7 @@ export const SearchModal = ({
     setTextSearch("");
     handleClearFilter({ word: "", typeService: "" });
   };
+
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View
@@ -95,16 +101,13 @@ export const SearchModal = ({
           return false;
         }}
       >
-        <View style={localStyle.contentModal}>
-          <View style={localStyle.contentHeader}>
-            <Pressable onPress={handleCloseModal}>
-              <SimpleLineIcons
-                name="close"
-                size={24}
-                color={ThemeColorsSthetic.accentReverse}
-              />
-            </Pressable>
-          </View>
+        <View
+          style={{
+            ...localStyle.contentModal,
+            top: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+          }}
+        >
+          <ButtonCloseModal handleOnPress={handleCloseModal} />
           <View style={localStyle.contentFilter}>
             <View>
               <ThemedText style={localStyle.label}>Negocio:</ThemedText>
@@ -169,10 +172,9 @@ const localStyle = StyleSheet.create({
     justifyContent: "center",
   },
   contentModal: {
-    top: 0,
     position: "absolute",
     width: "100%",
-    backgroundColor: ThemeColorsSthetic.backgroundLigth,
+    backgroundColor: ThemeColorsSthetic.backgroundLight,
   },
   contentHeader: {
     flexDirection: "row",

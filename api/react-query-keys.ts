@@ -4,7 +4,12 @@ export const REACT_QUERY_KEYS = {
         getDataUser: (key: string) => `get-data-user-${key}`,
     },
     userConfig: {
-        getLocationByUser: (key:string) => `get-location-by-user${key}`
+        getLocationByProvider: (key:string) => `get-location-by-provider`,
+        /**
+         * 
+         * @deprecated no se usa para esta app
+         */
+        getLocationByUser: (key:string) => `get-location-by-user${key}`,
     },
     plan: {
         getFilterData: (key:string) => `get-plan-filter-data-${key}`,
@@ -21,7 +26,8 @@ export const REACT_QUERY_KEYS = {
         services: {
             getByUserId: (key:string | number | undefined) => `get-catalog-user-service-by-id-${key}`,
             getToEdit: (key:number) => `get-catalog-user-service-to-edit-${key}`,
-            getById: (key: number) => `get-catalog-user-service-by-id-${key}`
+            getById: (key: number) => `get-catalog-user-service-by-id-${key}`,
+            
         },
         coupon: {
             getByCode: (key:string) => `get-coupon-by-code-${key}`
@@ -29,14 +35,19 @@ export const REACT_QUERY_KEYS = {
     },
     calendar: {
         calendarByUser: {
-            getByIdUser: (key:string | undefined) => `get-calendar-by-user-id-${key}`
-        },
+            /**
+             * @deprecated getByIdUser no se usa en esta app
+             */
+            getByIdUser: (key:string | undefined) => `get-calendar-by-user-id-${key}`,
+            getTimeCalendarByProvider: (key:string) => `get-time-calendar-by-provider`
+        },        
         calendarException: {
             getByUser: (key:string) => `get-calendar-exception-by-user-${key}`
         }
     },
     provider: {
         searchProvider: (key:string) => `search-provider-by-filter-${key}`,
-        findProviderByUserId: (key:string | number | undefined) => `find-provider-by-user-id-${key}`
+        findProviderByUserId: (key:string | number | undefined) => `find-provider-by-user-id-${key}`,
+        getServicesByProvider: (key: string) => `get-menu-services-by-provide-${key}`
     }
 }

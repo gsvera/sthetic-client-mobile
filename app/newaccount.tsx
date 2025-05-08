@@ -16,6 +16,7 @@ import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessag
 import { KEY_STORE, setStoreSession } from "@/hooks/StoreDataSecure";
 import { useApiProvider } from "@/provider/InterceptorProvider";
 import { parsePasswordEncrypt } from "@/utils/GeneralUtils";
+import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 
 const defaultValues = {
   firstName: "",
@@ -53,7 +54,7 @@ export default function newAccount() {
 
   const { mutate: createUser } = useMutation({
     mutationFn: (data: any) => apiUser.saveUser(data),
-    onSuccess: (data: ResponseAPi) => handleSuccessSaveUser(data?.data),
+    onSuccess: (data: ResponseApi) => handleSuccessSaveUser(data?.data),
     onError: (err) => ErrorAlertMessage,
   });
 
@@ -85,7 +86,7 @@ export default function newAccount() {
   return (
     <SafeAreaView style={{ ...Container.container, paddingTop: 10 }}>
       {showMessageSucces ? (
-        <SuccessNotification />
+        <SuccessNotification message="Su cuenta ha sido creada con éxito" />
       ) : (
         <>
           <View

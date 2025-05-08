@@ -62,7 +62,9 @@ const ApiRequestProvider = ({ children }) => {
   }, [interceptRequestHandler, interceptResponseErrorHandler, token]);
 
   return (
-    <InterceptorAxiosProvider.Provider value={{ axiosInstances, setToken }}>
+    <InterceptorAxiosProvider.Provider
+      value={{ axiosInstances, setToken, token }}
+    >
       {children}
     </InterceptorAxiosProvider.Provider>
   );

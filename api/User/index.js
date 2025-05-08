@@ -40,7 +40,7 @@ export const apiUser = {
   searchProvider: function (data) {
     const { page, word, typeService } = data;
     return axiosInstance.get(
-      `${BASE_URL}/get-provider-available?page=${page}&size=2${
+      `${BASE_URL}/get-provider-available?page=${page}&size=5${
         word && "&word=" + word
       }${typeService && "&type-service=" + typeService}`
     );

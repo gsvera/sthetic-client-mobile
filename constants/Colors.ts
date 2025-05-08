@@ -33,7 +33,7 @@ export enum GlobalColors {
  * @param secondary - Fondo principal o secciones
  * @param accent - Íconos, detalles premium
  * @param accentReverse - Aporta contraste sin ser negro, ideal para íconos o textos destacados
- * @param background - Backgrounds, tarjetas
+ * @param backgroundLight - Backgrounds, tarjetas
  * @param backgroundStrong - Background oscuro
  * @param text - Texto principal
  * @param textLight - Texto invertido
@@ -52,6 +52,7 @@ export enum GlobalColors {
  * @param updateNotification - para notificaciones de actualizacion
  * @param errorNotification - para notificaciones de error
  * @param dangerColor - colores de error o advertencia de peligro o de acciones que son de riesgo
+ * @param shadowBackground - Shadow background para modales
  * 
  */
 export enum ThemeColorsSthetic  {
@@ -74,7 +75,7 @@ export enum ThemeColorsSthetic  {
     /**
      * Backgrounds, tarjetas
      */
-    backgroundLigth = '#F5F5F5',
+    backgroundLight = '#F5F5F5',
     /**
      * Background oscuro
      */
@@ -146,7 +147,11 @@ export enum ThemeColorsSthetic  {
     /**
      * colores de error o advertencia de peligro o de acciones que son de riesgo
      */
-    dangerColor = '#ff4d4d'
+    dangerColor = '#ff4d4d',
+/**
+     * Shadow background para modales
+     */
+    shadowBackground = "rgba(0, 0, 0, 0.5)"
 };
 
 export const textColors = {

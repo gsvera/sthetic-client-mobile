@@ -31,6 +31,8 @@ import {
 } from "@/constants/StyleComponents";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
+import { ObjectResponse, ResponseApi } from "@/api/responseApi";
+import LoadingView from "@/components/Shared/LoadingView";
 
 const schema = yup.object({
   username: yup.string().required("Ingrese un usuario valid"),
@@ -40,7 +42,7 @@ const schema = yup.object({
 export default function Login() {
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
-  const { setToken } = useApiProvider();
+  const { setToken, token } = useApiProvider();
   const {
     control,
     handleSubmit,
@@ -49,15 +51,17 @@ export default function Login() {
     resolver: yupResolver(schema),
   });
   const [hiddenPass, setHiddenPass] = useState(true);
+  const [loadingSession, setLoadingSession] = useState(false);
 
   const { mutate: login } = useMutation({
     mutationFn: (data: loginData) => apiUser.login(data),
-    onSuccess: (data: ResponseAPi) => handleSuccessLogin(data.data),
+    onSuccess: (data: ResponseApi) => handleSuccessLogin(data.data),
     onError: (error: any) => handleError(error),
   });
 
   const handleSuccessLogin = (data: ObjectResponse) => {
     if (data.error) {
+      setLoadingSession(false);
       ErrorAlertMessage({ message: data.message });
       return;
     }
@@ -70,10 +74,14 @@ export default function Login() {
       value: data.items?.idUser,
     });
     setToken(data.items?.token);
-    navigation.navigate("(tabs)" as never);
+    setTimeout(() => {
+      setLoadingSession(false);
+      navigation.navigate("(tabs)" as never);
+    }, 1500);
   };
 
   const handleError = (error: any) => {
+    setLoadingSession(false);
     ErrorAlertMessage({
       message:
         "Hubo un problema al querer inciar sesión, por favor intentelo mas tarde",
@@ -83,6 +91,13 @@ export default function Login() {
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
+
+  useEffect(() => {
+    if (token) {
+      setLoadingSession(false);
+      navigation.navigate("(tabs)" as never);
+    }
+  }, [token]);
 
   const imageBg = require("@/assets/images/background.webp");
 
@@ -99,7 +114,7 @@ export default function Login() {
         backgroundColor:
           colorScheme === "dark"
             ? ThemeColorsSthetic.backgroundStrong
-            : ThemeColorsSthetic.backgroundLigth,
+            : ThemeColorsSthetic.backgroundLight,
       }}
     >
       <SafeAreaView style={Container.containerLogin}>
@@ -115,12 +130,12 @@ export default function Login() {
               <View>
                 <View style={styles.imgContainer}>
                   <Image
-                    source={require("@/assets/images/react-logo.png")}
+                    source={require("@/assets/images/meredith-logo.png")}
                     style={styles.logo}
                   />
                 </View>
-                <ThemedText style={styles.title}>Sthetic Services</ThemedText>
                 <View style={styles.centerInput}>
+                  <ThemedText style={styles.label}>Usuario</ThemedText>
                   <Controller
                     control={control}
                     name="username"
@@ -144,6 +159,7 @@ export default function Login() {
                   )}
                 </View>
                 <View style={styles.centerInput}>
+                  <ThemedText style={styles.label}>Contraseña</ThemedText>
                   <Controller
                     control={control}
                     name="password"
@@ -177,11 +193,13 @@ export default function Login() {
                     ...loginStyle.buttonSubmit,
                   }}
                 >
+                  {loadingSession && <LoadingView />}
                   <GeneralButton
                     textBtn="Iniciar sesión"
                     styleBtn={ButtonGeneralStyle.btnSaveSthetic}
                     styleText={TextStyle.fontBoldWhite}
                     handleOnPress={handleSubmit(onSubmit)}
+                    disabledBtn={loadingSession}
                   />
                   <View style={MarginStyle.marginT20}>
                     <ThemedText
@@ -221,9 +239,9 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   logo: {
-    height: 100,
-    width: 100,
-    marginTop: 100,
+    height: 200,
+    width: 230,
+    marginTop: 70,
   },
   title: {
     paddingTop: 20,
@@ -233,9 +251,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: ThemeColorsSthetic.primary,
   },
+  label: {
+    color: ThemeColorsSthetic.textTitle,
+    textAlign: "center",
+    marginBottom: 5,
+  },
   centerInput: {
     justifyContent: "center",
-    flexDirection: "row",
     marginTop: 15,
   },
   icon: {

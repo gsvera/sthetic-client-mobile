@@ -4,6 +4,13 @@ export type loginData = {
     isClient?: boolean;
 }
 
+export type UserType = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string
+}
+
 export type selectOptionType = {
     key: number | string,
     value: string,
@@ -16,6 +23,7 @@ export type modalCustomProps = {
     open: boolean;
     handleCloseModal: () => void;    
     idUser?: string | number;
+    idProvider?: string;
   };
 
 export type InfoCompanyType = {
@@ -40,6 +48,9 @@ export type UserLocationType = {
     id: string;
     latitude: number;
     longitude: number;
+    auxState?: string;
+    auxMunicipality?: string;
+    reference?: string;
 }
 
 export type ProviderType = {
@@ -71,7 +82,37 @@ export type ProjectType = {
 };
 
 
-export type weekDays = 'Lunes' | 'Martes' | 'Miércoles' | 'Jueves' | 'Viernes' | 'Sábado' | 'Domingo';
+export type weekDays = 'lunes' | 'martes' | 'miércoles' | 'jueves' | 'viernes' | 'sábado' | 'domingo';
+
+export type TimeScheduleType = {
+    start: string;
+    end: string
+}
+
+export type SelectedDateCalendarType = {
+    dateString: string;
+    nameDay: string;
+    time: TimeScheduleType;
+} 
+
+export type MenuServiceType = {
+    id: number;
+    nameService: string;
+    people: number;
+    price: number;
+}
+
+export type ScheduleServiceType = {
+    id?: number;
+    idClient: string;
+    idProvider: string;
+    scheduleDate: string;
+    startTime: string;
+    endTime: string;
+    nameService: string;
+    people: number;
+    amount: number;
+}
 
 
 /**

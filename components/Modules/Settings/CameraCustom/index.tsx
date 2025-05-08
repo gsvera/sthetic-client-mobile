@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Platform,
 } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
@@ -16,8 +17,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import apiUserConfig from "@/api/UserConfig";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import { useNotificationProvider } from "@/provider/NotificationProvider";
-import { TYPE_STATUS } from "@/constants/Constants";
+import { PLATFORM_TYPE, TYPE_STATUS } from "@/constants/Constants";
 import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
+import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 
 type cameraCustomProps = {
   idUser: string;
@@ -25,6 +27,7 @@ type cameraCustomProps = {
 };
 
 export const CameraCustom = ({ returnBack, idUser }: cameraCustomProps) => {
+  const platformOs = Platform.OS;
   const { handleNotification } = useNotificationProvider();
   const queryClient = useQueryClient();
   const [facing, setFacing] = useState<CameraType>("back");
@@ -34,7 +37,7 @@ export const CameraCustom = ({ returnBack, idUser }: cameraCustomProps) => {
 
   const { mutate: savePicture } = useMutation({
     mutationFn: (data: any) => apiUserConfig.saveProfilePicture(data),
-    onSuccess: (data: ResponseAPi) => handleSuccessSavePicture(data.data),
+    onSuccess: (data: ResponseApi) => handleSuccessSavePicture(data.data),
     onError: ErrorAlertMessage,
   });
 
@@ -100,7 +103,12 @@ export const CameraCustom = ({ returnBack, idUser }: cameraCustomProps) => {
               source={{ uri: imageBase64 }}
               style={localStyles.imgCaptured}
             />
-            <View style={localStyles.btnContainerOption}>
+            <View
+              style={{
+                ...localStyles.btnContainerOption,
+                bottom: platformOs === PLATFORM_TYPE.ANDROID ? 70 : 90,
+              }}
+            >
               <TouchableOpacity
                 onPress={backToTakePicture}
                 style={localStyles.btnOptionCamera}
@@ -126,13 +134,20 @@ export const CameraCustom = ({ returnBack, idUser }: cameraCustomProps) => {
             </View>
           </View>
         ) : (
-          <CameraView
-            ref={cameraRef}
-            style={localStyles.camera}
-            facing={facing}
-            mirror={facing === "front"}
-          >
-            <View style={localStyles.btnContainerOption}>
+          <>
+            <CameraView
+              ref={cameraRef}
+              style={localStyles.camera}
+              facing={facing}
+              mirror={facing === "front"}
+            />
+
+            <View
+              style={{
+                ...localStyles.btnContainerOption,
+                bottom: platformOs === PLATFORM_TYPE.ANDROID ? 70 : 90,
+              }}
+            >
               <TouchableOpacity
                 style={localStyles.btnOptionCamera}
                 onPress={toogleCameraFacing}
@@ -156,7 +171,7 @@ export const CameraCustom = ({ returnBack, idUser }: cameraCustomProps) => {
                 />
               </TouchableOpacity>
             </View>
-          </CameraView>
+          </>
         )}
       </View>
     </View>
@@ -184,10 +199,8 @@ const localStyles = StyleSheet.create({
   },
   btnContainerOption: {
     position: "absolute",
-    bottom: 70,
     flexDirection: "row",
-    alignContent: "flex-end",
-    alignSelf: "flex-end",
+    alignSelf: "center",
   },
   btnOptionCamera: {
     alignSelf: "flex-end",

@@ -157,8 +157,8 @@ export const TextStyle = StyleSheet.create({
         color: GlobalColors.whiteColor,
         fontWeight: 'bold'
     },
-    fontBoldBlue: {
-        color: GlobalColors.blueColor,
+    fontTitleBold: {
+        color: ThemeColorsSthetic.textTitle,
         fontWeight: 'bold'
     },
     darkColor: {
@@ -208,6 +208,12 @@ export const TextStyle = StyleSheet.create({
     },
     textError: {
         color: ThemeColorsSthetic.dangerColor
+    },
+    textNote: {
+        color: ThemeColorsSthetic.muted
+    },
+    textMuted: {
+        color: ThemeColorsSthetic.muted
     }
 })
 

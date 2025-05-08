@@ -1,22 +1,27 @@
 import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
+import { ResponseApi } from "@/api/responseApi";
 import apiTypeService from "@/api/TypeService";
 import { apiUser } from "@/api/User";
 import CardProfileProvider from "@/components/Modules/Provider/CardProfileProvider";
 import { ProfileProviderModal } from "@/components/Modules/Provider/ProfileProviderModal";
 import SearchModal from "@/components/Modules/Provider/SearchModal";
+import Schedule from "@/components/Modules/Schedule";
 import LoadingView from "@/components/Shared/LoadingView";
 import { ThemedText } from "@/components/ThemedText";
 
 import { ThemeColorsSthetic } from "@/constants/Colors";
+import { PLATFORM_TYPE } from "@/constants/Constants";
 import { TypesServicesType } from "@/constants/GeneralTypes";
 import { TextStyle } from "@/constants/StyleComponents";
 import { Feather } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { Image, Platform } from "react-native";
 import { FlatList } from "react-native";
 import { Pressable, StyleSheet, View } from "react-native";
 
 export default function Home() {
+  const platform = Platform.OS;
   const [filterParams, setFilterParams] = useState({
     page: 0,
     word: "",
@@ -27,12 +32,14 @@ export default function Home() {
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [openProfileProviderModal, setOpenProfileProviderModal] =
     useState(false);
+  const [openSchedule, setOpenSchedule] = useState(false);
   const [profileSelected, setProfileSelected] = useState("");
 
   const {
     data: listProvider = [],
     refetch: refetchListprovider,
     isFetching: isFetchingListProvider,
+    isLoading,
   } = useQuery({
     queryKey: [
       REACT_QUERY_KEYS.provider.searchProvider("search-provider"),
@@ -40,7 +47,7 @@ export default function Home() {
     ],
     queryFn: () => apiUser.searchProvider({ ...filterParams, page }),
     ...{
-      select: (data: ResponseAPi) => data.data.items,
+      select: (data: ResponseApi) => data.data.items,
     },
   });
 
@@ -48,7 +55,7 @@ export default function Home() {
     queryKey: [REACT_QUERY_KEYS.catalogs.typeServices.getAll("get-all")],
     queryFn: () => apiTypeService.getAll(),
     ...{
-      select: (data: ResponseAPi) => data.data.items as TypesServicesType[],
+      select: (data: ResponseApi) => data.data.items as TypesServicesType[],
     },
   });
 
@@ -104,10 +111,22 @@ export default function Home() {
     setOpenProfileProviderModal(false);
   };
 
+  const handleMakeSchedule = (idUser: string) => {
+    setProfileSelected(idUser);
+    setOpenSchedule(true);
+  };
+
+  const handleCloseSchedule = () => {
+    setOpenSchedule(false);
+  };
+
   return (
     <View>
       <View style={localStyle.header}>
-        <ThemedText style={localStyle.title}>Personal Care</ThemedText>
+        <Image
+          source={require("@/assets/images/me-text-logo.png")}
+          style={localStyle.logo}
+        />
         <Pressable
           style={localStyle.inputSearch}
           onPress={() => setOpenSearchModal((v) => !v)}
@@ -122,10 +141,9 @@ export default function Home() {
           />
         </Pressable>
       </View>
-      <View style={{ height: "92%" }}>
-        {isFetchingListProvider && (
-          <LoadingView styleProps={localStyle.loader} />
-        )}
+      <View
+        style={{ height: platform === PLATFORM_TYPE.ANDROID ? "90%" : "85%" }}
+      >
         <FlatList
           data={Array.isArray(dataListProvider) ? dataListProvider : []}
           keyExtractor={(item, index) =>
@@ -143,13 +161,26 @@ export default function Home() {
                 companyPicture={item.companyPicture}
                 typesServices={item.typesServices}
                 handleSelectProfile={handleOnSelectProfile}
+                handleMakeSchedule={handleMakeSchedule}
               />
             );
           }}
           onEndReached={fetchData}
           onEndReachedThreshold={0.5}
-          ListEmptyComponent={<ThemedText>No hay datos disponibles</ThemedText>}
+          ListEmptyComponent={
+            <ThemedText style={localStyle.textEmpty}>
+              No hay datos disponibles
+            </ThemedText>
+          }
         />
+        {isFetchingListProvider && (
+          <LoadingView
+            styleProps={{
+              ...localStyle.loader,
+              bottom: platform === PLATFORM_TYPE.ANDROID ? 50 : 120,
+            }}
+          />
+        )}
       </View>
       <SearchModal
         open={openSearchModal}
@@ -163,11 +194,20 @@ export default function Home() {
         handleCloseModal={handleCloseProfileProviderModal}
         idUser={profileSelected}
       />
+      <Schedule
+        open={openSchedule}
+        handleCloseModal={handleCloseSchedule}
+        idProvider={profileSelected}
+      />
     </View>
   );
 }
 
 const localStyle = StyleSheet.create({
+  logo: {
+    width: 150,
+    height: 50,
+  },
   header: {
     marginVertical: 10,
     flexDirection: "row",
@@ -195,10 +235,12 @@ const localStyle = StyleSheet.create({
     width: 100,
   },
   loader: {
-    position: "absolute",
-    bottom: 10,
     left: 0,
     right: 0,
     zIndex: 1000,
+  },
+  textEmpty: {
+    ...TextStyle.textMuted,
+    textAlign: "center",
   },
 });

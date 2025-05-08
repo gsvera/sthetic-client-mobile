@@ -67,8 +67,7 @@ export const UploadOptionPictureModal = ({
     });
 
     if (!result.canceled) {
-      console.log(result);
-      console.log("Imagen seleccionada:", result.assets[0].base64);
+      // console.log("Imagen seleccionada:", result.assets[0].base64);
     } else {
       console.log("El usuario canceló la selección.");
     }

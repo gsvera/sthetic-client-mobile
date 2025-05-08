@@ -3,7 +3,13 @@ import { AntDesign } from "@expo/vector-icons";
 import { StyleSheet, View } from "react-native";
 import { ThemedText } from "../../ThemedText";
 
-export default function SuccessNotification() {
+type successNotificationProps = {
+  message: string;
+};
+
+export default function SuccessNotification({
+  message,
+}: successNotificationProps) {
   return (
     <View style={localStyles.backgroundContent}>
       <View style={localStyles.body}>
@@ -13,7 +19,7 @@ export default function SuccessNotification() {
           color={ThemeColorsSthetic.textLight}
         />
         <ThemedText type="subtitle" style={localStyles.textSuccess}>
-          Su cuenta ha sido creada con exito
+          {message}
         </ThemedText>
       </View>
     </View>
@@ -23,21 +29,21 @@ export default function SuccessNotification() {
 const localStyles = StyleSheet.create({
   backgroundContent: {
     backgroundColor: ThemeColorsSthetic.successNotification,
-    width: "100%",
-    height: "100%",
-    bottom: 0,
+    justifyContent: "center",
+    position: "absolute",
     top: 0,
+    bottom: 0,
     left: 0,
     right: 0,
-    position: "fixed",
     zIndex: 1000,
-    justifyContent: "center",
     alignItems: "center",
+    alignContent: "center",
   },
   body: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1,
+    padding: 20,
+    borderRadius: 10,
   },
   textSuccess: {
     color: ThemeColorsSthetic.textLight,

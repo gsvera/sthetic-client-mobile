@@ -36,13 +36,13 @@ export enum FORMAT_DATE {
 }
 
 export const WEEK_DAYS:weekDays[] = [
-    'Lunes',
-    'Martes', 
-    'Miércoles', 
-    'Jueves', 
-    'Viernes', 
-    'Sábado', 
-    'Domingo'
+    'lunes',
+    'martes', 
+    'miércoles', 
+    'jueves', 
+    'viernes', 
+    'sábado', 
+    'domingo'
 ];
 
 export const DEFAULT_VALUES_WEEK = WEEK_DAYS.map((day: string) => ({
@@ -53,3 +53,14 @@ export const DEFAULT_VALUES_WEEK = WEEK_DAYS.map((day: string) => ({
   duration: 0,
   maxReservations: 0,
 }));
+
+export enum STEP_RESERVATION {
+    SELECT_DATE = 1,
+    SELECT_SERVICE = 2,
+    CONFIRM_RESERVATION = 3
+}
+
+export enum PLATFORM_TYPE {
+    IOS = 'ios',
+    ANDROID = 'android'
+}

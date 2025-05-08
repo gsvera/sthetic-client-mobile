@@ -18,27 +18,31 @@ import {
   GridStyle,
   TextStyle,
 } from "@/constants/StyleComponents";
-import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import {
   Image,
   Linking,
   Modal,
+  Platform,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from "react-native";
 import GalleryProjectModal from "../GalleryProjectModal";
-
-const imageProfileDefault = require("@/assets/images/profile-default.png");
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ResponseApi } from "@/api/responseApi";
+import { PLATFORM_TYPE } from "@/constants/Constants";
 
 export const ProfileProviderModal = ({
   open,
   handleCloseModal,
   idUser,
 }: modalCustomProps) => {
+  const insets = useSafeAreaInsets();
+  const platform = Platform.OS;
   const [showTextDescription, setShowTextDescription] = useState(false);
   const [openModalGalery, setOpenModalGalery] = useState(false);
   const [gallerySelected, setgallerySelected] = useState({
@@ -50,7 +54,7 @@ export const ProfileProviderModal = ({
     queryKey: [REACT_QUERY_KEYS.provider.findProviderByUserId(idUser)],
     queryFn: () => apiUser.findProviderByUser(idUser),
     ...{
-      select: (data: ResponseAPi) => data.data.items as ProviderType,
+      select: (data: ResponseApi) => data.data.items as ProviderType,
       enabled: !!idUser,
     },
   });
@@ -59,7 +63,7 @@ export const ProfileProviderModal = ({
     queryKey: [REACT_QUERY_KEYS.catalogs.services.getByUserId(idUser)],
     queryFn: () => apiCatalogUserService.getCatalogServicesByUserId(idUser),
     ...{
-      select: (data: ResponseAPi) => data.data.items,
+      select: (data: ResponseApi) => data.data.items,
       enabled: !!idUser,
     },
   });
@@ -83,8 +87,13 @@ export const ProfileProviderModal = ({
     setOpenModalGalery(false);
   };
   return (
-    <Modal animationType="slide" transparent={false} visible={open}>
-      <View>
+    <Modal animationType="slide" transparent={true} visible={open}>
+      <View
+        style={{
+          ...localStyle.modal,
+          marginTop: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+        }}
+      >
         <ReturnArrow handleReturn={handleCloseModal} />
         {isLoading ? (
           <LoadingView />
@@ -99,11 +108,11 @@ export const ProfileProviderModal = ({
                 <Image
                   style={localStyle.profilePicture}
                   source={
-                    dataInfo?.profilePictureB64
-                      ? {
+                    !dataInfo?.profilePictureB64
+                      ? require("@/assets/images/me-logo.png")
+                      : {
                           uri: dataInfo?.profilePictureB64,
                         }
-                      : imageProfileDefault
                   }
                 />
               </View>
@@ -231,6 +240,10 @@ export const ProfileProviderModal = ({
 };
 
 const localStyle = StyleSheet.create({
+  modal: {
+    backgroundColor: "white",
+    height: "100%",
+  },
   contentHeader: {
     flexDirection: "row",
     justifyContent: "flex-start",
@@ -258,7 +271,7 @@ const localStyle = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
     marginBottom: 7,
-    backgroundColor: ThemeColorsSthetic.backgroundLigth,
+    backgroundColor: ThemeColorsSthetic.backgroundLight,
   },
   titleCompany: {
     fontSize: 30,

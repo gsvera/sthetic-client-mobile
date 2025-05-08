@@ -4,6 +4,14 @@ const BASE_URL = "/catalog-type-service";
 const BASE_URL_AUTH = "/auth/catalog-type-user-service";
 
 export const apiCatalogUserService = {
+  getCatalogServicesByUserId: function (idUser) {
+    return axiosInstance.get(`${BASE_URL}/get-services-by-user/${idUser}`);
+  },
+  getCatalogServiceDetailByIdPorject: function (id) {
+    return axiosInstance.get(
+      `${BASE_URL}/get-detail-service-by-id?id-project=${id}`
+    );
+  },
   saveCatalogService: function (data) {
     return axiosInstance.post(
       `${BASE_URL_AUTH}/save-catalog-user-service`,
@@ -22,14 +30,7 @@ export const apiCatalogUserService = {
   getCatalogServiceByUser: function (id) {
     return axiosInstance.get(`${BASE_URL_AUTH}/service-get-by-user/${id}`);
   },
-  getCatalogServicesByUserId: function (idUser) {
-    return axiosInstance.get(`${BASE_URL}/get-services-by-user/${idUser}`);
-  },
-  getCatalogServiceDetailByIdPorject: function (id) {
-    return axiosInstance.get(
-      `${BASE_URL}/get-detail-service-by-id?id-project=${id}`
-    );
-  },
+
   getToEditCatalogService: function (id) {
     return axiosInstance.get(
       `${BASE_URL_AUTH}/get-catalog-service-by-id/${id}`

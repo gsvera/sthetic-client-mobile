@@ -9,6 +9,7 @@ import GeneralButton from "@/components/Shared/GeneralButton";
 
 type cardProfileProviderProps = InfoCompanyType & {
   handleSelectProfile: (id: string) => void;
+  handleMakeSchedule: (id: string) => void;
 };
 export const CardProfileProvider = ({
   id,
@@ -18,6 +19,7 @@ export const CardProfileProvider = ({
   generalDescription,
   typesServices,
   handleSelectProfile,
+  handleMakeSchedule,
 }: cardProfileProviderProps) => {
   const [showText, setShowText] = useState(false);
   const typeServicesArr = useMemo(
@@ -61,7 +63,7 @@ export const CardProfileProvider = ({
             ...ButtonGeneralStyle.btnSaveSthetic,
             ...localStyle.btn,
           }}
-          handleOnPress={() => {}}
+          handleOnPress={() => handleMakeSchedule(idUser)}
         />
         <GeneralButton
           textBtn="Ver más"

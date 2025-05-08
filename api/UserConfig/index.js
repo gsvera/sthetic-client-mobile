@@ -3,6 +3,15 @@ import axiosInstance from "..";
 const BASE_URL = "/auth-user-config";
 
 export const apiUserConfig = {
+  getLocationByProvider: function (idUser) {
+    return axiosInstance.get(
+      `${BASE_URL}/get-location-by-user?id-user=${idUser}`
+    );
+  },
+  /**
+   *
+   * @deprecated no se usa para esta app
+   */
   getLocationByUser: function (idUser) {
     return axiosInstance.get(
       `${BASE_URL}/get-location-by-user?id-user=${idUser}`

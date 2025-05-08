@@ -1,0 +1,256 @@
+import ReturnArrow from "@/components/Shared/ReturnArrow";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemeColorsSthetic } from "@/constants/Colors";
+import {
+  FORMAT_DATE,
+  PLATFORM_TYPE,
+  STEP_RESERVATION,
+  TYPE_STATUS,
+} from "@/constants/Constants";
+import {
+  MenuServiceType,
+  modalCustomProps,
+  ScheduleServiceType,
+  SelectedDateCalendarType,
+} from "@/constants/GeneralTypes";
+import { TextStyle } from "@/constants/StyleComponents";
+import { useEffect, useState } from "react";
+import {
+  Modal,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import StepCalendar from "./StepCalendar";
+import StepService from "./StepService";
+import StepConfirm from "./StepConfirm";
+import { getStoreSession, KEY_STORE } from "@/hooks/StoreDataSecure";
+import { useMutation } from "@tanstack/react-query";
+import { apiScheduleService } from "@/api/ScheduleService";
+import { ObjectResponse, ResponseApi } from "@/api/responseApi";
+import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
+import { useNotificationProvider } from "@/provider/NotificationProvider";
+import SuccessNotification from "@/components/Shared/Notifications/SuccessNotification";
+import { convertDateToGeneralFormat } from "@/utils/GeneralUtils";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+export const Schedule = ({
+  open,
+  handleCloseModal,
+  idProvider,
+}: modalCustomProps) => {
+  const insets = useSafeAreaInsets();
+  const platform = Platform.OS;
+  const { handleNotification } = useNotificationProvider();
+  const [openSuccessNotification, setOpenSuccessNotification] = useState(false);
+  const [makeScheduleService, setMakeScheduleService] =
+    useState<ScheduleServiceType>({
+      idProvider: idProvider ?? "",
+      idClient: "",
+      scheduleDate: "",
+      startTime: "",
+      endTime: "",
+      nameService: "",
+      people: 0,
+      amount: 0,
+    });
+  const [stepSelected, setStepSelected] = useState<STEP_RESERVATION>(
+    STEP_RESERVATION.SELECT_DATE
+  );
+
+  const { mutate: saveScheduleService } = useMutation({
+    mutationFn: (data: ScheduleServiceType) => apiScheduleService.save(data),
+    onSuccess: (data: ResponseApi) =>
+      handleSuccessSaveScheduleService(data.data),
+    onError: ErrorAlertMessage,
+  });
+
+  const handleSuccessSaveScheduleService = (data: ObjectResponse) => {
+    if (data.error) {
+      handleNotification({
+        type: TYPE_STATUS.ERROR,
+        messae: data.message,
+      });
+    }
+    setOpenSuccessNotification(true);
+  };
+
+  getStoreSession({ key: KEY_STORE.idUser }).then((value) => {
+    if (value) setMakeScheduleService((prev) => ({ ...prev, idClient: value }));
+  });
+
+  useEffect(() => {
+    if (openSuccessNotification) {
+      setTimeout(() => {
+        onPressCloseModal();
+        setOpenSuccessNotification(false);
+      }, 1500);
+    }
+  }, [openSuccessNotification]);
+
+  const handleSelectAvailable = (dateAvailable: SelectedDateCalendarType) => {
+    setMakeScheduleService((prev) => ({
+      ...prev,
+      scheduleDate: dateAvailable.dateString,
+      startTime: dateAvailable.time.start,
+      endTime: dateAvailable.time.end,
+    }));
+    setStepSelected(STEP_RESERVATION.SELECT_SERVICE);
+  };
+
+  const handleSelectService = (service: MenuServiceType) => {
+    setMakeScheduleService((prev) => ({
+      ...prev,
+      nameService: service.nameService,
+      people: service.people,
+      amount: service.price,
+    }));
+    setStepSelected(STEP_RESERVATION.CONFIRM_RESERVATION);
+  };
+
+  const handleSave = () => {
+    const dateWithFormat = convertDateToGeneralFormat(
+      makeScheduleService.scheduleDate,
+      FORMAT_DATE.TIME_STAMP
+    );
+
+    if (dateWithFormat)
+      saveScheduleService({
+        ...makeScheduleService,
+        scheduleDate: dateWithFormat,
+      });
+    else
+      handleNotification({
+        type: TYPE_STATUS.ERROR,
+        message: "Formato de fecha invalido",
+      });
+  };
+
+  const onPressCloseModal = () => {
+    setMakeScheduleService({
+      idProvider: "",
+      idClient: "",
+      scheduleDate: "",
+      startTime: "",
+      endTime: "",
+      nameService: "",
+      people: 0,
+      amount: 0,
+    });
+    setStepSelected(STEP_RESERVATION.SELECT_DATE);
+    handleCloseModal();
+  };
+
+  return (
+    <Modal visible={open} transparent={true} animationType="fade">
+      <View
+        style={{
+          marginTop: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+          backgroundColor: "white",
+          height: "93%",
+        }}
+      >
+        <View>
+          {openSuccessNotification && (
+            <SuccessNotification message="Se ha generado su reservación con éxito" />
+          )}
+          <ReturnArrow handleReturn={onPressCloseModal} />
+          <View>
+            <ThemedText style={localStyle.title}>Solcitar cita</ThemedText>
+          </View>
+          <View style={localStyle.contentTab}>
+            <TouchableOpacity
+              style={
+                stepSelected >= STEP_RESERVATION.SELECT_DATE
+                  ? localStyle.tabSelected
+                  : localStyle.tab
+              }
+            >
+              <ThemedText style={TextStyle.fontBoldWhite}>
+                Disponibilidad
+              </ThemedText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                stepSelected >= STEP_RESERVATION.SELECT_SERVICE
+                  ? localStyle.tabSelected
+                  : localStyle.tab
+              }
+            >
+              <ThemedText style={TextStyle.fontBoldWhite}>Servicio</ThemedText>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                stepSelected >= STEP_RESERVATION.CONFIRM_RESERVATION
+                  ? localStyle.tabSelected
+                  : localStyle.tab
+              }
+            >
+              <ThemedText style={TextStyle.fontBoldWhite}>
+                Confirmación
+              </ThemedText>
+            </TouchableOpacity>
+          </View>
+          <View style={{ height: "85%" }}>
+            {stepSelected === STEP_RESERVATION.SELECT_DATE && (
+              <StepCalendar
+                idProvider={idProvider as string}
+                handleSelectAvailableTime={handleSelectAvailable}
+              />
+            )}
+            {stepSelected === STEP_RESERVATION.SELECT_SERVICE && (
+              <StepService
+                idProvider={idProvider as string}
+                onSelect={handleSelectService}
+              />
+            )}
+            {stepSelected === STEP_RESERVATION.CONFIRM_RESERVATION && (
+              <StepConfirm
+                idProvider={idProvider as string}
+                scheduleService={makeScheduleService}
+                onSave={handleSave}
+              />
+            )}
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
+const localStyle = StyleSheet.create({
+  title: {
+    color: ThemeColorsSthetic.textLabels,
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 25,
+  },
+  contentTab: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 10,
+  },
+  tabSelected: {
+    borderWidth: 0.5,
+    borderColor: ThemeColorsSthetic.backgroundStrong,
+    backgroundColor: ThemeColorsSthetic.accentReverse,
+    width: "30%",
+    flexDirection: "row",
+    justifyContent: "center",
+    padding: 5,
+    borderRadius: 5,
+  },
+  tab: {
+    borderWidth: 0.5,
+    borderColor: ThemeColorsSthetic.backgroundStrong,
+    backgroundColor: ThemeColorsSthetic.muted,
+    width: "30%",
+    flexDirection: "row",
+    justifyContent: "center",
+    padding: 5,
+    borderRadius: 5,
+  },
+});
+
+export default Schedule;

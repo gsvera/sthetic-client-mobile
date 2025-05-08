@@ -6,7 +6,7 @@ import TabBarBackground from "@/components/ui/TabBarBackground";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { getStoreSession, KEY_STORE } from "@/hooks/StoreDataSecure";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FontAwesome, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useApiProvider } from "@/provider/InterceptorProvider";
 
@@ -14,6 +14,7 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { setToken } = useApiProvider();
   const [tokenSession, setTokenSession] = useState<string | null>("");
+  const insets = useSafeAreaInsets();
 
   getStoreSession({ key: KEY_STORE.userToken }).then((value) => {
     setTokenSession(value);
@@ -26,17 +27,19 @@ export default function TabLayout() {
     <View
       style={{
         ...localStyle.container,
+        paddingTop: insets.top,
         backgroundColor:
           colorScheme === "dark"
             ? ThemeColorsSthetic.backgroundStrong
-            : ThemeColorsSthetic.backgroundLigth,
+            : ThemeColorsSthetic.backgroundLight,
       }}
     >
-      <SafeAreaView style={localStyle.container}>
+      <View style={localStyle.container}>
         <Tabs
           screenOptions={{
             tabBarActiveTintColor: ThemeColorsSthetic.accent,
-            tabBarActiveBackgroundColor: ThemeColorsSthetic.backgroundLigth,
+            tabBarActiveBackgroundColor: ThemeColorsSthetic.backgroundLight,
+            tabBarInactiveBackgroundColor: "white",
             headerShown: false,
             tabBarButton: HapticTab,
             tabBarBackground: TabBarBackground,
@@ -104,7 +107,7 @@ export default function TabLayout() {
             }}
           />
         </Tabs>
-      </SafeAreaView>
+      </View>
     </View>
   );
 }
