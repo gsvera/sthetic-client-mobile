@@ -1,13 +1,24 @@
 import { ThemedText } from "@/components/ThemedText";
-import { Modal, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import {
+  Modal,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { modalCustomProps } from "@/constants/GeneralTypes";
 import { SimpleLineIcons } from "@expo/vector-icons";
+import { PLATFORM_TYPE } from "@/constants/Constants";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function PoliticsAndConditionsModal({
   open,
   handleCloseModal,
 }: modalCustomProps) {
+  const insets = useSafeAreaInsets();
+  const platform = Platform.OS;
   return (
     <Modal
       style={localStyles.contentPolitics}
@@ -15,7 +26,12 @@ export default function PoliticsAndConditionsModal({
       transparent={false}
       visible={open}
     >
-      <View style={localStyles.contentBtnClose}>
+      <View
+        style={{
+          ...localStyles.contentBtnClose,
+          top: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+        }}
+      >
         <Pressable onPress={handleCloseModal}>
           <SimpleLineIcons
             name="close"

@@ -11,10 +11,22 @@ export type UserType = {
     phone: string
 }
 
+export type LadaType = {
+    id: number;
+    code: string;
+    lada: string;
+}
+
 export type selectOptionType = {
     key: number | string,
     value: string,
     checked?: boolean
+}
+
+export type OptionSelectType = {
+    value: string | number;
+    label: string;
+    onSelect: (value:string | number) => void   
 }
 
 export type fileTypes = 'image' | 'video' | null;

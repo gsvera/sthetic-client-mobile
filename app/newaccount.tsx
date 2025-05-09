@@ -43,15 +43,6 @@ export default function newAccount() {
 
   useEffect(() => navigation.setOptions({ headerShown: false }), [navigation]);
 
-  useEffect(() => {
-    if (showMessageSucces) {
-      setTimeout(() => {
-        setShowMessageSuccess(false);
-        navigation.navigate("(tabs)" as never);
-      }, 4000);
-    }
-  }, [showMessageSucces]);
-
   const { mutate: createUser } = useMutation({
     mutationFn: (data: any) => apiUser.saveUser(data),
     onSuccess: (data: ResponseApi) => handleSuccessSaveUser(data?.data),
@@ -63,10 +54,13 @@ export default function newAccount() {
       ErrorAlertMessage({ message: data.message });
       return;
     }
-    setStoreSession({ key: KEY_STORE.userToken, value: data.items.token });
-    setStoreSession({ key: KEY_STORE.idUser, value: data.items.idUser });
-    setToken(data.items.token);
     setShowMessageSuccess(true);
+    setTimeout(() => {
+      setStoreSession({ key: KEY_STORE.userToken, value: data.items.token });
+      setStoreSession({ key: KEY_STORE.idUser, value: data.items.idUser });
+      setToken(data.items.token);
+      setShowMessageSuccess(false);
+    }, 3000);
   };
 
   const handleSaveNewUser = (personalInformation: FormInputs) => {

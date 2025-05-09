@@ -214,6 +214,10 @@ export const TextStyle = StyleSheet.create({
     },
     textMuted: {
         color: ThemeColorsSthetic.muted
+    },
+    valueSelect: {
+        fontSize: 19,
+        color: ThemeColorsSthetic.text
     }
 })
 
@@ -260,3 +264,12 @@ export const MarginStyle = StyleSheet.create({
         marginTop: 20
     }
 });
+
+export const ModalStyle = StyleSheet.create({
+    modalView: {
+        flex: 1,
+        backgroundColor: ThemeColorsSthetic.shadowBackground, // <-- fondo negro con opacidad
+        justifyContent: "center",
+        alignItems: "center",
+      },
+})

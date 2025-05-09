@@ -1,5 +1,6 @@
 import { apiLada } from "@/api/Lada";
 import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
+import { ResponseApi } from "@/api/responseApi";
 import { apiUser } from "@/api/User";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
@@ -29,10 +30,6 @@ const schema = yup.object().shape({
     .string()
     .required("Campo obligatorio")
     .matches(REGEX.ONLY_TEXT, "Solo puede agregar letras"),
-  lada: yup
-    .string()
-    .required("Campo obligatorio")
-    .notOneOf(["0"], "La lada es obligatoria"),
   phone: yup
     .string()
     .required("El numero telefonico es obligatorio")
@@ -47,7 +44,7 @@ const schema = yup.object().shape({
 export type formPersonalInformation = {
   firstName: string;
   lastName: string;
-  lada: string;
+  lada?: string;
   email: string;
   phone: string;
 };
@@ -65,7 +62,7 @@ export const PersonalInformation = ({
   const [disableButton, setDisableButton] = useState(true);
   const queryClient = useQueryClient();
   const initFormData = formDataInformation;
-  const [lada, setLada] = useState(); // PENDIENTE A REVISAR: DEBE ESTAS CON EL useform PERO POR EL MOMENTO NO SE VA A EDITAR
+  const [lada, setLada] = useState<string | undefined>(); // PENDIENTE A REVISAR: DEBE ESTAS CON EL useform PERO POR EL MOMENTO NO SE VA A EDITAR
   const {
     control,
     handleSubmit,
@@ -81,18 +78,18 @@ export const PersonalInformation = ({
     queryKey: [REACT_QUERY_KEYS.lada.getFilterData("personal-information")],
     queryFn: () => apiLada.getFilterData(),
     ...{
-      select: (data: ResponseAPi) => data.data.items,
+      select: (data: ResponseApi) => data.data.items,
     },
   });
 
   const { mutate: updatePersonalInformation } = useMutation({
     mutationFn: (data: formPersonalInformation) =>
       apiUser.updatePersonalInformation(data),
-    onSuccess: (data: ResponseAPi) => handleSuccessUpdate(data),
+    onSuccess: (data: ResponseApi) => handleSuccessUpdate(data),
     onError: (err) => ErrorAlertMessage,
   });
 
-  const handleSuccessUpdate = (data: ResponseAPi) => {
+  const handleSuccessUpdate = (data: ResponseApi) => {
     if (data.data.error) {
       handleNotification({
         type: TYPE_STATUS.ERROR,
@@ -112,12 +109,14 @@ export const PersonalInformation = ({
 
   // EFFECTS
   useEffect(() => {
-    if (dataLada && initFormData.lada) {
-      const findLada = dataLada?.find(
-        (item: any) => item?.id == initFormData.lada
-      );
-      setLada(findLada?.lada);
-    }
+    // ESTE SE DEBE MODIFICA PARA SETEAR EL LADA DE ACUERDO A CATALOGO Y AL VALOR POR EL MOMENTO SE SETEA DIRECTO
+    // if (dataLada && initFormData.lada) {
+    //   const findLada = dataLada?.find(
+    //     (item: any) => item?.id == initFormData.lada
+    //   );
+    //   setLada(findLada?.lada);
+    // }
+    if (initFormData?.lada) setLada(initFormData.lada);
   }, [initFormData.lada, dataLada]);
 
   useEffect(() => {
