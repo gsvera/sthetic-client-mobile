@@ -117,6 +117,7 @@ export default function Home() {
   };
 
   const handleCloseSchedule = () => {
+    setProfileSelected("");
     setOpenSchedule(false);
   };
 
@@ -194,7 +195,7 @@ export default function Home() {
         handleCloseModal={handleCloseProfileProviderModal}
         idUser={profileSelected}
       />
-      {profileSelected && (
+      {!!profileSelected && (
         <Schedule
           open={openSchedule}
           handleCloseModal={handleCloseSchedule}

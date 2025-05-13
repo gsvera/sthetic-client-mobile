@@ -116,7 +116,7 @@ export type MenuServiceType = {
 
 export type ScheduleServiceType = {
     id?: number;
-    idClient: string;
+    idClientAux: string;
     idProvider: string;
     scheduleDate: string;
     startTime: string;

@@ -35,19 +35,23 @@ import SuccessNotification from "@/components/Shared/Notifications/SuccessNotifi
 import { convertDateToGeneralFormat } from "@/utils/GeneralUtils";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+type scheduleProps = Omit<modalCustomProps, "idProvider"> & {
+  idProvider: string;
+};
+
 export const Schedule = ({
   open,
   handleCloseModal,
   idProvider,
-}: modalCustomProps) => {
+}: scheduleProps) => {
   const insets = useSafeAreaInsets();
   const platform = Platform.OS;
   const { handleNotification } = useNotificationProvider();
   const [openSuccessNotification, setOpenSuccessNotification] = useState(false);
   const [makeScheduleService, setMakeScheduleService] =
     useState<ScheduleServiceType>({
-      idProvider: "",
-      idClient: "",
+      idProvider: idProvider,
+      idClientAux: "",
       scheduleDate: "",
       startTime: "",
       endTime: "",
@@ -68,7 +72,7 @@ export const Schedule = ({
 
   const handleSuccessSaveScheduleService = (data: ObjectResponse) => {
     if (data.error) {
-      handleNotification({
+      return handleNotification({
         type: TYPE_STATUS.ERROR,
         messae: data.message,
       });
@@ -77,14 +81,15 @@ export const Schedule = ({
   };
 
   useEffect(() => {
-    if (idProvider) {
-      setMakeScheduleService((prev) => ({ ...prev, idProvider: idProvider }));
-      getStoreSession({ key: KEY_STORE.idUser }).then((value) => {
-        if (value)
-          setMakeScheduleService((prev) => ({ ...prev, idClient: value }));
-      });
-    }
-  }, [idProvider]);
+    getStoreSession({ key: KEY_STORE.idUser }).then((value) => {
+      if (value) {
+        setMakeScheduleService((prev) => ({
+          ...prev,
+          idClientAux: value,
+        }));
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (openSuccessNotification) {
@@ -134,16 +139,16 @@ export const Schedule = ({
   };
 
   const onPressCloseModal = () => {
-    setMakeScheduleService({
+    setMakeScheduleService((prev) => ({
       idProvider: "",
-      idClient: "",
+      idClientAux: prev.idClientAux,
       scheduleDate: "",
       startTime: "",
       endTime: "",
       nameService: "",
       people: 0,
       amount: 0,
-    });
+    }));
     setStepSelected(STEP_RESERVATION.SELECT_DATE);
     handleCloseModal();
   };
