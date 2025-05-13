@@ -46,7 +46,7 @@ export const Schedule = ({
   const [openSuccessNotification, setOpenSuccessNotification] = useState(false);
   const [makeScheduleService, setMakeScheduleService] =
     useState<ScheduleServiceType>({
-      idProvider: idProvider ?? "",
+      idProvider: "",
       idClient: "",
       scheduleDate: "",
       startTime: "",
@@ -76,9 +76,15 @@ export const Schedule = ({
     setOpenSuccessNotification(true);
   };
 
-  getStoreSession({ key: KEY_STORE.idUser }).then((value) => {
-    if (value) setMakeScheduleService((prev) => ({ ...prev, idClient: value }));
-  });
+  useEffect(() => {
+    if (idProvider) {
+      setMakeScheduleService((prev) => ({ ...prev, idProvider: idProvider }));
+      getStoreSession({ key: KEY_STORE.idUser }).then((value) => {
+        if (value)
+          setMakeScheduleService((prev) => ({ ...prev, idClient: value }));
+      });
+    }
+  }, [idProvider]);
 
   useEffect(() => {
     if (openSuccessNotification) {

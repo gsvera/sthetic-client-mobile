@@ -37,7 +37,6 @@ export const SearchModal = ({
   handleClearFilter,
 }: searchModalProps) => {
   const insets = useSafeAreaInsets();
-  const platform = Platform.OS;
   const [textSearch, setTextSearch] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<number[]>([]);
 
@@ -104,7 +103,7 @@ export const SearchModal = ({
         <View
           style={{
             ...localStyle.contentModal,
-            top: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+            top: Platform.OS === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
           }}
         >
           <ButtonCloseModal handleOnPress={handleCloseModal} />

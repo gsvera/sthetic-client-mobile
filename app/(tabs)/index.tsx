@@ -194,11 +194,13 @@ export default function Home() {
         handleCloseModal={handleCloseProfileProviderModal}
         idUser={profileSelected}
       />
-      <Schedule
-        open={openSchedule}
-        handleCloseModal={handleCloseSchedule}
-        idProvider={profileSelected}
-      />
+      {profileSelected && (
+        <Schedule
+          open={openSchedule}
+          handleCloseModal={handleCloseSchedule}
+          idProvider={profileSelected}
+        />
+      )}
     </View>
   );
 }
@@ -209,11 +211,12 @@ const localStyle = StyleSheet.create({
     height: 50,
   },
   header: {
-    marginVertical: 10,
+    paddingVertical: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 10,
+    backgroundColor: ThemeColorsSthetic.backgroundStrong,
   },
   title: {
     color: ThemeColorsSthetic.textOre,
@@ -233,6 +236,7 @@ const localStyle = StyleSheet.create({
     paddingHorizontal: 10,
     height: 30,
     width: 100,
+    backgroundColor: ThemeColorsSthetic.backgroundLight,
   },
   loader: {
     left: 0,

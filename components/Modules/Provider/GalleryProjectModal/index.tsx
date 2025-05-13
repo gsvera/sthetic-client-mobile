@@ -78,7 +78,7 @@ export const GalleryProjectModal = ({
 
 const localStyle = StyleSheet.create({
   modal: {
-    backgroundColor: "white",
+    backgroundColor: ThemeColorsSthetic.backgroundLight,
     height: "100%",
   },
   title: {

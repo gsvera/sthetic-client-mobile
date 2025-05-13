@@ -177,7 +177,7 @@ export const ProfileProviderModal = ({
                       openLink(
                         `https://wa.me/${dataInfo.lada.substring(0, 1)}${
                           dataInfo.phone
-                        }?text=Hola!%20Te%20encontre%20en%20la%20app%20de%20personal%20care,%20me%20gustaria%20más%20informacion%20acerca%20de%20tus%20servicios`
+                        }?text=Hola!%20Te%20encontre%20en%20la%20app%20de%20Meredith%20Care,%20me%20gustaria%20más%20informacion%20acerca%20de%20tus%20servicios`
                       )
                     }
                   >
