@@ -47,7 +47,7 @@ export const GalleryProjectModal = ({
       <View
         style={{
           ...localStyle.modal,
-          marginTop: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+          top: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
         }}
       >
         <ReturnArrow handleReturn={handleCloseModal} />
@@ -56,21 +56,23 @@ export const GalleryProjectModal = ({
             {project.nameService}
           </ThemedText>
         </View>
-        {isFetchingListImg ? (
-          <LoadingView />
-        ) : (
-          <ScrollView style={localStyle.contentImgList}>
-            {listImg.map((item, index: number) => (
-              <View key={index} style={localStyle.contentImg}>
-                <Image
-                  style={localStyle.imgDetail}
-                  source={{ uri: item.fileBase64 }}
-                  resizeMode="contain"
-                />
-              </View>
-            ))}
-          </ScrollView>
-        )}
+        <View style={localStyle.contentImgList}>
+          {isFetchingListImg ? (
+            <LoadingView />
+          ) : (
+            <ScrollView>
+              {listImg.map((item, index: number) => (
+                <View key={index} style={localStyle.contentImg}>
+                  <Image
+                    style={localStyle.imgDetail}
+                    source={{ uri: item.fileBase64 }}
+                    resizeMode="contain"
+                  />
+                </View>
+              ))}
+            </ScrollView>
+          )}
+        </View>
       </View>
     </Modal>
   );
@@ -90,11 +92,11 @@ const localStyle = StyleSheet.create({
     fontSize: 30,
   },
   contentImgList: {
-    height: "80%",
+    height: Platform.OS === PLATFORM_TYPE.IOS ? "80%" : "88%",
   },
   contentImg: {
     width: "100%",
-    height: 350,
+    maxHeight: 500,
     marginVertical: 7,
     alignItems: "center",
     backgroundColor: ThemeColorsSthetic.backgroundLight,
