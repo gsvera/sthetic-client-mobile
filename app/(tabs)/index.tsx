@@ -193,7 +193,7 @@ export default function Home() {
       <ProfileProviderModal
         open={openProfileProviderModal}
         handleCloseModal={handleCloseProfileProviderModal}
-        idUser={profileSelected}
+        idProvider={profileSelected}
       />
       {!!profileSelected && (
         <Schedule

@@ -18,7 +18,7 @@ import {
   GridStyle,
   TextStyle,
 } from "@/constants/StyleComponents";
-import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import {
@@ -35,11 +35,12 @@ import GalleryProjectModal from "../GalleryProjectModal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResponseApi } from "@/api/responseApi";
 import { PLATFORM_TYPE } from "@/constants/Constants";
+import Schedule from "../../Schedule";
 
 export const ProfileProviderModal = ({
   open,
   handleCloseModal,
-  idUser,
+  idProvider,
 }: modalCustomProps) => {
   const insets = useSafeAreaInsets();
   const platform = Platform.OS;
@@ -49,22 +50,23 @@ export const ProfileProviderModal = ({
     id: 0,
     nameService: "",
   });
+  const [openMakeSchedule, setOpenMakeSchedule] = useState(false);
 
   const { data: dataInfo, isFetching: isFetchingDataInfo } = useQuery({
-    queryKey: [REACT_QUERY_KEYS.provider.findProviderByUserId(idUser)],
-    queryFn: () => apiUser.findProviderByUser(idUser),
+    queryKey: [REACT_QUERY_KEYS.provider.findProviderByUserId(idProvider)],
+    queryFn: () => apiUser.findProviderByUser(idProvider),
     ...{
       select: (data: ResponseApi) => data.data.items as ProviderType,
-      enabled: !!idUser,
+      enabled: Boolean(idProvider),
     },
   });
 
   const { data: dataListProyects = [] } = useQuery({
-    queryKey: [REACT_QUERY_KEYS.catalogs.services.getByUserId(idUser)],
-    queryFn: () => apiCatalogUserService.getCatalogServicesByUserId(idUser),
+    queryKey: [REACT_QUERY_KEYS.catalogs.services.getByUserId(idProvider)],
+    queryFn: () => apiCatalogUserService.getCatalogServicesByUserId(idProvider),
     ...{
       select: (data: ResponseApi) => data.data.items,
-      enabled: !!idUser,
+      enabled: Boolean(idProvider),
     },
   });
 
@@ -128,7 +130,7 @@ export const ProfileProviderModal = ({
                   textBtn="Agendar cita"
                   styleText={TextStyle.fontBoldWhite}
                   styleBtn={localStyle.btnSchedule}
-                  handleOnPress={() => {}}
+                  handleOnPress={() => setOpenMakeSchedule(true)}
                 />
               </View>
               <View style={localStyle.contentSocialMedia}>
@@ -171,8 +173,9 @@ export const ProfileProviderModal = ({
                     />
                   </TouchableOpacity>
                 )}
-                {dataInfo?.phone && (
+                {dataInfo?.phone && dataInfo.lada && (
                   <TouchableOpacity
+                    style={localStyle.touchIcon}
                     onPress={() =>
                       openLink(
                         `https://wa.me/${dataInfo.lada.substring(0, 1)}${
@@ -183,6 +186,17 @@ export const ProfileProviderModal = ({
                   >
                     <MaterialCommunityIcons
                       name="whatsapp"
+                      style={localStyle.iconSocialMedia}
+                    />
+                  </TouchableOpacity>
+                )}
+                {dataInfo?.phone && (
+                  <TouchableOpacity
+                    style={localStyle.touchIcon}
+                    onPress={() => openLink(`tel:${dataInfo.phone}`)}
+                  >
+                    <Feather
+                      name="phone-outgoing"
                       style={localStyle.iconSocialMedia}
                     />
                   </TouchableOpacity>
@@ -233,6 +247,13 @@ export const ProfileProviderModal = ({
           open={openModalGalery}
           handleCloseModal={handleCloseModalGallery}
           project={gallerySelected}
+        />
+      )}
+      {!!openMakeSchedule && idProvider && (
+        <Schedule
+          open={openMakeSchedule}
+          handleCloseModal={() => setOpenMakeSchedule(false)}
+          idProvider={idProvider}
         />
       )}
     </Modal>
