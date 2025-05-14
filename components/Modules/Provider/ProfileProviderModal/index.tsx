@@ -16,6 +16,7 @@ import {
 import {
   ButtonGeneralStyle,
   GridStyle,
+  MarginStyle,
   TextStyle,
 } from "@/constants/StyleComponents";
 import { Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -36,6 +37,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResponseApi } from "@/api/responseApi";
 import { PLATFORM_TYPE } from "@/constants/Constants";
 import Schedule from "../../Schedule";
+import ButtonShowMore from "@/components/Shared/ButtonShowMore";
+import AddressProvider from "../AddressProvider";
 
 export const ProfileProviderModal = ({
   open,
@@ -205,29 +208,32 @@ export const ProfileProviderModal = ({
             </View>
             <ScrollView style={{ height: "52%" }}>
               <View style={localStyle.contentInfoCompany}>
-                <ThemedText style={localStyle.titleCompany}>
-                  {dataInfo?.infoCompanyDTO.companyName}
-                </ThemedText>
-                <ThemedText
-                  style={localStyle.description}
-                  numberOfLines={showTextDescription ? undefined : 2}
-                >
-                  {dataInfo?.infoCompanyDTO.generalDescription}
-                </ThemedText>
-                <TouchableOpacity
-                  onPress={() => setShowTextDescription((v) => !v)}
-                >
-                  <ThemedText style={localStyle.toggleText}>
-                    {showTextDescription ? "Ver menos ▲" : "Ver más ▼"}
+                <View>
+                  <ThemedText style={localStyle.titleCompany}>
+                    {dataInfo?.infoCompanyDTO.companyName}
                   </ThemedText>
-                </TouchableOpacity>
-                <View style={localStyle.contentBadge}>
-                  {dataInfo?.typeServices
-                    ?.split(",")
-                    .map((item, index: number) => (
-                      <Badge key={index} text={item} />
-                    ))}
+                  <ThemedText
+                    style={localStyle.description}
+                    numberOfLines={showTextDescription ? undefined : 2}
+                  >
+                    {dataInfo?.infoCompanyDTO.generalDescription}
+                  </ThemedText>
+                  <ButtonShowMore
+                    show={showTextDescription}
+                    handlePress={() => setShowTextDescription((v) => !v)}
+                  />
                 </View>
+                <View style={MarginStyle.marginT10}>
+                  <ThemedText style={TextStyle.label}>Categorias:</ThemedText>
+                  <View style={localStyle.contentBadge}>
+                    {dataInfo?.typeServices
+                      ?.split(",")
+                      .map((item, index: number) => (
+                        <Badge key={index} text={item} />
+                      ))}
+                  </View>
+                </View>
+                {idProvider && <AddressProvider idProvider={idProvider} />}
               </View>
               <View style={localStyle.contentInfoCompany}>
                 {dataListProyects?.map((item: ProjectType) => (
@@ -295,20 +301,15 @@ const localStyle = StyleSheet.create({
     backgroundColor: ThemeColorsSthetic.backgroundLight,
   },
   titleCompany: {
-    fontSize: 30,
+    fontSize: 23,
     paddingTop: 10,
     color: ThemeColorsSthetic.textOre,
     fontWeight: "bold",
     marginBottom: 5,
   },
-  toggleText: {
-    color: ThemeColorsSthetic.accentReverse,
-    fontWeight: "bold",
-  },
   description: {
-    color: ThemeColorsSthetic.muted,
-    fontSize: 17,
-    fontWeight: "bold",
+    color: ThemeColorsSthetic.text,
+    fontSize: 15,
   },
   contentBadge: {
     flexDirection: "row",
@@ -325,7 +326,7 @@ const localStyle = StyleSheet.create({
   },
   iconSocialMedia: {
     fontSize: 25,
-    color: ThemeColorsSthetic.accentReverse,
+    color: ThemeColorsSthetic.action,
   },
   btnSchedule: {
     ...ButtonGeneralStyle.btnSaveSthetic,

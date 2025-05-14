@@ -48,6 +48,7 @@ export const REACT_QUERY_KEYS = {
     provider: {
         searchProvider: (key:string) => `search-provider-by-filter-${key}`,
         findProviderByUserId: (key:string | number | undefined) => `find-provider-by-user-id-${key}`,
-        getServicesByProvider: (key: string) => `get-menu-services-by-provide-${key}`
+        getServicesByProvider: (key: string | undefined) => `get-menu-services-by-provide-${key}`,
+        getLocation: (key:string) => `get-location-by-provider-${key}`
     }
 }

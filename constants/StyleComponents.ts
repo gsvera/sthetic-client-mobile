@@ -206,6 +206,10 @@ export const TextStyle = StyleSheet.create({
         fontSize: 17,
         color: ThemeColorsSthetic.text
     },
+    descript: {
+        fontSize: 15,
+        color: ThemeColorsSthetic.text
+    },
     textError: {
         color: ThemeColorsSthetic.dangerColor
     },
@@ -250,9 +254,17 @@ export const GridStyle = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
     },
+    rowFlexEnd: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+    },
     rowItemsVerticalCenter: {
         alignItems: "center",
         flexDirection: "row",
+    },
+    rowContentCenter: {
+        flexDirection: 'row',
+        justifyContent: 'center'
     }
 });
 

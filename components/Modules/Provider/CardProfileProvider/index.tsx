@@ -6,6 +6,7 @@ import { ThemeColorsSthetic } from "@/constants/Colors";
 import { useMemo, useState } from "react";
 import Badge from "@/components/Shared/Badge";
 import GeneralButton from "@/components/Shared/GeneralButton";
+import ButtonShowMore from "@/components/Shared/ButtonShowMore";
 
 type cardProfileProviderProps = InfoCompanyType & {
   handleSelectProfile: (id: string) => void;
@@ -44,11 +45,10 @@ export const CardProfileProvider = ({
         >
           {generalDescription}
         </ThemedText>
-        <TouchableOpacity onPress={() => setShowText((v) => !v)}>
-          <ThemedText style={localStyle.toggleText}>
-            {showText ? "Ver menos ▲" : "Ver más ▼"}
-          </ThemedText>
-        </TouchableOpacity>
+        <ButtonShowMore
+          show={showText}
+          handlePress={() => setShowText((v) => !v)}
+        />
       </View>
       <View style={localStyle.contentBadge}>
         {typeServicesArr?.map((item, index: number) => (
@@ -98,9 +98,8 @@ const localStyle = StyleSheet.create({
     marginBottom: 7,
   },
   description: {
-    color: ThemeColorsSthetic.muted,
-    fontSize: 17,
-    fontWeight: "bold",
+    color: ThemeColorsSthetic.text,
+    fontSize: 15,
   },
   contentImg: {
     width: "100%",
