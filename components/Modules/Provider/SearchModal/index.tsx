@@ -92,7 +92,12 @@ export const SearchModal = ({
   };
 
   return (
-    <Modal animationType="fade" transparent={true} visible={open}>
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={open}
+      onRequestClose={handleCloseModal}
+    >
       <View
         style={localStyle.modalSearch}
         onStartShouldSetResponder={() => {

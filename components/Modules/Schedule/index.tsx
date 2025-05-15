@@ -154,12 +154,17 @@ export const Schedule = ({
   };
 
   return (
-    <Modal visible={open} transparent={true} animationType="fade">
+    <Modal
+      visible={open}
+      transparent={true}
+      animationType="fade"
+      onRequestClose={onPressCloseModal}
+    >
       <View
         style={{
           marginTop: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
           backgroundColor: "white",
-          height: "93%",
+          height: "100%",
         }}
       >
         <View>

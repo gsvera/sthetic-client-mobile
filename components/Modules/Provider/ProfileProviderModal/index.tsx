@@ -92,7 +92,12 @@ export const ProfileProviderModal = ({
     setOpenModalGalery(false);
   };
   return (
-    <Modal animationType="slide" transparent={true} visible={open}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={open}
+      onRequestClose={handleCloseModal}
+    >
       <View
         style={{
           ...localStyle.modal,
@@ -206,7 +211,7 @@ export const ProfileProviderModal = ({
                 )}
               </View>
             </View>
-            <ScrollView style={{ height: "52%" }}>
+            <ScrollView style={{ height: "54%" }}>
               <View style={localStyle.contentInfoCompany}>
                 <View>
                   <ThemedText style={localStyle.titleCompany}>

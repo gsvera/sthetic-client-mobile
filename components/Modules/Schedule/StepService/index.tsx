@@ -3,11 +3,12 @@ import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import { ThemedText } from "@/components/ThemedText";
 import { TextStyle } from "@/constants/StyleComponents";
 import { useQuery } from "@tanstack/react-query";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import OptionService from "./OptionService";
 import { MenuServiceType } from "@/constants/GeneralTypes";
 import LoadingView from "@/components/Shared/LoadingView";
 import { ResponseApi } from "@/api/responseApi";
+import { PLATFORM_TYPE } from "@/constants/Constants";
 
 type stepServiceProps = {
   idProvider: string;
@@ -37,8 +38,10 @@ export const StepService = ({ idProvider, onSelect }: stepServiceProps) => {
       {isLoadingListServices ? (
         <LoadingView />
       ) : (
-        <ScrollView style={{ height: "84%" }}>
-          {listServices.map((item: MenuServiceType, index: number) => (
+        <ScrollView
+          style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "84%" : "95%" }}
+        >
+          {listServices?.map((item: MenuServiceType, index: number) => (
             <OptionService
               key={index}
               service={item}

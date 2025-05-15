@@ -40,7 +40,7 @@ export const ModalConfirm = ({
             <ThemedText style={localStyle.textTitle}>{title}</ThemedText>
           )}
           {message && (
-            <ThemedText style={localStyle.textMessage}>{message}</ThemedText>
+            <ThemedText style={TextStyle.value}>{message}</ThemedText>
           )}
           <View style={localStyle.contentBtns}>
             <GeneralButton
@@ -85,13 +85,8 @@ const localStyle = StyleSheet.create({
   },
   textTitle: {
     ...TextStyle.center,
-    ...TextStyle.size20,
-    ...TextStyle.bold,
-    color: ThemeColorsSthetic.textLabels,
+    ...TextStyle.label,
     marginBottom: 10,
-  },
-  textMessage: {
-    color: ThemeColorsSthetic.text,
   },
   contentBtns: {
     marginTop: 20,

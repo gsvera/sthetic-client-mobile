@@ -1,3 +1,4 @@
+import { ResponseApi } from "@/api/responseApi";
 import { apiUser } from "@/api/User";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
@@ -5,19 +6,17 @@ import SubHeaderReturn from "@/components/Shared/SubHeaderReturn";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { REGEX, TYPE_STATUS } from "@/constants/Constants";
-import { ButtonGeneralStyle, GeneralStyle } from "@/constants/StyleComponents";
+import {
+  ButtonGeneralStyle,
+  GeneralStyle,
+  TextStyle,
+} from "@/constants/StyleComponents";
 import { useNotificationProvider } from "@/provider/NotificationProvider";
 import { parsePasswordEncrypt } from "@/utils/GeneralUtils";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 type changePasswordProps = {
   returnBack: () => void;
@@ -31,11 +30,11 @@ export const ChangePassword = ({ returnBack }: changePasswordProps) => {
 
   const { mutate: updatePassword } = useMutation({
     mutationFn: (value: string) => apiUser.updatePassword(value),
-    onSuccess: (data: ResponseAPi) => handleResponseUpdate(data),
+    onSuccess: (data: ResponseApi) => handleResponseUpdate(data),
     onError: (err) => handleErrorUpdate(err),
   });
 
-  const handleResponseUpdate = (data: ResponseAPi) => {
+  const handleResponseUpdate = (data: ResponseApi) => {
     if (data?.data?.error) {
       handleNotification({
         type: TYPE_STATUS.ERROR,
@@ -74,7 +73,7 @@ export const ChangePassword = ({ returnBack }: changePasswordProps) => {
         handleReturn={returnBack}
       />
       <View style={localStyle.contentSingleInput}>
-        <ThemedText style={localStyle.label}>
+        <ThemedText style={TextStyle.label}>
           Ingrese su nueva contraseña
         </ThemedText>
         <View style={{ flexDirection: "row" }}>
@@ -137,10 +136,6 @@ const localStyle = StyleSheet.create({
   contentSingleInput: {
     marginTop: "10%",
     paddingHorizontal: "10%",
-  },
-  label: {
-    color: ThemeColorsSthetic.textLabels,
-    fontWeight: "bold",
   },
   textObservation: {
     color: ThemeColorsSthetic.muted,

@@ -1,5 +1,6 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { GlobalColors, ThemeColorsSthetic } from "./Colors";
+import { PLATFORM_TYPE } from "./Constants";
 
 /**
  * @deprecated Viejos estilos, mejor utilizar ButtonGeneralStyle
@@ -197,13 +198,18 @@ export const TextStyle = StyleSheet.create({
         color: ThemeColorsSthetic.textTitle,
         textAlign: 'center'
     },
+    title: {
+        fontSize: Platform.OS === PLATFORM_TYPE.ANDROID ? 19 : 17,
+        fontWeight: 'bold',
+        color: ThemeColorsSthetic.textTitle 
+    },
     label: {
-        fontSize: 18,
+        fontSize: Platform.OS === PLATFORM_TYPE.ANDROID ? 18 : 16,
         fontWeight: 'bold',
         color: ThemeColorsSthetic.textLabels 
     },
     value: {
-        fontSize: 17,
+        fontSize: Platform.OS === PLATFORM_TYPE.ANDROID ? 17 : 15,
         color: ThemeColorsSthetic.text
     },
     descript: {
@@ -220,7 +226,7 @@ export const TextStyle = StyleSheet.create({
         color: ThemeColorsSthetic.muted
     },
     valueSelect: {
-        fontSize: 19,
+        fontSize: Platform.OS === PLATFORM_TYPE.ANDROID ? 18 : 16,
         color: ThemeColorsSthetic.text
     }
 })

@@ -43,7 +43,12 @@ export const GalleryProjectModal = ({
     },
   });
   return (
-    <Modal animationType="slide" transparent={true} visible={open}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={open}
+      onRequestClose={handleCloseModal}
+    >
       <View
         style={{
           ...localStyle.modal,
@@ -92,7 +97,7 @@ const localStyle = StyleSheet.create({
     fontSize: 30,
   },
   contentImgList: {
-    height: Platform.OS === PLATFORM_TYPE.IOS ? "80%" : "88%",
+    height: Platform.OS === PLATFORM_TYPE.IOS ? "82%" : "85%",
   },
   contentImg: {
     width: "100%",

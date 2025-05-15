@@ -278,9 +278,7 @@ export const PersonalInformation = ({
 
 const localStyle = StyleSheet.create({
   label: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: ThemeColorsSthetic.textLabels,
+    ...TextStyle.label,
     marginBottom: 10,
   },
   contentButton: {
