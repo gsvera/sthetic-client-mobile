@@ -29,6 +29,7 @@ import ModalConfirm from "@/components/Shared/ModalConfirm";
 import { TextStyle } from "@/constants/StyleComponents";
 import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import LoadingView from "@/components/Shared/LoadingView";
+import MyLocation from "@/components/Modules/Settings/MyLocation";
 
 export default function More() {
   const navigation = useNavigation();
@@ -102,6 +103,10 @@ export default function More() {
         );
       case COMPONENTS_SETINGS.CHANGE_PASSWORD:
         return <ChangePassword returnBack={() => handleView("")} />;
+      case COMPONENTS_SETINGS.MY_LOCATION:
+        return (
+          <MyLocation idUser={dataUser?.id} returnBack={() => handleView("")} />
+        );
       case COMPONENTS_SETINGS.PROFILE_PICTURE:
         return (
           <CameraCustom
@@ -180,6 +185,18 @@ export default function More() {
                 <ThemedText darkColor="black">
                   {"    "}
                   Cambio de contraseña
+                </ThemedText>
+              </View>
+            </Pressable>
+            <Pressable
+              style={localStyle.itemMenu}
+              onPress={() => handleView(COMPONENTS_SETINGS.MY_LOCATION)}
+            >
+              <View style={localStyle.itemMenuText}>
+                <Entypo name="location" style={localStyle.iconItem} />
+                <ThemedText darkColor="black">
+                  {"    "}
+                  Mi ubicación pretederminada
                 </ThemedText>
               </View>
             </Pressable>

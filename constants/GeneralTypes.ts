@@ -151,3 +151,20 @@ export type UserPlan = {
     isActive: boolean;
     catalogPlanDTO: CatalogPlanDTO;
 }
+
+export type CatalogGeoStateType = {
+    id: number;
+    stateName: string;
+}
+
+export type CatalogGeoMunicipalityType = {
+    id: number;
+    municipalityName: string;
+    latitude?: number;
+    longitude?: number;
+}
+
+export type DefaultLocationType = {
+    defaultState: string;
+    defaultMunicipality: string;
+}

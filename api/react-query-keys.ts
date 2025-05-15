@@ -5,11 +5,7 @@ export const REACT_QUERY_KEYS = {
     },
     userConfig: {
         getLocationByProvider: (key:string) => `get-location-by-provider`,
-        /**
-         * 
-         * @deprecated no se usa para esta app
-         */
-        getLocationByUser: (key:string) => `get-location-by-user${key}`,
+        getDefaultLocationByUser: (key:string) => `get-location-by-user${key}`,
     },
     plan: {
         getFilterData: (key:string) => `get-plan-filter-data-${key}`,
@@ -31,7 +27,11 @@ export const REACT_QUERY_KEYS = {
         },
         coupon: {
             getByCode: (key:string) => `get-coupon-by-code-${key}`
-        }
+        },
+        geo: {
+            getAllState: (key: string) => `get-all-geo-state-${key}`,
+            getMunicipalityByState: (key: number | undefined) => `get-all-geo-municipality-${key}`
+        }   
     },
     calendar: {
         calendarByUser: {
