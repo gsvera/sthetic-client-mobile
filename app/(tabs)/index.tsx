@@ -20,12 +20,22 @@ import { Image, Platform } from "react-native";
 import { FlatList } from "react-native";
 import { Pressable, StyleSheet, View } from "react-native";
 
+type FilterSearchParamsType = {
+  page: number;
+  word: string;
+  typeService: string;
+  defaultState: string;
+  defaultMunicipality: string;
+};
+
 export default function Home() {
   const platform = Platform.OS;
-  const [filterParams, setFilterParams] = useState({
+  const [filterParams, setFilterParams] = useState<FilterSearchParamsType>({
     page: 0,
     word: "",
     typeService: "",
+    defaultState: "",
+    defaultMunicipality: "",
   });
   const [dataListProvider, setDataListProvider] = useState<any[]>([]);
   const [page, setPage] = useState(0);
@@ -39,7 +49,6 @@ export default function Home() {
     data: listProvider = [],
     refetch: refetchListprovider,
     isFetching: isFetchingListProvider,
-    isLoading,
   } = useQuery({
     queryKey: [
       REACT_QUERY_KEYS.provider.searchProvider("search-provider"),
@@ -60,7 +69,11 @@ export default function Home() {
   });
 
   useEffect(() => {
-    if (listProvider?.items && Array.isArray(listProvider?.items)) {
+    if (
+      listProvider?.pageNumber === page &&
+      listProvider?.items &&
+      Array.isArray(listProvider?.items)
+    ) {
       setDataListProvider((prev: any) => {
         const existingIds = new Set(prev.map((item: any) => item.id));
         const filteredNew = listProvider?.items.filter(
@@ -73,12 +86,14 @@ export default function Home() {
         setPage((n) => n + 1);
       }
     }
-  }, [listProvider]);
+  }, [listProvider?.pageNumber]);
 
   const handleSearch = (data: any) => {
     if (
       filterParams.typeService !== data?.typeService?.join(",") ||
-      filterParams.word !== data.word
+      filterParams.word !== data.word ||
+      filterParams.defaultState !== data?.defaultState ||
+      filterParams.defaultMunicipality !== data?.defaultMunicipality
     ) {
       setDataListProvider([]);
       setFilterParams({
@@ -86,19 +101,21 @@ export default function Home() {
         typeService: data?.typeService && data?.typeService.join(","),
       });
       setPage(0);
+      fetchData();
     }
     setOpenSearchModal(false);
   };
 
   const handleClearFilter = (data: any) => {
-    setDataListProvider([]);
     setPage(0);
     setFilterParams(data);
-    setOpenSearchModal(false);
+    fetchData();
   };
 
   const fetchData = () => {
-    refetchListprovider();
+    setTimeout(() => {
+      refetchListprovider();
+    }, 1000);
   };
 
   const handleOnSelectProfile = (idUser: string) => {

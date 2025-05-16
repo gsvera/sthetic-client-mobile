@@ -165,6 +165,8 @@ export type CatalogGeoMunicipalityType = {
 }
 
 export type DefaultLocationType = {
+    idState?: number;
     defaultState: string;
-    defaultMunicipality: string;
+    idMunicipality?: number;
+    defaultMunicipality?: string;
 }

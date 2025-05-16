@@ -1,24 +1,31 @@
 import ButtonCloseModal from "@/components/Shared/ButtonCloseModal";
 import GeneralButton from "@/components/Shared/GeneralButton";
+import StateAndMunicipalitySelect from "@/components/Shared/StateAndMunicipalitySelect";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { PLATFORM_TYPE } from "@/constants/Constants";
 import {
+  DefaultLocationType,
   modalCustomProps,
   selectOptionType,
   TypesServicesType,
 } from "@/constants/GeneralTypes";
-import { ButtonGeneralStyle, TextStyle } from "@/constants/StyleComponents";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import {
+  ButtonGeneralStyle,
+  MarginStyle,
+  TextStyle,
+} from "@/constants/StyleComponents";
 import Checkbox from "expo-checkbox";
 import { useMemo, useState } from "react";
 import {
+  Keyboard,
   Modal,
   Platform,
   ScrollView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -38,7 +45,9 @@ export const SearchModal = ({
 }: searchModalProps) => {
   const insets = useSafeAreaInsets();
   const [textSearch, setTextSearch] = useState("");
+  const [locationSelected, setLocationSelect] = useState<DefaultLocationType>();
   const [selectedKeys, setSelectedKeys] = useState<number[]>([]);
+  const [clearSelect, setClearSelect] = useState(false);
 
   const listItemTypeService = useMemo(
     () =>
@@ -78,17 +87,38 @@ export const SearchModal = ({
     }
   };
 
+  const handleSelectLocation = (data: DefaultLocationType) => {
+    setLocationSelect(data);
+  };
+
   const handleOnPressFilter = () => {
     handleFilter({
       word: textSearch,
       typeService: selectedKeys,
+      defaultState: locationSelected?.defaultState,
+      defaultMunicipality: locationSelected?.defaultMunicipality,
     });
   };
 
   const handleOnClearFilter = () => {
     setSelectedKeys([]);
     setTextSearch("");
-    handleClearFilter({ word: "", typeService: "" });
+    setClearSelect(true);
+    setLocationSelect({
+      idState: 0,
+      defaultState: "",
+      idMunicipality: 0,
+      defaultMunicipality: "",
+    });
+    handleClearFilter({
+      word: "",
+      typeService: "",
+      defaultState: "",
+      defaultMunicipality: "",
+    });
+    setTimeout(() => {
+      setClearSelect(false);
+    }, 1000);
   };
 
   return (
@@ -98,73 +128,74 @@ export const SearchModal = ({
       visible={open}
       onRequestClose={handleCloseModal}
     >
-      <View
-        style={localStyle.modalSearch}
-        onStartShouldSetResponder={() => {
-          handleCloseModal();
-          return false;
-        }}
-      >
-        <View
-          style={{
-            ...localStyle.contentModal,
-            top: Platform.OS === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
-          }}
-        >
-          <ButtonCloseModal handleOnPress={handleCloseModal} />
-          <View style={localStyle.contentFilter}>
-            <View>
-              <ThemedText style={localStyle.label}>Negocio:</ThemedText>
-            </View>
-            <View style={localStyle.contentComponent}>
-              <TextInput
-                placeholder="Buscar"
-                style={localStyle.inputSearch}
-                value={textSearch}
-                onChangeText={setTextSearch}
-              />
-            </View>
-            <View>
-              <ThemedText style={localStyle.label}>Tipo servicio:</ThemedText>
-            </View>
-            <ScrollView style={{ ...localStyle.contentComponent, height: 250 }}>
-              {listItemTypeService.map((item) => (
-                <TouchableOpacity
-                  onPress={() => handleSelectItem(item.key)}
-                  key={item.key}
-                  style={localStyle.contentElement}
-                >
-                  <Checkbox value={item.checked} />
-                  <ThemedText style={localStyle.listValue}>
-                    {"   "}
-                    {item.value}
-                  </ThemedText>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-            <View style={localStyle.contentBtn}>
-              <GeneralButton
-                textBtn="Limpiar filtros"
-                styleText={TextStyle.fontBoldWhite}
-                styleBtn={{
-                  ...ButtonGeneralStyle.btnCancelSthetic,
-                  ...localStyle.btn,
-                }}
-                handleOnPress={handleOnClearFilter}
-              />
-              <GeneralButton
-                textBtn="Aplicar filtros"
-                styleText={TextStyle.fontBoldWhite}
-                styleBtn={{
-                  ...ButtonGeneralStyle.btnSaveSthetic,
-                  ...localStyle.btn,
-                }}
-                handleOnPress={handleOnPressFilter}
-              />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={localStyle.modalSearch}>
+          <View
+            style={{
+              ...localStyle.contentModal,
+              top: Platform.OS === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+            }}
+          >
+            <ButtonCloseModal handleOnPress={handleCloseModal} />
+            <View style={localStyle.contentFilter}>
+              <View style={localStyle.contentComponent}>
+                <ThemedText style={TextStyle.label}>Negocio:</ThemedText>
+                <TextInput
+                  placeholder="Buscar"
+                  style={localStyle.inputSearch}
+                  value={textSearch}
+                  onChangeText={setTextSearch}
+                />
+              </View>
+              <View>
+                <StateAndMunicipalitySelect
+                  defaultValues={locationSelected}
+                  handleSelectData={handleSelectLocation}
+                  clearData={clearSelect}
+                />
+              </View>
+              <View style={localStyle.contentScroll}>
+                <ThemedText style={TextStyle.label}>Tipo servicio:</ThemedText>
+                <ScrollView style={localStyle.contentComponent}>
+                  {listItemTypeService.map((item) => (
+                    <TouchableOpacity
+                      onPress={() => handleSelectItem(item.key)}
+                      key={item.key}
+                      style={localStyle.contentElement}
+                    >
+                      <Checkbox value={item.checked} />
+                      <ThemedText style={localStyle.listValue}>
+                        {"   "}
+                        {item.value}
+                      </ThemedText>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+              <View style={localStyle.contentBtn}>
+                <GeneralButton
+                  textBtn="Limpiar filtros"
+                  styleText={TextStyle.fontBoldWhite}
+                  styleBtn={{
+                    ...ButtonGeneralStyle.btnCancelSthetic,
+                    ...localStyle.btn,
+                  }}
+                  handleOnPress={handleOnClearFilter}
+                />
+                <GeneralButton
+                  textBtn="Buscar"
+                  styleText={TextStyle.fontBoldWhite}
+                  styleBtn={{
+                    ...ButtonGeneralStyle.btnSaveSthetic,
+                    ...localStyle.btn,
+                  }}
+                  handleOnPress={handleOnPressFilter}
+                />
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
@@ -188,9 +219,10 @@ const localStyle = StyleSheet.create({
     paddingRight: 10,
   },
   inputSearch: {
-    borderColor: ThemeColorsSthetic.muted,
+    ...MarginStyle.marginT10,
+    borderColor: ThemeColorsSthetic.backgroundStrong,
     borderWidth: 0.5,
-    borderRadius: 20,
+    borderRadius: 5,
     padding: 15,
   },
   contentFilter: {
@@ -206,7 +238,7 @@ const localStyle = StyleSheet.create({
   },
   contentComponent: {
     marginTop: 10,
-    marginBottom: 15,
+    // marginBottom: 15,
   },
   contentBtn: {
     marginTop: 10,
@@ -217,9 +249,9 @@ const localStyle = StyleSheet.create({
   btn: {
     width: "48%",
   },
-  label: {
-    color: ThemeColorsSthetic.textLabels,
-    fontWeight: "bold",
+  contentScroll: {
+    ...MarginStyle.marginT10,
+    height: 250,
   },
 });
 
