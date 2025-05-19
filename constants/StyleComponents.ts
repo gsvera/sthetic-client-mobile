@@ -162,6 +162,10 @@ export const TextStyle = StyleSheet.create({
         color: ThemeColorsSthetic.textTitle,
         fontWeight: 'bold'
     },
+    fontGoldTitle: {
+        color: ThemeColorsSthetic.accent,
+        fontWeight: 'bold'
+    },
     darkColor: {
         color: GlobalColors.blackColor
     },

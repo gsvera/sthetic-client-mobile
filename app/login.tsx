@@ -66,10 +66,6 @@ export default function Login() {
       return;
     }
     setStoreSession({
-      key: KEY_STORE.userToken,
-      value: data.items?.token,
-    });
-    setStoreSession({
       key: KEY_STORE.idUser,
       value: data.items?.idUser,
     });
@@ -94,6 +90,7 @@ export default function Login() {
 
   useEffect(() => {
     if (token) {
+      console.log("🚀 ~ useEffect ~ token:", token);
       setLoadingSession(false);
       navigation.reset({
         index: 0,

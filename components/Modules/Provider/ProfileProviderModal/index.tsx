@@ -115,6 +115,13 @@ export const ProfileProviderModal = ({
                 source={{ uri: dataInfo?.infoCompanyDTO?.companyPicture }}
               />
               <View style={localStyle.contentImgProfile}>
+                <View style={localStyle.nameProvider}>
+                  <ThemedText
+                    style={{ ...TextStyle.fontGoldTitle, fontSize: 14 }}
+                  >
+                    {dataInfo?.firstName} {dataInfo?.lastName}
+                  </ThemedText>
+                </View>
                 <Image
                   style={localStyle.profilePicture}
                   source={
@@ -286,10 +293,21 @@ const localStyle = StyleSheet.create({
   contentBanner: {
     marginBottom: 7,
   },
+  nameProvider: {
+    backgroundColor: ThemeColorsSthetic.backgroundStrong,
+    paddingHorizontal: 7,
+    paddingVertical: 5,
+    marginRight: 5,
+    borderRadius: 5,
+    borderColor: ThemeColorsSthetic.accent,
+    borderWidth: 0.5,
+  },
   contentImgProfile: {
     position: "absolute",
     bottom: 10,
     right: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
   profilePicture: {
     width: 80,

@@ -1,4 +1,5 @@
 import axiosInstance from "@/api";
+import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import { KEY_STORE, setStoreSession } from "@/hooks/StoreDataSecure";
 import {
   createContext,
@@ -15,6 +16,14 @@ const axiosInstances = [axiosInstance];
 const ApiRequestProvider = ({ children }) => {
   const [token, setToken] = useState(null);
 
+  useEffect(() => {
+    if (token)
+      setStoreSession({
+        key: KEY_STORE.userToken,
+        value: token,
+      });
+  }, [token]);
+
   const interceptRequestHandler = useCallback(
     (config) => {
       config.params = { ...(config?.params ?? {}) };
@@ -27,12 +36,30 @@ const ApiRequestProvider = ({ children }) => {
     [token]
   );
 
+  const clearToken = async () => {
+    setToken(null);
+    await setStoreSession({ key: KEY_STORE.userToken, value: "" });
+  };
+
   const interceptResponseErrorHandler = useCallback((error) => {
-    const { status: statusCode, data, headers } = error?.response ?? {};
-    if (statusCode === 403 && token) {
-      console.log("🚀 ~ interceptResponseErrorHandler ~ error:", error);
-      // PARA MANEJO DE ERRORES
-      setStoreSession({ key: KEY_STORE.userToken, value: "" });
+    const {
+      status: statusCode,
+      data,
+      headers,
+      message,
+    } = error?.response ?? {};
+
+    if (statusCode === 401) {
+      ErrorAlertMessage({
+        title: "Sessión expirada",
+        message: "Su Sessión expiro, inicie sessión nuevamente",
+      });
+
+      clearToken();
+    }
+
+    if (statusCode === 403 && !token) {
+      clearToken();
     }
     // Reject promise if usual error
     if (statusCode !== 401) {

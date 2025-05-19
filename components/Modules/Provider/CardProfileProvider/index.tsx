@@ -8,31 +8,32 @@ import Badge from "@/components/Shared/Badge";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import ButtonShowMore from "@/components/Shared/ButtonShowMore";
 
-type cardProfileProviderProps = InfoCompanyType & {
+type cardProfileProviderProps = {
+  infoCompany: InfoCompanyType;
   handleSelectProfile: (id: string) => void;
   handleMakeSchedule: (id: string) => void;
 };
 export const CardProfileProvider = ({
-  id,
-  idUser,
-  companyName,
-  companyPicture,
-  generalDescription,
-  typesServices,
+  infoCompany,
   handleSelectProfile,
   handleMakeSchedule,
 }: cardProfileProviderProps) => {
   const [showText, setShowText] = useState(false);
   const typeServicesArr = useMemo(
-    () => typesServices?.split(","),
-    [typesServices]
+    () => infoCompany.typesServices?.split(","),
+    [infoCompany.typesServices]
   );
 
   return (
     <View style={localStyle.card}>
-      <ThemedText style={localStyle.title}>{companyName}</ThemedText>
+      <ThemedText style={localStyle.title}>
+        {infoCompany.companyName}
+      </ThemedText>
       <View style={localStyle.contentImg}>
-        <Image style={localStyle.image} source={{ uri: companyPicture }} />
+        <Image
+          style={localStyle.image}
+          source={{ uri: infoCompany.companyPicture }}
+        />
       </View>
       <View>
         {/* <AntDesign name="hearto" size={24} color="black" /> */}
@@ -43,7 +44,7 @@ export const CardProfileProvider = ({
           style={localStyle.description}
           numberOfLines={showText ? undefined : 2}
         >
-          {generalDescription}
+          {infoCompany.generalDescription}
         </ThemedText>
         <ButtonShowMore
           show={showText}
@@ -55,6 +56,13 @@ export const CardProfileProvider = ({
           <Badge key={index} text={item} />
         ))}
       </View>
+      <View style={{ paddingHorizontal: 7 }}>
+        <ThemedText style={TextStyle.fontBoldDark}>Ubicación:</ThemedText>
+        <ThemedText style={TextStyle.value}>
+          {infoCompany.auxState}{" "}
+          {infoCompany?.auxMunicipality && `, ` + infoCompany?.auxMunicipality}
+        </ThemedText>
+      </View>
       <View style={localStyle.contentBtn}>
         <GeneralButton
           textBtn="Agendar cita"
@@ -63,7 +71,7 @@ export const CardProfileProvider = ({
             ...ButtonGeneralStyle.btnSaveSthetic,
             ...localStyle.btn,
           }}
-          handleOnPress={() => handleMakeSchedule(idUser)}
+          handleOnPress={() => handleMakeSchedule(infoCompany.idUser)}
         />
         <GeneralButton
           textBtn="Ver más"
@@ -72,7 +80,7 @@ export const CardProfileProvider = ({
             ...ButtonGeneralStyle.btnActionSthetic,
             ...localStyle.btn,
           }}
-          handleOnPress={() => handleSelectProfile(idUser)}
+          handleOnPress={() => handleSelectProfile(infoCompany.idUser)}
         />
       </View>
     </View>

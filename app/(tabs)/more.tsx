@@ -76,6 +76,7 @@ export default function More() {
   };
 
   const deleteSession = async () => {
+    setOpenModalLogout(false);
     setToken(null);
     await setStoreSession({ key: KEY_STORE.userToken, value: "" });
     navigation.navigate("login" as never);

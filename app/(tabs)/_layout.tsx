@@ -1,5 +1,5 @@
-import { Redirect, Tabs } from "expo-router";
-import React, { useState } from "react";
+import { Tabs, useNavigation } from "expo-router";
+import React, { useEffect } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
@@ -11,17 +11,17 @@ import { FontAwesome, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
 import { useApiProvider } from "@/provider/InterceptorProvider";
 
 export default function TabLayout() {
+  const navigation = useNavigation();
   const colorScheme = useColorScheme();
-  const { setToken } = useApiProvider();
-  const [tokenSession, setTokenSession] = useState<string | null>("");
+  const { token, setToken } = useApiProvider();
   const insets = useSafeAreaInsets();
 
-  getStoreSession({ key: KEY_STORE.userToken }).then((value) => {
-    setTokenSession(value);
-    setToken(value);
-  });
-
-  if (tokenSession === null) return <Redirect href="/login" />;
+  useEffect(() => {
+    getStoreSession({ key: KEY_STORE.userToken }).then((value) => {
+      if (!value) return navigation.navigate("login" as never);
+      else setToken(value);
+    });
+  }, [token]);
 
   return (
     <View

@@ -172,12 +172,7 @@ export default function Home() {
             return (
               <CardProfileProvider
                 key={item.id}
-                id={item.id}
-                idUser={item.userDTO.id}
-                companyName={item.companyName}
-                generalDescription={item.generalDescription}
-                companyPicture={item.companyPicture}
-                typesServices={item.typesServices}
+                infoCompany={item}
                 handleSelectProfile={handleOnSelectProfile}
                 handleMakeSchedule={handleMakeSchedule}
               />

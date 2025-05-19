@@ -36,7 +36,11 @@ export type modalCustomProps = {
     handleCloseModal: () => void;    
     idUser?: string | number;
     idProvider?: string;
-  };
+};
+
+export type UserDTOType = {
+    id: string;
+}
 
 export type InfoCompanyType = {
     id: number;
@@ -48,6 +52,9 @@ export type InfoCompanyType = {
     facebook?: string;
     instagram?: string;
     webPage?: string;
+    auxState?: string;
+    auxMunicipality?: string;
+    userDTO?: UserDTOType;
 }
 
 export type TypesServicesType = {
