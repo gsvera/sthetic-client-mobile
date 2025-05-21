@@ -18,7 +18,9 @@ import GeneralButton from "@/components/Shared/GeneralButton";
 type availableWeekProps = modalCustomProps & {
   daysByweek: weekDaysProps[];
 };
-
+/**
+ * @deprecated No es para esta app
+ */
 export const AvailibleWeek = ({
   open,
   handleCloseModal,

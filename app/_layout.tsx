@@ -19,6 +19,7 @@ import {
 } from "@tanstack/react-query";
 import { ApiRequestProvider } from "@/provider/InterceptorProvider";
 import { NotificationProvider } from "@/provider/NotificationProvider";
+import { SessionProvider } from "@/provider/SessionProvider";
 import { useOnlineManager } from "@/hooks/query/UseOnlineManager";
 import { useAppState } from "@/hooks/query/useAppState";
 
@@ -62,14 +63,16 @@ export default function RootLayout() {
         <ThemeProvider
           value={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
         >
-          <NotificationProvider>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              {/* <Stack.Screen name="+not-found" /> */}
-              <Stack.Screen name="login" options={{ headerShown: false }} />
-            </Stack>
-            <StatusBar style="auto" />
-          </NotificationProvider>
+          <SessionProvider>
+            <NotificationProvider>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                {/* <Stack.Screen name="+not-found" /> */}
+                <Stack.Screen name="login" options={{ headerShown: false }} />
+              </Stack>
+              <StatusBar style="auto" />
+            </NotificationProvider>
+          </SessionProvider>
         </ThemeProvider>
       </ApiRequestProvider>
     </QueryClientProvider>

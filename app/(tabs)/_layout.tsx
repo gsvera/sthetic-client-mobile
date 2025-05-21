@@ -23,6 +23,8 @@ export default function TabLayout() {
     });
   }, [token]);
 
+  if (!token) return <></>;
+
   return (
     <View
       style={{

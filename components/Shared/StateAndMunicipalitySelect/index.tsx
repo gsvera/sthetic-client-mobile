@@ -75,8 +75,12 @@ export const StateAndMunicipalitySelect = ({
 
   const onSelectState = (item: CatalogGeoStateType) => {
     setLocalState(item);
-    handleSelectData({ idState: item.id, defaultState: item.stateName });
     setLocalMunicipality(undefined);
+    handleSelectData({
+      idState: item.id,
+      defaultState: item.stateName,
+      defaultMunicipality: "",
+    });
     setOpenStateModal(false);
   };
 
@@ -92,6 +96,26 @@ export const StateAndMunicipalitySelect = ({
     setOpenMunicipalityModal(false);
   };
 
+  const clearDataSelectState = () => {
+    setLocalState(undefined);
+    setLocalMunicipality(undefined);
+    handleSelectData({
+      idState: 0,
+      defaultState: "",
+      defaultMunicipality: "",
+    });
+  };
+
+  const clearDataSelectMunicipality = () => {
+    setLocalMunicipality(undefined);
+    handleSelectData({
+      idState: localState?.id,
+      defaultState: localState?.stateName || "",
+      idMunicipality: 0,
+      defaultMunicipality: "",
+    });
+  };
+
   return (
     <View>
       <View style={MarginStyle.marginT10}>
@@ -100,6 +124,7 @@ export const StateAndMunicipalitySelect = ({
           label="Seleccione un estado"
           value={localState?.stateName}
           handleOpenModal={() => setOpenStateModal(true)}
+          clearData={clearDataSelectState}
         />
       </View>
       <View style={MarginStyle.marginT10}>
@@ -108,6 +133,7 @@ export const StateAndMunicipalitySelect = ({
           label="Seleccione un municipio"
           value={localMunicipality?.municipalityName}
           handleOpenModal={() => setOpenMunicipalityModal(true)}
+          clearData={clearDataSelectMunicipality}
         />
       </View>
       <SelectStateModal

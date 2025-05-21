@@ -69,6 +69,14 @@ export default function Login() {
       key: KEY_STORE.idUser,
       value: data.items?.idUser,
     });
+    setStoreSession({
+      key: KEY_STORE.defaultState,
+      value: data.items?.defaultState,
+    });
+    setStoreSession({
+      key: KEY_STORE.defaultMunicipality,
+      value: data.items?.defaultMunicipality,
+    });
     setToken(data.items?.token);
     setTimeout(() => {
       setLoadingSession(false);
@@ -90,7 +98,6 @@ export default function Login() {
 
   useEffect(() => {
     if (token) {
-      console.log("🚀 ~ useEffect ~ token:", token);
       setLoadingSession(false);
       navigation.reset({
         index: 0,

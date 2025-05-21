@@ -30,14 +30,15 @@ import { TextStyle } from "@/constants/StyleComponents";
 import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import LoadingView from "@/components/Shared/LoadingView";
 import MyLocation from "@/components/Modules/Settings/MyLocation";
+import { useSessionProvider } from "@/provider/SessionProvider";
 
 export default function More() {
   const navigation = useNavigation();
   const { setToken } = useApiProvider();
+  const { deleteSessionStore } = useSessionProvider();
   const [viewComponent, setViewComponent] = useState<string>();
   const [openModalDeleteAccount, setOpenModalDeleteAccount] = useState(false);
   const [openModaloLogout, setOpenModalLogout] = useState(false);
-  // const [openModal, setOpenModal] = useState(false);
 
   const { data: dataUser, isFetching: isFetchingData } = useQuery({
     queryKey: [REACT_QUERY_KEYS.user.getDataUser("personal-information")],
@@ -79,6 +80,10 @@ export default function More() {
     setOpenModalLogout(false);
     setToken(null);
     await setStoreSession({ key: KEY_STORE.userToken, value: "" });
+    await setStoreSession({ key: KEY_STORE.idUser, value: "" });
+    await setStoreSession({ key: KEY_STORE.defaultState, value: "" });
+    await setStoreSession({ key: KEY_STORE.defaultMunicipality, value: "" });
+    deleteSessionStore();
     navigation.navigate("login" as never);
   };
 

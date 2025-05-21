@@ -4,7 +4,9 @@ export const KEY_STORE = {
     userToken: 'userToken',
     idUser: 'idUser',
     userData: 'userData',
-    profilePicture: 'profilePicture'
+    profilePicture: 'profilePicture',
+    defaultState: 'defaultState',
+    defaultMunicipality: 'defaultMunicipality'
 }
 
 type keyGetProps={

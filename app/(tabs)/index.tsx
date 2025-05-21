@@ -13,12 +13,15 @@ import { ThemeColorsSthetic } from "@/constants/Colors";
 import { PLATFORM_TYPE } from "@/constants/Constants";
 import { TypesServicesType } from "@/constants/GeneralTypes";
 import { TextStyle } from "@/constants/StyleComponents";
+import { getStoreSession, KEY_STORE } from "@/hooks/StoreDataSecure";
 import { Feather } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Image, Platform } from "react-native";
 import { FlatList } from "react-native";
 import { Pressable, StyleSheet, View } from "react-native";
+import { useSessionProvider } from "@/provider/SessionProvider";
+import { MyLocationModal } from "@/components/Modules/Settings/MyLocation/MyLocationModal";
 
 type FilterSearchParamsType = {
   page: number;
@@ -30,6 +33,7 @@ type FilterSearchParamsType = {
 
 export default function Home() {
   const platform = Platform.OS;
+  const { storeSessionProvider } = useSessionProvider();
   const [filterParams, setFilterParams] = useState<FilterSearchParamsType>({
     page: 0,
     word: "",
@@ -44,16 +48,15 @@ export default function Home() {
     useState(false);
   const [openSchedule, setOpenSchedule] = useState(false);
   const [profileSelected, setProfileSelected] = useState("");
+  const [openModalDefaultLocation, setOpenModalDefaultLocation] =
+    useState(false);
 
   const {
     data: listProvider = [],
     refetch: refetchListprovider,
     isFetching: isFetchingListProvider,
   } = useQuery({
-    queryKey: [
-      REACT_QUERY_KEYS.provider.searchProvider("search-provider"),
-      filterParams,
-    ],
+    queryKey: [REACT_QUERY_KEYS.provider.searchProvider("search-provider")],
     queryFn: () => apiUser.searchProvider({ ...filterParams, page }),
     ...{
       select: (data: ResponseApi) => data.data.items,
@@ -74,42 +77,69 @@ export default function Home() {
       listProvider?.items &&
       Array.isArray(listProvider?.items)
     ) {
-      setDataListProvider((prev: any) => {
-        const existingIds = new Set(prev.map((item: any) => item.id));
-        const filteredNew = listProvider?.items.filter(
-          (item: any) => !existingIds.has(item.id)
-        );
-        return [...prev, ...filteredNew];
-      });
+      if (page === 0) {
+        setDataListProvider(listProvider?.items);
+      } else {
+        setDataListProvider((prev: any) => {
+          const existingIds = new Set(prev.map((item: any) => item.id));
+          const filteredNew = listProvider?.items.filter(
+            (item: any) => !existingIds.has(item.id)
+          );
+          return [...prev, ...filteredNew];
+        });
+      }
 
       if (listProvider.totalPages >= page + 1) {
         setPage((n) => n + 1);
       }
     }
-  }, [listProvider?.pageNumber]);
+  }, [listProvider?.pageNumber, listProvider.totalElements, page]);
+
+  useEffect(() => {
+    setFilterParams((prev) => ({
+      ...prev,
+      defaultState: storeSessionProvider?.defaultState,
+    }));
+    setFilterParams((prev) => ({
+      ...prev,
+      defaultMunicipality: storeSessionProvider?.defaultMunicipality,
+    }));
+    setTimeout(() => {
+      if (storeSessionProvider?.defaultState)
+        handleSearch({
+          defaultState: storeSessionProvider?.defaultState,
+          defaultMunicipality: storeSessionProvider?.defaultMunicipality,
+        });
+    }, 1000);
+  }, [
+    storeSessionProvider?.defaultState,
+    storeSessionProvider?.defaultMunicipality,
+  ]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      getStoreSession({ key: KEY_STORE.defaultState }).then((value) => {
+        if (!value) setOpenModalDefaultLocation(true);
+      });
+    }, 3000);
+  }, [storeSessionProvider?.idUser]);
 
   const handleSearch = (data: any) => {
-    if (
-      filterParams.typeService !== data?.typeService?.join(",") ||
-      filterParams.word !== data.word ||
-      filterParams.defaultState !== data?.defaultState ||
-      filterParams.defaultMunicipality !== data?.defaultMunicipality
-    ) {
-      setDataListProvider([]);
-      setFilterParams({
-        ...data,
-        typeService: data?.typeService && data?.typeService.join(","),
-      });
+    setDataListProvider([]);
+    setFilterParams({
+      ...data,
+      typeService: data?.typeService && data?.typeService.join(","),
+    });
+    setTimeout(() => {
       setPage(0);
       fetchData();
-    }
+    }, 1000);
     setOpenSearchModal(false);
   };
 
   const handleClearFilter = (data: any) => {
     setPage(0);
-    setFilterParams(data);
-    fetchData();
+    handleSearch(data);
   };
 
   const fetchData = () => {
@@ -136,6 +166,11 @@ export default function Home() {
   const handleCloseSchedule = () => {
     setProfileSelected("");
     setOpenSchedule(false);
+  };
+
+  const handleRefetchLocationDefault = () => {
+    setOpenModalDefaultLocation(false);
+    handleSearch({});
   };
 
   return (
@@ -212,6 +247,13 @@ export default function Home() {
           open={openSchedule}
           handleCloseModal={handleCloseSchedule}
           idProvider={profileSelected}
+        />
+      )}
+      {openModalDefaultLocation && storeSessionProvider?.idUser && (
+        <MyLocationModal
+          idUser={storeSessionProvider?.idUser as string}
+          open={openModalDefaultLocation}
+          handleCloseModal={handleRefetchLocationDefault}
         />
       )}
     </View>

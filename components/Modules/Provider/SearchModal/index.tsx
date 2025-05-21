@@ -15,8 +15,9 @@ import {
   MarginStyle,
   TextStyle,
 } from "@/constants/StyleComponents";
+import { useSessionProvider } from "@/provider/SessionProvider";
 import Checkbox from "expo-checkbox";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Keyboard,
   Modal,
@@ -44,10 +45,30 @@ export const SearchModal = ({
   handleClearFilter,
 }: searchModalProps) => {
   const insets = useSafeAreaInsets();
+  const { storeSessionProvider } = useSessionProvider();
   const [textSearch, setTextSearch] = useState("");
-  const [locationSelected, setLocationSelect] = useState<DefaultLocationType>();
+  const [locationSelected, setLocationSelect] = useState<DefaultLocationType>({
+    defaultState: "",
+    defaultMunicipality: "",
+  });
   const [selectedKeys, setSelectedKeys] = useState<number[]>([]);
   const [clearSelect, setClearSelect] = useState(false);
+
+  useEffect(() => {
+    if (storeSessionProvider?.defaultState)
+      setLocationSelect((prev) => ({
+        ...prev,
+        defaultState: storeSessionProvider?.defaultState,
+      }));
+    if (storeSessionProvider?.defaultMunicipality)
+      setLocationSelect((prev) => ({
+        ...prev,
+        defaultMunicipality: storeSessionProvider?.defaultMunicipality,
+      }));
+  }, [
+    storeSessionProvider?.defaultState,
+    storeSessionProvider?.defaultMunicipality,
+  ]);
 
   const listItemTypeService = useMemo(
     () =>
