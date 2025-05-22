@@ -158,6 +158,7 @@ export const FormRegister = ({
 
   const handleSelectLada = (data: LadaType) => {
     setLadaSelected(data);
+    setShowErrorLada(false);
     setOpenLadaModal(false);
   };
   return (

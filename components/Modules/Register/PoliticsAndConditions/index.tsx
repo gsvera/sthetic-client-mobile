@@ -10,7 +10,6 @@ import {
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { modalCustomProps } from "@/constants/GeneralTypes";
 import { SimpleLineIcons } from "@expo/vector-icons";
-import { PLATFORM_TYPE } from "@/constants/Constants";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function PoliticsAndConditionsModal({
@@ -28,62 +27,71 @@ export default function PoliticsAndConditionsModal({
     >
       <View
         style={{
-          ...localStyles.contentBtnClose,
-          top: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+          backgroundColor: ThemeColorsSthetic.backgroundStrong,
         }}
       >
-        <Pressable onPress={handleCloseModal}>
-          <SimpleLineIcons
-            name="close"
-            size={24}
-            color={ThemeColorsSthetic.accentReverse}
-          />
-        </Pressable>
+        <View style={localStyles.contentBody}>
+          <View
+            style={{
+              ...localStyles.contentBtnClose,
+            }}
+          >
+            <Pressable onPress={handleCloseModal}>
+              <SimpleLineIcons
+                name="close"
+                size={24}
+                color={ThemeColorsSthetic.accentReverse}
+              />
+            </Pressable>
+          </View>
+          <View style={localStyles.contentSubtitle}>
+            <ThemedText type="title" style={localStyles.subtitle}>
+              Terminos y condiciones
+            </ThemedText>
+          </View>
+          <ScrollView style={localStyles.contentText}>
+            {/* ESTO DEBE CAMBIARSE POR LOS TEXTO REALES */}
+            <ThemedText style={localStyles.text}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id
+              odit doloribus rem, delectus ea voluptatibus quibusdam adipisci
+              accusantium? Optio voluptas voluptatem libero minus explicabo rem
+              accusamus suscipit dolorem quaerat.
+            </ThemedText>
+            <ThemedText style={localStyles.text}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id
+              odit doloribus rem, delectus ea voluptatibus quibusdam adipisci
+              accusantium? Optio voluptas voluptatem libero minus explicabo rem
+              accusamus suscipit dolorem quaerat.
+            </ThemedText>
+            <ThemedText style={localStyles.text}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id
+              odit doloribus rem, delectus ea voluptatibus quibusdam adipisci
+              accusantium? Optio voluptas voluptatem libero minus explicabo rem
+              accusamus suscipit dolorem quaerat.
+            </ThemedText>
+            <ThemedText style={localStyles.text}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id
+              odit doloribus rem, delectus ea voluptatibus quibusdam adipisci
+              accusantium? Optio voluptas voluptatem libero minus explicabo rem
+              accusamus suscipit dolorem quaerat.
+            </ThemedText>
+            <ThemedText style={localStyles.text}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id
+              odit doloribus rem, delectus ea voluptatibus quibusdam adipisci
+              accusantium? Optio voluptas voluptatem libero minus explicabo rem
+              accusamus suscipit dolorem quaerat.
+            </ThemedText>
+            <ThemedText style={localStyles.text}>
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id
+              odit doloribus rem, delectus ea voluptatibus quibusdam adipisci
+              accusantium? Optio voluptas voluptatem libero minus explicabo rem
+              accusamus suscipit dolorem quaerat.
+            </ThemedText>
+          </ScrollView>
+        </View>
       </View>
-      <View style={localStyles.contentSubtitle}>
-        <ThemedText type="title" style={localStyles.subtitle}>
-          Terminos y condiciones
-        </ThemedText>
-      </View>
-      <ScrollView style={localStyles.contentText}>
-        {/* ESTO DEBE CAMBIARSE POR LOS TEXTO REALES */}
-        <ThemedText style={localStyles.text}>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id odit
-          doloribus rem, delectus ea voluptatibus quibusdam adipisci
-          accusantium? Optio voluptas voluptatem libero minus explicabo rem
-          accusamus suscipit dolorem quaerat.
-        </ThemedText>
-        <ThemedText style={localStyles.text}>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id odit
-          doloribus rem, delectus ea voluptatibus quibusdam adipisci
-          accusantium? Optio voluptas voluptatem libero minus explicabo rem
-          accusamus suscipit dolorem quaerat.
-        </ThemedText>
-        <ThemedText style={localStyles.text}>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id odit
-          doloribus rem, delectus ea voluptatibus quibusdam adipisci
-          accusantium? Optio voluptas voluptatem libero minus explicabo rem
-          accusamus suscipit dolorem quaerat.
-        </ThemedText>
-        <ThemedText style={localStyles.text}>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id odit
-          doloribus rem, delectus ea voluptatibus quibusdam adipisci
-          accusantium? Optio voluptas voluptatem libero minus explicabo rem
-          accusamus suscipit dolorem quaerat.
-        </ThemedText>
-        <ThemedText style={localStyles.text}>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id odit
-          doloribus rem, delectus ea voluptatibus quibusdam adipisci
-          accusantium? Optio voluptas voluptatem libero minus explicabo rem
-          accusamus suscipit dolorem quaerat.
-        </ThemedText>
-        <ThemedText style={localStyles.text}>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ex id odit
-          doloribus rem, delectus ea voluptatibus quibusdam adipisci
-          accusantium? Optio voluptas voluptatem libero minus explicabo rem
-          accusamus suscipit dolorem quaerat.
-        </ThemedText>
-      </ScrollView>
     </Modal>
   );
 }
@@ -129,5 +137,9 @@ export const localStyles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     margin: 15,
+  },
+  contentBody: {
+    height: "100%",
+    backgroundColor: ThemeColorsSthetic.backgroundLight,
   },
 });

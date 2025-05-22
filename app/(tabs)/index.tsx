@@ -195,7 +195,7 @@ export default function Home() {
         </Pressable>
       </View>
       <View
-        style={{ height: platform === PLATFORM_TYPE.ANDROID ? "90%" : "85%" }}
+        style={{ height: platform === PLATFORM_TYPE.ANDROID ? "90%" : "87%" }}
       >
         <FlatList
           data={Array.isArray(dataListProvider) ? dataListProvider : []}

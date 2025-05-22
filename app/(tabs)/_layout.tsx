@@ -30,6 +30,7 @@ export default function TabLayout() {
       style={{
         ...localStyle.container,
         paddingTop: insets.top,
+        paddingBottom: insets.bottom,
         backgroundColor:
           colorScheme === "dark"
             ? ThemeColorsSthetic.backgroundStrong
@@ -45,13 +46,19 @@ export default function TabLayout() {
             headerShown: false,
             tabBarButton: HapticTab,
             tabBarBackground: TabBarBackground,
-            tabBarStyle: Platform.select({
-              ios: {
-                // Use a transparent background on iOS to show the blur effect
-                position: "absolute",
-              },
-              default: {},
-            }),
+            tabBarStyle: {
+              ...Platform.select({
+                ios: {
+                  // Use a transparent background on iOS to show the blur effect
+                  position: "absolute",
+                },
+                default: {},
+              }),
+              height: 50,
+              paddingBottom: 0,
+              borderTopWidth: 0,
+              backgroundColor: ThemeColorsSthetic.backgroundLight,
+            },
           }}
         >
           <Tabs.Screen

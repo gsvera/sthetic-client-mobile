@@ -4,7 +4,7 @@ import { Container, ThemeColorsSthetic } from "@/constants/Colors";
 import { useNavigation } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import FormRegister, {
   FormInputs,
@@ -30,6 +30,7 @@ const defaultValues = {
 
 export default function newAccount() {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const { setToken } = useApiProvider();
   const [showMessageSucces, setShowMessageSuccess] = useState(false);
   const [agreeConditions, setAgreeconditions] = useState(false);
@@ -78,16 +79,29 @@ export default function newAccount() {
   };
 
   return (
-    <SafeAreaView style={{ ...Container.container, paddingTop: 10 }}>
+    <View
+      style={{
+        ...Container.container,
+        backgroundColor: ThemeColorsSthetic.backgroundStrong,
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+      }}
+    >
       {showMessageSucces ? (
         <SuccessNotification message="Su cuenta ha sido creada con éxito" />
       ) : (
-        <>
+        <View
+          style={{
+            backgroundColor: ThemeColorsSthetic.backgroundLight,
+            height: "100%",
+          }}
+        >
           <View
             style={{
               flexDirection: "row",
               justifyContent: "flex-end",
               paddingRight: 20,
+              marginTop: 20,
             }}
           >
             <AntDesign
@@ -106,9 +120,9 @@ export default function newAccount() {
               personalInformation={personalInformation}
             />
           )}
-        </>
+        </View>
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
