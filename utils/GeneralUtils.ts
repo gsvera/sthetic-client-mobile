@@ -73,36 +73,3 @@ export const convertDateToGeneralFormat = (date:string | undefined, formatString
 export const convertHourToAMorPM = (hour: string) => {
   return dayjs(hour, "HH:mm").format("hh:mm A");
 }
-
-
-export function makeAvailablePerDay(startHour:string, endHour:string, minDuration:number):TimeScheduleType[] {
-  const result = [];
-
-  // Convertir horas a objetos Date para operar
-  const [startHours, startMinutes] = startHour.split(':').map(Number);
-  const [endHours, endMinutes] = endHour.split(':').map(Number);
-
-  const start = new Date();
-  start.setHours(startHours, startMinutes, 0, 0);
-
-  const end = new Date();
-  end.setHours(endHours, endMinutes, 0, 0);
-
-  let current = new Date(start);
-
-  while (current < end) {
-    const next = new Date(current.getTime() + minDuration * 60000);
-
-    if (next <= end) {
-      const formato = (hour: Date) => hour.toTimeString().slice(0, 5); // "HH:MM"
-      result.push({
-        start: formato(current),
-        end: formato(next),
-      });
-    }
-
-    current = next;
-  }
-
-  return result;
-}

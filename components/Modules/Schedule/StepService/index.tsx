@@ -39,7 +39,7 @@ export const StepService = ({ idProvider, onSelect }: stepServiceProps) => {
         <LoadingView />
       ) : (
         <ScrollView
-          style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "84%" : "95%" }}
+          style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "84%" : "85%" }}
         >
           {listServices?.map((item: MenuServiceType, index: number) => (
             <OptionService

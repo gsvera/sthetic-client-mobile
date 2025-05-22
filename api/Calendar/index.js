@@ -4,9 +4,9 @@ const BASE_URL = "/calendar";
 const BASE_URL_PUBLIC = "/public/calendar";
 
 export const apiCalendar = {
-  getTimeCalendarByPovider: function (iProvider, day) {
+  getTimeCalendarByPovider: function (iProvider, day, date) {
     return axiosInstance.get(
-      `${BASE_URL_PUBLIC}/get-time-by-provider/${iProvider}?day=${day}`
+      `${BASE_URL_PUBLIC}/get-time-by-provider/${iProvider}?day=${day}&date=${date}`
     );
   },
   getCalencarExceptionByUser: function (iProvider, date) {

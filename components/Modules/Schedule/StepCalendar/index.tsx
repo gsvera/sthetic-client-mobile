@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
 import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import { apiCalendar } from "@/api/Calendar";
-import { makeAvailablePerDay } from "@/utils/GeneralUtils";
 import {
   SelectedDateCalendarType,
   TimeScheduleType,
@@ -45,7 +44,11 @@ export const StepCalendar = ({
       selectedDate.nameDay,
     ],
     queryFn: () =>
-      apiCalendar.getTimeCalendarByPovider(idProvider, selectedDate.nameDay),
+      apiCalendar.getTimeCalendarByPovider(
+        idProvider,
+        selectedDate.nameDay,
+        selectedDate.dateString
+      ),
     ...{
       select: (data: ResponseApi) => data.data.items,
       enabled: !!selectedDate.nameDay,
@@ -54,13 +57,7 @@ export const StepCalendar = ({
 
   useEffect(() => {
     if (listTimes) {
-      setBlockTime(
-        makeAvailablePerDay(
-          listTimes.startTime,
-          listTimes.endTime,
-          listTimes.duration
-        )
-      );
+      setBlockTime(listTimes);
     }
   }, [listTimes]);
 
@@ -79,7 +76,11 @@ export const StepCalendar = ({
   };
 
   return (
-    <View style={localStyle.stepCalendar}>
+    <View
+      style={{
+        ...localStyle.stepCalendar,
+      }}
+    >
       <View>
         <Pressable
           style={localStyle.dateLabel}

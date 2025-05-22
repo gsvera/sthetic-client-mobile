@@ -160,6 +160,9 @@ const localStyle = StyleSheet.create({
     padding: 15,
     marginTop: 15,
     marginHorizontal: 10,
+    borderWidth: 0.5,
+    borderRadius: 5,
+    borderColor: ThemeColorsSthetic.backgroundStrong,
   },
   row: {
     ...GridStyle.rowSpaceBetween,

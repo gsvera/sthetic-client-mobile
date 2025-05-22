@@ -162,12 +162,11 @@ export const Schedule = ({
     >
       <View
         style={{
-          marginTop: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
-          backgroundColor: "white",
+          backgroundColor: ThemeColorsSthetic.backgroundLight,
           height: "100%",
         }}
       >
-        <View>
+        <View style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
           {openSuccessNotification && (
             <SuccessNotification message="Se ha generado su reservación con éxito" />
           )}
@@ -183,9 +182,7 @@ export const Schedule = ({
                   : localStyle.tab
               }
             >
-              <ThemedText style={TextStyle.fontBoldWhite}>
-                Disponibilidad
-              </ThemedText>
+              <ThemedText style={localStyle.textTab}>Disponibilidad</ThemedText>
             </TouchableOpacity>
             <TouchableOpacity
               style={
@@ -194,7 +191,7 @@ export const Schedule = ({
                   : localStyle.tab
               }
             >
-              <ThemedText style={TextStyle.fontBoldWhite}>Servicio</ThemedText>
+              <ThemedText style={localStyle.textTab}>Servicio</ThemedText>
             </TouchableOpacity>
             <TouchableOpacity
               style={
@@ -203,12 +200,14 @@ export const Schedule = ({
                   : localStyle.tab
               }
             >
-              <ThemedText style={TextStyle.fontBoldWhite}>
-                Confirmación
-              </ThemedText>
+              <ThemedText style={localStyle.textTab}>Confirmación</ThemedText>
             </TouchableOpacity>
           </View>
-          <View style={{ height: "85%" }}>
+          <View
+            style={{
+              height: Platform.OS === PLATFORM_TYPE.ANDROID ? "91%" : "87%",
+            }}
+          >
             {stepSelected === STEP_RESERVATION.SELECT_DATE && (
               <StepCalendar
                 idProvider={idProvider as string}
@@ -237,7 +236,7 @@ export const Schedule = ({
 
 const localStyle = StyleSheet.create({
   title: {
-    color: ThemeColorsSthetic.textLabels,
+    color: ThemeColorsSthetic.textTitle,
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 25,
@@ -266,6 +265,11 @@ const localStyle = StyleSheet.create({
     justifyContent: "center",
     padding: 5,
     borderRadius: 5,
+  },
+  textTab: {
+    color: ThemeColorsSthetic.textLight,
+    fontWeight: 600,
+    fontSize: 15,
   },
 });
 
