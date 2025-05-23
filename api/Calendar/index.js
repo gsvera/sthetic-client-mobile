@@ -1,12 +1,12 @@
 import axiosInstance from "..";
 
 const BASE_URL = "/calendar";
-const BASE_URL_PUBLIC = "/public/calendar";
+// const BASE_URL_PUBLIC = "/public/calendar";
 
 export const apiCalendar = {
   getTimeCalendarByPovider: function (iProvider, day, date) {
     return axiosInstance.get(
-      `${BASE_URL_PUBLIC}/get-time-by-provider/${iProvider}?day=${day}&date=${date}`
+      `${BASE_URL}/get-time-by-provider/${iProvider}?day=${day}&date=${date}`
     );
   },
   getCalencarExceptionByUser: function (iProvider, date) {
@@ -16,7 +16,7 @@ export const apiCalendar = {
   },
   getServicesByProvider: function (idProvider) {
     return axiosInstance.get(
-      `${BASE_URL_PUBLIC}/get-services-by-provider/${idProvider}`
+      `${BASE_URL}/get-services-by-provider/${idProvider}`
     );
   },
   /**
