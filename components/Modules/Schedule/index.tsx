@@ -63,7 +63,7 @@ export const Schedule = ({
     STEP_RESERVATION.SELECT_DATE
   );
 
-  const { mutate: saveScheduleService } = useMutation({
+  const { mutate: saveScheduleService, isPending } = useMutation({
     mutationFn: (data: ScheduleServiceType) => apiScheduleService.save(data),
     onSuccess: (data: ResponseApi) =>
       handleSuccessSaveScheduleService(data.data),
@@ -225,6 +225,7 @@ export const Schedule = ({
                 idProvider={idProvider as string}
                 scheduleService={makeScheduleService}
                 onSave={handleSave}
+                disableBtnSave={isPending}
               />
             )}
           </View>

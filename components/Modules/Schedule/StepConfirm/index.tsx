@@ -24,12 +24,14 @@ import { Platform, ScrollView, StyleSheet, View } from "react-native";
 type stepConfirmProps = {
   idProvider: string;
   scheduleService: ScheduleServiceType;
+  disableBtnSave: boolean;
   onSave: () => void;
 };
 
 export const StepConfirm = ({
   idProvider,
   scheduleService,
+  disableBtnSave,
   onSave,
 }: stepConfirmProps) => {
   const platform = Platform.OS;
@@ -148,6 +150,7 @@ export const StepConfirm = ({
           textBtn="Confirmar"
           styleBtn={localStyle.btn}
           handleOnPress={onSave}
+          disabledBtn={disableBtnSave}
         />
       </ScrollView>
     </View>

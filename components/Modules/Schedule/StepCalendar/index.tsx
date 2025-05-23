@@ -29,7 +29,7 @@ export const StepCalendar = ({
   handleSelectAvailableTime,
 }: stepCalendarProps) => {
   const [showCalendar, setShowCalendar] = useState(true);
-  const [blockTime, setBlockTime] = useState<TimeScheduleType[]>();
+  const [blockTime, setBlockTime] = useState<TimeScheduleType[]>([]);
   const [selectedDate, setSelectedDate] = useState<SelectedDateCalendarType>({
     dateString: "",
     nameDay: "",
@@ -110,13 +110,22 @@ export const StepCalendar = ({
               />
             )}
             <View>
-              {blockTime?.map((time, index: number) => (
-                <OptionSchedule
-                  key={index}
-                  optionSchedule={time}
-                  onSelect={handleSelectTime}
-                />
-              ))}
+              {blockTime.length > 0 ? (
+                blockTime?.map((time, index: number) => (
+                  <OptionSchedule
+                    key={index}
+                    optionSchedule={time}
+                    onSelect={handleSelectTime}
+                  />
+                ))
+              ) : (
+                <ThemedText
+                  style={{ ...TextStyle.textMuted, ...TextStyle.center }}
+                >
+                  {selectedDate.dateString !== "" &&
+                    "No hay disponibilidad en esta fecha"}
+                </ThemedText>
+              )}
             </View>
           </ScrollView>
         )}
