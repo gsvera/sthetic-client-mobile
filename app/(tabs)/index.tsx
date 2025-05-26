@@ -22,6 +22,7 @@ import { FlatList } from "react-native";
 import { Pressable, StyleSheet, View } from "react-native";
 import { useSessionProvider } from "@/provider/SessionProvider";
 import { MyLocationModal } from "@/components/Modules/Settings/MyLocation/MyLocationModal";
+import EmptyView from "@/components/Shared/EmptyView";
 
 type FilterSearchParamsType = {
   page: number;
@@ -197,30 +198,31 @@ export default function Home() {
       <View
         style={{ height: platform === PLATFORM_TYPE.ANDROID ? "90%" : "87%" }}
       >
-        <FlatList
-          data={Array.isArray(dataListProvider) ? dataListProvider : []}
-          keyExtractor={(item, index) =>
-            item?.id?.toString?.() || index.toString()
-          }
-          renderItem={({ item }) => {
-            if (!item) return null;
-            return (
-              <CardProfileProvider
-                key={item.id}
-                infoCompany={item}
-                handleSelectProfile={handleOnSelectProfile}
-                handleMakeSchedule={handleMakeSchedule}
-              />
-            );
-          }}
-          onEndReached={fetchData}
-          onEndReachedThreshold={0.5}
-          ListEmptyComponent={
-            <ThemedText style={localStyle.textEmpty}>
-              No hay datos disponibles
-            </ThemedText>
-          }
-        />
+        {dataListProvider.length > 0 ? (
+          <FlatList
+            data={Array.isArray(dataListProvider) ? dataListProvider : []}
+            keyExtractor={(item, index) =>
+              item?.id?.toString?.() || index.toString()
+            }
+            renderItem={({ item }) => {
+              if (!item) return null;
+              return (
+                <CardProfileProvider
+                  key={item.id}
+                  infoCompany={item}
+                  handleSelectProfile={handleOnSelectProfile}
+                  handleMakeSchedule={handleMakeSchedule}
+                />
+              );
+            }}
+            onEndReached={fetchData}
+            onEndReachedThreshold={0.5}
+          />
+        ) : (
+          <View style={{ marginTop: 100 }}>
+            {!isFetchingListProvider && <EmptyView />}
+          </View>
+        )}
         {isFetchingListProvider && (
           <LoadingView
             styleProps={{

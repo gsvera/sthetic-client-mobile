@@ -3,7 +3,21 @@ import axiosInstance from "..";
 const BASE_URL = "/schedule-service";
 
 export const apiScheduleService = {
+  findMyReservations: function (idClient, date) {
+    return axiosInstance.get(
+      `${BASE_URL}/find-schedules-by-client/${idClient}?date=${date}`
+    );
+  },
   save: function (data) {
     return axiosInstance.post(`${BASE_URL}/make-schedule-service`, data);
+  },
+  changeStatusSchedule: function ({
+    idSchedule,
+    statusSchedule,
+    textComments,
+  }) {
+    return axiosInstance.patch(
+      `${BASE_URL}/change-status-schedule?id-schedule=${idSchedule}&status-schedule=${statusSchedule}&text-comments=${textComments}`
+    );
   },
 };

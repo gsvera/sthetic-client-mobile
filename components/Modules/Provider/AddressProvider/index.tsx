@@ -12,10 +12,11 @@ import {
   MarginStyle,
   TextStyle,
 } from "@/constants/StyleComponents";
+import { openMap } from "@/utils/GeneralUtils";
 import { Entypo } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Linking, Platform, StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 
 type addressProviderProps = {
   idProvider: string;
@@ -31,23 +32,6 @@ export const AddressProvider = ({ idProvider }: addressProviderProps) => {
       enabled: Boolean(idProvider),
     },
   });
-
-  const openMap = (
-    latitude: number,
-    longitude: number,
-    label = "Ubicación"
-  ) => {
-    const latLng = `${latitude},${longitude}`;
-
-    const url = Platform.select({
-      ios: `http://maps.apple.com/?ll=${latLng}&q=${label}`,
-      android: `geo:${latLng}?q=${latLng}(${label})`,
-    });
-
-    Linking.openURL(url!).catch((err) =>
-      console.error("Error abriendo mapa", err)
-    );
-  };
 
   return (
     <View style={MarginStyle.marginT10}>

@@ -124,13 +124,17 @@ export type MenuServiceType = {
 export type ScheduleServiceType = {
     id?: number;
     idClientAux: string;
-    idProvider: string;
+    idProviderAux: string;
+    idProvider?: ProviderType;
     scheduleDate: string;
     startTime: string;
     endTime: string;
     nameService: string;
     people: number;
     amount: number;
+    statusService?: number;
+    comments?: string;
+    userLocationDTO?: UserLocationType;
 }
 
 

@@ -64,3 +64,10 @@ export enum PLATFORM_TYPE {
     IOS = 'ios',
     ANDROID = 'android'
 }
+
+export enum STATUS_SERVICE {
+    REJECT = -1,
+    PENDIENT = 0,
+    ACCEPT = 1,
+    CANCEL = 2
+}

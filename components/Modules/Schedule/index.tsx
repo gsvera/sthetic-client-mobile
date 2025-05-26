@@ -13,7 +13,6 @@ import {
   ScheduleServiceType,
   SelectedDateCalendarType,
 } from "@/constants/GeneralTypes";
-import { TextStyle } from "@/constants/StyleComponents";
 import { useEffect, useState } from "react";
 import {
   Modal,
@@ -45,12 +44,11 @@ export const Schedule = ({
   idProvider,
 }: scheduleProps) => {
   const insets = useSafeAreaInsets();
-  const platform = Platform.OS;
   const { handleNotification } = useNotificationProvider();
   const [openSuccessNotification, setOpenSuccessNotification] = useState(false);
   const [makeScheduleService, setMakeScheduleService] =
     useState<ScheduleServiceType>({
-      idProvider: idProvider,
+      idProviderAux: idProvider,
       idClientAux: "",
       scheduleDate: "",
       startTime: "",
@@ -140,7 +138,7 @@ export const Schedule = ({
 
   const onPressCloseModal = () => {
     setMakeScheduleService((prev) => ({
-      idProvider: "",
+      idProviderAux: "",
       idClientAux: prev.idClientAux,
       scheduleDate: "",
       startTime: "",

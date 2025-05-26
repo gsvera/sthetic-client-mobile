@@ -65,6 +65,11 @@ const ApiRequestProvider = ({ children }) => {
     if (statusCode !== 401) {
       return Promise.reject(error);
     }
+    if (statusCode === 401) {
+      setToken(null);
+      setStoreSession({ key: KEY_STORE.userToken, value: null });
+      return Promise.reject(error);
+    }
   }, []);
 
   useEffect(() => {

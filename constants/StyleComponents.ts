@@ -166,6 +166,18 @@ export const TextStyle = StyleSheet.create({
         color: ThemeColorsSthetic.accent,
         fontWeight: 'bold'
     },
+    fontBoldError: {
+        color: ThemeColorsSthetic.textError,
+        fontWeight: 'bold'
+    },
+    fontBoldAccept: {
+        color: ThemeColorsSthetic.textOre,
+        fontWeight: 'bold'
+    },
+    fontBoldCancel: {
+        color: ThemeColorsSthetic.muted,
+        fontWeight: 'bold'
+    },
     darkColor: {
         color: GlobalColors.blackColor
     },
