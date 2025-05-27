@@ -35,10 +35,15 @@ export default function Reservation() {
           style={localStyle.logo}
         />
       </View>
-      <ThemedText style={{ ...TextStyle.titleModal, marginTop: 10 }}>
-        Mis reservaciones
-      </ThemedText>
-      <View style={GridStyle.rowContentCenter}>
+      <View style={localStyle.headerTitle}>
+        <ThemedText
+          style={{
+            ...TextStyle.titleModal,
+            fontSize: Platform.OS === PLATFORM_TYPE.IOS ? 17 : 19,
+          }}
+        >
+          Mis reservaciones del día:
+        </ThemedText>
         <TouchableOpacity
           style={localStyle.contentDate}
           onPress={() => setOpenDatePicker(true)}
@@ -47,7 +52,7 @@ export default function Reservation() {
         </TouchableOpacity>
       </View>
       <View
-        style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "70%" : "74%" }}
+        style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "75%" : "80%" }}
       >
         {storeSessionProvider?.idUser && (
           <ReservationList
@@ -80,18 +85,24 @@ const localStyle = StyleSheet.create({
     backgroundColor: ThemeColorsSthetic.backgroundStrong,
   },
   contentDate: {
-    paddingVertical: 7,
+    paddingVertical: 5,
     paddingHorizontal: 10,
-    marginTop: 10,
-    marginBottom: 15,
     borderWidth: 0.5,
     borderRadius: 5,
   },
   labelDate: {
     ...TextStyle.label,
-    fontSize: 20,
+    fontSize: Platform.OS === PLATFORM_TYPE.IOS ? 15 : 17,
     fontWeight: "bold",
     textAlign: "center",
     lineHeight: 28,
+  },
+  headerTitle: {
+    ...GridStyle.rowSpaceBetween,
+    ...GridStyle.rowItemsVerticalCenter,
+    marginTop: 10,
+    width: "90%",
+    marginHorizontal: "auto",
+    marginBottom: Platform.OS === PLATFORM_TYPE.IOS ? 10 : 10,
   },
 });
