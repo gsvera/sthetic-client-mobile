@@ -22,7 +22,7 @@ const NotificationProvider = ({ children }) => {
     if (showNotification) {
       setTimeout(() => {
         setShowNotification(false);
-      }, 3000);
+      }, 2000);
     } else {
     }
   }, [showNotification, dataNotification]);
@@ -31,6 +31,7 @@ const NotificationProvider = ({ children }) => {
     <NotificationContext.Provider value={{ handleNotification }}>
       {showNotification && (
         <MiniNotification
+          open={showNotification}
           type={dataNotification?.type}
           message={dataNotification?.message}
         />

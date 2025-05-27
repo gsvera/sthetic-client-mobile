@@ -45,7 +45,10 @@ export const ReservationList = ({ idUser, day }: reservationListProps) => {
         message: data.message,
       });
 
-    handleNotification({ type: TYPE_STATUS.SUCCESS, messsage: data.message });
+    handleNotification({
+      type: TYPE_STATUS.SUCCESS,
+      message: "Se cancelo su reserva con éxito",
+    });
     refetchListSchedule();
   };
 

@@ -145,13 +145,15 @@ export const StepConfirm = ({
             </ThemedText>
           </View>
         </View>
-        <GeneralButton
-          styleText={TextStyle.fontBoldWhite}
-          textBtn="Confirmar"
-          styleBtn={localStyle.btn}
-          handleOnPress={onSave}
-          disabledBtn={disableBtnSave}
-        />
+        <View style={localStyle.contentBtn}>
+          <GeneralButton
+            styleText={TextStyle.fontBoldWhite}
+            textBtn="Confirmar"
+            styleBtn={ButtonGeneralStyle.btnSaveSthetic}
+            handleOnPress={onSave}
+            disabledBtn={disableBtnSave}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -178,8 +180,8 @@ const localStyle = StyleSheet.create({
     ...TextStyle.value,
     fontWeight: "bold",
   },
-  btn: {
-    ...ButtonGeneralStyle.btnSaveSthetic,
+
+  contentBtn: {
     width: "90%",
     marginHorizontal: "auto",
     marginTop: 20,

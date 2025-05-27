@@ -9,6 +9,7 @@ import { MenuServiceType } from "@/constants/GeneralTypes";
 import LoadingView from "@/components/Shared/LoadingView";
 import { ResponseApi } from "@/api/responseApi";
 import { PLATFORM_TYPE } from "@/constants/Constants";
+import EmptyView from "@/components/Shared/EmptyView";
 
 type stepServiceProps = {
   idProvider: string;
@@ -41,13 +42,19 @@ export const StepService = ({ idProvider, onSelect }: stepServiceProps) => {
         <ScrollView
           style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "84%" : "85%" }}
         >
-          {listServices?.map((item: MenuServiceType, index: number) => (
-            <OptionService
-              key={index}
-              service={item}
-              onSelect={handleSelectService}
-            />
-          ))}
+          {listServices.length > 0 ? (
+            listServices?.map((item: MenuServiceType, index: number) => (
+              <OptionService
+                key={index}
+                service={item}
+                onSelect={handleSelectService}
+              />
+            ))
+          ) : (
+            <View style={{ marginTop: 100 }}>
+              <EmptyView />
+            </View>
+          )}
         </ScrollView>
       )}
     </View>

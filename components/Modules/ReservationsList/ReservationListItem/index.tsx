@@ -153,20 +153,20 @@ export const ReservationListItem = ({
           </View>
         </View>
       </View>
-      {item.statusService === STATUS_SERVICE.PENDIENT ||
-        (item.statusService === STATUS_SERVICE.ACCEPT && (
-          <View style={localStyle.contentBtnAction}>
-            <GeneralButton
-              textBtn="Cancelar"
-              styleText={TextStyle.fontBoldWhite}
-              styleBtn={{
-                ...ButtonGeneralStyle.btnCancelSthetic,
-                ...localStyle.btn,
-              }}
-              handleOnPress={rejectService}
-            />
-          </View>
-        ))}
+      {(item.statusService === STATUS_SERVICE.PENDIENT ||
+        item.statusService === STATUS_SERVICE.ACCEPT) && (
+        <View style={localStyle.contentBtnAction}>
+          <GeneralButton
+            textBtn="Cancelar"
+            styleText={TextStyle.fontBoldWhite}
+            styleBtn={{
+              ...ButtonGeneralStyle.btnCancelSthetic,
+              ...localStyle.btn,
+            }}
+            handleOnPress={rejectService}
+          />
+        </View>
+      )}
     </View>
   );
 };

@@ -16,6 +16,7 @@ import {
 import OptionSchedule from "./OptionSchedule";
 import LoadingView from "@/components/Shared/LoadingView";
 import { ResponseApi } from "@/api/responseApi";
+import EmptyView from "@/components/Shared/EmptyView";
 
 dayjs.locale("es"); // Esta config se debera establecer a futuro para ingles tambien
 
@@ -110,22 +111,19 @@ export const StepCalendar = ({
               />
             )}
             <View>
-              {blockTime.length > 0 ? (
-                blockTime?.map((time, index: number) => (
-                  <OptionSchedule
-                    key={index}
-                    optionSchedule={time}
-                    onSelect={handleSelectTime}
-                  />
-                ))
-              ) : (
-                <ThemedText
-                  style={{ ...TextStyle.textMuted, ...TextStyle.center }}
-                >
-                  {selectedDate.dateString !== "" &&
-                    "No hay disponibilidad en esta fecha"}
-                </ThemedText>
-              )}
+              {blockTime.length > 0
+                ? blockTime?.map((time, index: number) => (
+                    <OptionSchedule
+                      key={index}
+                      optionSchedule={time}
+                      onSelect={handleSelectTime}
+                    />
+                  ))
+                : selectedDate.dateString !== "" && (
+                    <View style={{ marginTop: 100 }}>
+                      <EmptyView message="No hay disponibilidad en esta fecha" />
+                    </View>
+                  )}
             </View>
           </ScrollView>
         )}

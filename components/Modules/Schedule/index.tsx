@@ -29,10 +29,10 @@ import { useMutation } from "@tanstack/react-query";
 import { apiScheduleService } from "@/api/ScheduleService";
 import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
-import { useNotificationProvider } from "@/provider/NotificationProvider";
 import SuccessNotification from "@/components/Shared/Notifications/SuccessNotification";
 import { convertDateToGeneralFormat } from "@/utils/GeneralUtils";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import MiniNotification from "@/components/Shared/Notifications/MiniNotification";
 
 type scheduleProps = Omit<modalCustomProps, "idProvider"> & {
   idProvider: string;
@@ -44,8 +44,12 @@ export const Schedule = ({
   idProvider,
 }: scheduleProps) => {
   const insets = useSafeAreaInsets();
-  const { handleNotification } = useNotificationProvider();
   const [openSuccessNotification, setOpenSuccessNotification] = useState(false);
+  const [miniNotificationState, setMiniNotificationState] = useState({
+    open: false,
+    type: TYPE_STATUS.SUCCESS,
+    message: "",
+  });
   const [makeScheduleService, setMakeScheduleService] =
     useState<ScheduleServiceType>({
       idProviderAux: idProvider,
@@ -70,13 +74,24 @@ export const Schedule = ({
 
   const handleSuccessSaveScheduleService = (data: ObjectResponse) => {
     if (data.error) {
-      return handleNotification({
+      return setMiniNotificationState({
+        open: true,
         type: TYPE_STATUS.ERROR,
-        messae: data.message,
+        message: data.message,
       });
     }
     setOpenSuccessNotification(true);
   };
+
+  useEffect(() => {
+    /**
+     * Existe un provider de notificaciones pero por temas de super posicion del modal no se ve cuando ya hay un modal abierto por eso se hizo esta excepcion
+     */
+    if (miniNotificationState.open)
+      setTimeout(() => {
+        setMiniNotificationState((prev) => ({ ...prev, open: false }));
+      }, 2000);
+  }, [miniNotificationState.open]);
 
   useEffect(() => {
     getStoreSession({ key: KEY_STORE.idUser }).then((value) => {
@@ -130,7 +145,8 @@ export const Schedule = ({
         scheduleDate: dateWithFormat,
       });
     else
-      handleNotification({
+      setMiniNotificationState({
+        open: true,
         type: TYPE_STATUS.ERROR,
         message: "Formato de fecha invalido",
       });
@@ -160,11 +176,18 @@ export const Schedule = ({
     >
       <View
         style={{
-          backgroundColor: ThemeColorsSthetic.backgroundLight,
+          backgroundColor: ThemeColorsSthetic.backgroundStrong,
           height: "100%",
         }}
       >
-        <View style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
+        <View
+          style={{
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            backgroundColor: ThemeColorsSthetic.backgroundLight,
+            zIndex: 1500,
+          }}
+        >
           {openSuccessNotification && (
             <SuccessNotification message="Se ha generado su reservación con éxito" />
           )}
@@ -174,6 +197,7 @@ export const Schedule = ({
           </View>
           <View style={localStyle.contentTab}>
             <TouchableOpacity
+              onPress={() => setStepSelected(STEP_RESERVATION.SELECT_DATE)}
               style={
                 stepSelected >= STEP_RESERVATION.SELECT_DATE
                   ? localStyle.tabSelected
@@ -183,6 +207,11 @@ export const Schedule = ({
               <ThemedText style={localStyle.textTab}>Disponibilidad</ThemedText>
             </TouchableOpacity>
             <TouchableOpacity
+              onPress={() =>
+                makeScheduleService.startTime &&
+                makeScheduleService.endTime &&
+                setStepSelected(STEP_RESERVATION.SELECT_SERVICE)
+              }
               style={
                 stepSelected >= STEP_RESERVATION.SELECT_SERVICE
                   ? localStyle.tabSelected
@@ -229,6 +258,13 @@ export const Schedule = ({
           </View>
         </View>
       </View>
+      {miniNotificationState.open && (
+        <MiniNotification
+          open={miniNotificationState.open}
+          type={miniNotificationState.type}
+          message={miniNotificationState.message}
+        />
+      )}
     </Modal>
   );
 };
