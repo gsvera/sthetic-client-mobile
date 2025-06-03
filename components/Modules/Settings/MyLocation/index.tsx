@@ -11,7 +11,7 @@ export const MyLocation = ({ idUser, returnBack }: myLocationProps) => {
   return (
     <View>
       <SubHeaderReturn subtitle="Mi Ubicación" handleReturn={returnBack} />
-      <MyLocationForm idUser={idUser} />
+      <MyLocationForm idUser={idUser} handleClose={returnBack} />
     </View>
   );
 };

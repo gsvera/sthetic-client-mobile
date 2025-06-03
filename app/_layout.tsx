@@ -20,6 +20,7 @@ import {
 import { ApiRequestProvider } from "@/provider/InterceptorProvider";
 import { NotificationProvider } from "@/provider/NotificationProvider";
 import { SessionProvider } from "@/provider/SessionProvider";
+import { WebSocketProvider } from "@/provider/WebSocketProvider";
 import { useOnlineManager } from "@/hooks/query/UseOnlineManager";
 import { useAppState } from "@/hooks/query/useAppState";
 
@@ -64,14 +65,19 @@ export default function RootLayout() {
           value={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
         >
           <SessionProvider>
-            <NotificationProvider>
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                {/* <Stack.Screen name="+not-found" /> */}
-                <Stack.Screen name="login" options={{ headerShown: false }} />
-              </Stack>
-              <StatusBar style="auto" />
-            </NotificationProvider>
+            <WebSocketProvider>
+              <NotificationProvider>
+                <Stack>
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{ headerShown: false }}
+                  />
+                  {/* <Stack.Screen name="+not-found" /> */}
+                  <Stack.Screen name="login" options={{ headerShown: false }} />
+                </Stack>
+                <StatusBar style="auto" />
+              </NotificationProvider>
+            </WebSocketProvider>
           </SessionProvider>
         </ThemeProvider>
       </ApiRequestProvider>

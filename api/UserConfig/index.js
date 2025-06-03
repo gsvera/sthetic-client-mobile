@@ -27,6 +27,9 @@ export const apiUserConfig = {
       data
     );
   },
+  saveTokenNotification: function (data) {
+    return axiosInstance.put(`${BASE_URL}/save-notifications-token`, data);
+  },
   /**
    *
    * @deprecated no se usa para esta app

@@ -232,7 +232,7 @@ export const Schedule = ({
           </View>
           <View
             style={{
-              height: Platform.OS === PLATFORM_TYPE.ANDROID ? "91%" : "87%",
+              height: Platform.OS === PLATFORM_TYPE.ANDROID ? "90%" : "87%",
             }}
           >
             {stepSelected === STEP_RESERVATION.SELECT_DATE && (
@@ -275,6 +275,8 @@ const localStyle = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 25,
+    marginTop: -20,
+    marginBottom: 15,
   },
   contentTab: {
     flexDirection: "row",
