@@ -189,7 +189,7 @@ export const Schedule = ({
           }}
         >
           {openSuccessNotification && (
-            <SuccessNotification message="Se ha generado su reservación con éxito" />
+            <SuccessNotification message="Se ha generado su cita con éxito" />
           )}
           <ReturnArrow handleReturn={onPressCloseModal} />
           <View>

@@ -18,7 +18,6 @@ export const connectWebSocket = (token: string, channel:string, onNotification: 
       stompClient.subscribe(channel, (message) => {
         if (message.body) {
           const data = JSON.parse(message.body);
-          console.log('📩 Notificación recibida:', data);
           onNotification(data);
         }
       }),() => { console.log("📡 Suscripción activa")};

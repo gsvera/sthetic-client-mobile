@@ -29,7 +29,6 @@ export default function TabLayout() {
     useWebSocketProvider();
   const { storeSessionProvider } = useSessionProvider();
   const { token, setToken } = useApiProvider();
-  console.log("🚀 ~ TabLayout ~ token:", token);
   const insets = useSafeAreaInsets();
   const notificationListener = useRef<Notifications.EventSubscription | null>(
     null
@@ -44,7 +43,6 @@ export default function TabLayout() {
   });
 
   const handleSuccessSaveTokenNotification = (data: ObjectResponse) => {
-    console.log("🚀 ~ handleSuccessSaveTokenNotification ~ data:", data);
     if (data.error)
       return handleNotification({
         type: TYPE_STATUS.ERROR,
@@ -82,10 +80,6 @@ export default function TabLayout() {
   useEffect(() => {
     if (token && storeSessionProvider?.idUser) {
       registerForPushNotificationsAsync().then((tokenNotification) => {
-        console.log(
-          "🚀 ~ registerForPushNotificationsAsync ~ tokenNotification:",
-          tokenNotification
-        );
         if (tokenNotification) {
           saveTokenNotification({
             id: storeSessionProvider?.idUser,
@@ -235,9 +229,8 @@ async function registerForPushNotificationsAsync() {
     alert("No se otorgaron permisos para notificaciones push");
     return;
   }
-  console.log("finalStatus", finalStatus);
+
   const tokenData = await Notifications.getExpoPushTokenAsync();
-  console.log("🚀 ~ registerForPushNotificationsAsync ~ tokenData:", tokenData);
 
   return tokenData.data;
 }
