@@ -39,6 +39,10 @@ import { PLATFORM_TYPE } from "@/constants/Constants";
 import Schedule from "../../Schedule";
 import ButtonShowMore from "@/components/Shared/ButtonShowMore";
 import AddressProvider from "../AddressProvider";
+import { openLink } from "@/utils/GeneralUtils";
+
+const msnWhatsApp =
+  "Hola! Te encontre en la app de Meredith Care, me gustaria más informacion acerca de tus servicios";
 
 export const ProfileProviderModal = ({
   open,
@@ -74,13 +78,6 @@ export const ProfileProviderModal = ({
   });
 
   const isLoading = useMemo(() => isFetchingDataInfo, [isFetchingDataInfo]);
-
-  const openLink = async (url: string) => {
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      await Linking.openURL(url);
-    }
-  };
 
   const handleSelectGallery = (data: ProjectType) => {
     setgallerySelected(data);
@@ -195,7 +192,7 @@ export const ProfileProviderModal = ({
                       openLink(
                         `https://wa.me/${dataInfo.lada.substring(0, 1)}${
                           dataInfo.phone
-                        }?text=Hola!%20Te%20encontre%20en%20la%20app%20de%20Meredith%20Care,%20me%20gustaria%20más%20informacion%20acerca%20de%20tus%20servicios`
+                        }?text=${encodeURIComponent(msnWhatsApp)}`
                       )
                     }
                   >

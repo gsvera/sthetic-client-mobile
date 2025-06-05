@@ -39,8 +39,8 @@ export default function Home() {
     page: 0,
     word: "",
     typeService: "",
-    defaultState: "",
-    defaultMunicipality: "",
+    defaultState: storeSessionProvider?.defaultState,
+    defaultMunicipality: storeSessionProvider?.defaultMunicipality,
   });
   const [dataListProvider, setDataListProvider] = useState<any[]>([]);
   const [page, setPage] = useState(0);
@@ -51,6 +51,7 @@ export default function Home() {
   const [profileSelected, setProfileSelected] = useState("");
   const [openModalDefaultLocation, setOpenModalDefaultLocation] =
     useState(false);
+  const [force, setForce] = useState(false); // auxiliar para refrescar useEffect para rellenar items
 
   const {
     data: listProvider = [],
@@ -58,7 +59,7 @@ export default function Home() {
     isFetching: isFetchingListProvider,
   } = useQuery({
     queryKey: [REACT_QUERY_KEYS.provider.searchProvider("search-provider")],
-    queryFn: () => apiUser.searchProvider({ ...filterParams, page }),
+    queryFn: () => apiUser.searchProvider({ ...filterParams }),
     ...{
       select: (data: ResponseApi) => data.data.items,
     },
@@ -73,13 +74,10 @@ export default function Home() {
   });
 
   useEffect(() => {
-    if (
-      listProvider?.pageNumber === page &&
-      listProvider?.items &&
-      Array.isArray(listProvider?.items)
-    ) {
-      if (page === 0) {
+    if (listProvider?.items && Array.isArray(listProvider?.items)) {
+      if (listProvider?.pageNumber === 0) {
         setDataListProvider(listProvider?.items);
+        setPage(1);
       } else {
         setDataListProvider((prev: any) => {
           const existingIds = new Set(prev.map((item: any) => item.id));
@@ -88,30 +86,22 @@ export default function Home() {
           );
           return [...prev, ...filteredNew];
         });
-      }
-
-      if (listProvider.totalPages >= page + 1) {
-        setPage((n) => n + 1);
+        if (listProvider.totalPages >= page + 1) {
+          setPage((n) => n + 1);
+        }
       }
     }
-  }, [listProvider?.pageNumber, listProvider.totalElements, page]);
+  }, [listProvider?.pageNumber, listProvider.totalElements, force]);
 
   useEffect(() => {
-    setFilterParams((prev) => ({
-      ...prev,
-      defaultState: storeSessionProvider?.defaultState,
-    }));
-    setFilterParams((prev) => ({
-      ...prev,
-      defaultMunicipality: storeSessionProvider?.defaultMunicipality,
-    }));
-    setTimeout(() => {
-      if (storeSessionProvider?.defaultState)
+    if (storeSessionProvider?.defaultState) {
+      setTimeout(() => {
         handleSearch({
           defaultState: storeSessionProvider?.defaultState,
           defaultMunicipality: storeSessionProvider?.defaultMunicipality,
         });
-    }, 1000);
+      }, 500);
+    }
   }, [
     storeSessionProvider?.defaultState,
     storeSessionProvider?.defaultMunicipality,
@@ -126,14 +116,15 @@ export default function Home() {
   }, [storeSessionProvider?.idUser]);
 
   const handleSearch = (data: any) => {
-    setDataListProvider([]);
     setFilterParams({
       ...data,
+      page: 0,
       typeService: data?.typeService && data?.typeService.join(","),
     });
+    setPage(0);
+    setForce((v) => !v);
     setTimeout(() => {
-      setPage(0);
-      fetchData();
+      refetchListprovider();
     }, 1000);
     setOpenSearchModal(false);
   };
@@ -144,6 +135,7 @@ export default function Home() {
   };
 
   const fetchData = () => {
+    setFilterParams((prev) => ({ ...prev, page }));
     setTimeout(() => {
       refetchListprovider();
     }, 1000);
@@ -171,7 +163,6 @@ export default function Home() {
 
   const handleRefetchLocationDefault = () => {
     setOpenModalDefaultLocation(false);
-    handleSearch({});
   };
 
   return (
