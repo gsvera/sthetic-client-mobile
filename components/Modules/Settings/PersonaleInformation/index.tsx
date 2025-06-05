@@ -242,7 +242,7 @@ export const PersonalInformation = ({
                     style={GeneralStyle.simpleInput}
                     placeholder="Ingrese su email"
                     keyboardType="email-address"
-                    onChangeText={onChange}
+                    onChangeText={(e) => onChange(e.toLowerCase())}
                     onBlur={onBlur}
                     value={value}
                   />

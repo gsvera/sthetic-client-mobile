@@ -111,7 +111,6 @@ export const FormRegister = ({
       confirmPassword: "",
     },
   });
-
   const { data: catalogLada = [] } = useQuery({
     queryKey: [REACT_QUERY_KEYS.lada.getFilterData("registry")],
     queryFn: () => apiLada.getFilterData(),
@@ -258,7 +257,7 @@ export const FormRegister = ({
                 style={localStyles.input}
                 placeholder="Ingrese su email"
                 keyboardType="email-address"
-                onChangeText={onChange}
+                onChangeText={(e) => onChange(e.toLowerCase())}
                 onBlur={onBlur}
                 value={value}
               />
@@ -276,7 +275,7 @@ export const FormRegister = ({
             render={({ field: { onChange, onBlur, value } }) => (
               <View style={localStyles.input}>
                 <TextInput
-                  style={{ width: "80%" }}
+                  style={{ ...TextStyle.value, width: "80%" }}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
@@ -308,7 +307,7 @@ export const FormRegister = ({
             render={({ field: { onChange, onBlur, value } }) => (
               <View style={localStyles.input}>
                 <TextInput
-                  style={{ width: "80%" }}
+                  style={{ ...TextStyle.value, width: "80%" }}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
