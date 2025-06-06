@@ -17,6 +17,7 @@ import OptionSchedule from "./OptionSchedule";
 import LoadingView from "@/components/Shared/LoadingView";
 import { ResponseApi } from "@/api/responseApi";
 import EmptyView from "@/components/Shared/EmptyView";
+import { FORMAT_DATE } from "@/constants/Constants";
 
 dayjs.locale("es"); // Esta config se debera establecer a futuro para ingles tambien
 
@@ -32,8 +33,8 @@ export const StepCalendar = ({
   const [showCalendar, setShowCalendar] = useState(true);
   const [blockTime, setBlockTime] = useState<TimeScheduleType[]>([]);
   const [selectedDate, setSelectedDate] = useState<SelectedDateCalendarType>({
-    dateString: "",
-    nameDay: "",
+    dateString: dayjs().add(1, "days").format(FORMAT_DATE.GENERAL_EN),
+    nameDay: dayjs().add(1, "days").format("dddd"),
     time: { start: "", end: "" },
   });
 
@@ -101,7 +102,7 @@ export const StepCalendar = ({
             {showCalendar && (
               <Calendar
                 onDayPress={(day: any) => handleSelectedDate(day.dateString)}
-                minDate={dayjs().format("YYYY-MM-DD")}
+                minDate={dayjs().add(1, "day").format(FORMAT_DATE.GENERAL_EN)}
                 markedDates={{
                   [selectedDate.dateString]: {
                     selected: true,
