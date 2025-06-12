@@ -69,5 +69,6 @@ export enum STATUS_SERVICE {
     REJECT = -1,
     PENDIENT = 0,
     ACCEPT = 1,
-    CANCEL = 2
+    CANCEL = 2,
+    FINALIZED = 3
 }

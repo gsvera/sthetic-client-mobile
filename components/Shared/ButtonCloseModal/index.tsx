@@ -3,12 +3,16 @@ import { SimpleLineIcons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, View } from "react-native";
 
 type buttonCloseModalProps = {
+  styleContentHeader?: {};
   handleOnPress: () => void;
 };
 
-export const ButtonCloseModal = ({ handleOnPress }: buttonCloseModalProps) => {
+export const ButtonCloseModal = ({
+  styleContentHeader,
+  handleOnPress,
+}: buttonCloseModalProps) => {
   return (
-    <View style={localStyle.contentHeader}>
+    <View style={styleContentHeader || localStyle.contentHeader}>
       <Pressable onPress={handleOnPress}>
         <SimpleLineIcons
           name="close"

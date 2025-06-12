@@ -174,6 +174,10 @@ export const TextStyle = StyleSheet.create({
         color: ThemeColorsSthetic.textOre,
         fontWeight: 'bold'
     },
+    fontBoldFinalized: {
+        color: ThemeColorsSthetic.textTitle,
+        fontWeight: 'bold'
+    },
     fontBoldCancel: {
         color: ThemeColorsSthetic.muted,
         fontWeight: 'bold'

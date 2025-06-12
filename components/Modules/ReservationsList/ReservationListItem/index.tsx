@@ -57,6 +57,14 @@ export const ReservationListItem = ({
             Confirmado
           </ThemedText>
         );
+      case STATUS_SERVICE.FINALIZED:
+        return (
+          <ThemedText
+            style={{ ...TextStyle.fontBoldFinalized, ...localStyle.textStatus }}
+          >
+            Finalizado
+          </ThemedText>
+        );
       default:
         return <></>;
     }

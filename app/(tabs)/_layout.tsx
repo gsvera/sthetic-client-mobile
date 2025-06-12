@@ -1,5 +1,5 @@
 import { Tabs, useNavigation } from "expo-router";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
@@ -19,7 +19,11 @@ import * as Device from "expo-device";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import apiUserConfig from "@/api/UserConfig";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
+import { apiScheduleService } from "@/api/ScheduleService";
+import ModalQualification from "@/components/Shared/ModalQualification";
+import { ProviderRatings } from "@/constants/GeneralTypes";
 
 export default function TabLayout() {
   const navigation = useNavigation();
@@ -34,6 +38,17 @@ export default function TabLayout() {
     null
   );
   const responseListener = useRef<Notifications.EventSubscription | null>(null);
+  const [openQualificationModal, setOpenQualificationModal] = useState(false);
+
+  const { data: pendingRating } = useQuery({
+    queryKey: [REACT_QUERY_KEYS.provider.pendingRating("rating")],
+    queryFn: () =>
+      apiScheduleService.getPendingRatingByUser(storeSessionProvider?.idUser),
+    ...{
+      select: (data: ResponseApi) => data.data as ObjectResponse,
+      enabled: Boolean(token) && Boolean(storeSessionProvider?.idUser),
+    },
+  });
 
   const { mutate: saveTokenNotification } = useMutation({
     mutationFn: (data: any) => apiUserConfig.saveTokenNotification(data),
@@ -49,6 +64,12 @@ export default function TabLayout() {
         message: data.message,
       });
   };
+
+  useEffect(() => {
+    if (pendingRating?.items) {
+      setOpenQualificationModal(true);
+    }
+  }, [pendingRating]);
 
   useEffect(() => {
     getStoreSession({ key: KEY_STORE.userToken }).then((value) => {
@@ -201,6 +222,13 @@ export default function TabLayout() {
           />
         </Tabs>
       </View>
+      {openQualificationModal && (
+        <ModalQualification
+          open={openQualificationModal}
+          handleCloseModal={() => setOpenQualificationModal(false)}
+          providerRatings={pendingRating?.items as ProviderRatings}
+        />
+      )}
     </View>
   );
 }

@@ -20,4 +20,17 @@ export const apiScheduleService = {
       `${BASE_URL}/change-status-schedule?id-schedule=${idSchedule}&status-schedule=${statusSchedule}&text-comments=${textComments}`
     );
   },
+  getPendingRatingByUser: function (idUser) {
+    return axiosInstance.get(
+      `${BASE_URL}/get-pending-rating-by-user/${idUser}`
+    );
+  },
+  makeRatingByService: function (data) {
+    return axiosInstance.post(`${BASE_URL}/update-rating-by-service`, data);
+  },
+  deleteRatingByService: function (id) {
+    return axiosInstance.delete(
+      `${BASE_URL}/delete-rating-by-service?id-rating=${id}`
+    );
+  },
 };

@@ -137,6 +137,22 @@ export type ScheduleServiceType = {
     userLocationDTO?: UserLocationType;
 }
 
+export type UserProviderType = {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email?: string;
+    infoCompanyDTO?: InfoCompanyType;
+}
+
+export type ProviderRatings = {
+    id: number;
+    idUser: string;
+    idProvider: UserProviderType;
+    idService: number;
+    // rating?: number;
+}
+
 
 /**
  * @deprecated no se usa por que el cliente no adquiere un plan
