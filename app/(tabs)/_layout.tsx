@@ -24,6 +24,7 @@ import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import { apiScheduleService } from "@/api/ScheduleService";
 import ModalQualification from "@/components/Shared/ModalQualification";
 import { ProviderRatings } from "@/constants/GeneralTypes";
+import { Audio } from "expo-av";
 
 export default function TabLayout() {
   const navigation = useNavigation();
@@ -90,7 +91,11 @@ export default function TabLayout() {
     }
   }, [token]);
 
-  const handleNotificationWs = (data: any) => {
+  const handleNotificationWs = async (data: any) => {
+    const { sound } = await Audio.Sound.createAsync(
+      require("@/assets/sounds/short-success-sound.mp3")
+    );
+    await sound.playAsync();
     handleNotification({
       type: TYPE_STATUS.UPDATE,
       message: data.message,
