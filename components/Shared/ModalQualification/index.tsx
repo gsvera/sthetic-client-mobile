@@ -19,12 +19,13 @@ import StartRating from "./StartRating";
 import { useState } from "react";
 import GeneralButton from "../GeneralButton";
 import ButtonCloseModal from "../ButtonCloseModal";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiScheduleService } from "@/api/ScheduleService";
 import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import { ErrorAlertMessage } from "../Notifications/AlertMessage";
 import { useNotificationProvider } from "@/provider/NotificationProvider";
 import { TYPE_STATUS } from "@/constants/Constants";
+import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 
 type modalQualificationProps = modalCustomProps & {
   providerRatings: ProviderRatings;
@@ -35,6 +36,7 @@ export const ModalQualification = ({
   handleCloseModal,
   providerRatings,
 }: modalQualificationProps) => {
+  const queryClient = useQueryClient();
   const { handleNotification } = useNotificationProvider();
   const [rating, setRaiting] = useState(0);
   const [comment, setCommet] = useState<string>();
@@ -60,6 +62,9 @@ export const ModalQualification = ({
         message: data.message,
       });
     handleNotification({ type: TYPE_STATUS.SUCCESS, message: data.message });
+    queryClient.invalidateQueries({
+      queryKey: [REACT_QUERY_KEYS.provider.pendingRating("rating")],
+    });
     handleCloseModal();
   };
 
@@ -176,6 +181,7 @@ const localStyle = StyleSheet.create({
     marginTop: 10,
   },
   inputComments: {
+    color: ThemeColorsSthetic.text,
     borderWidth: 0.5,
     borderColor: ThemeColorsSthetic.muted,
     borderRadius: 5,

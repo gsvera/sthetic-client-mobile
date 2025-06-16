@@ -33,4 +33,7 @@ export const apiScheduleService = {
       `${BASE_URL}/delete-rating-by-service?id-rating=${id}`
     );
   },
+  getRatingsByProvider: function(idProvider) {
+    return axiosInstance.get(`${BASE_URL}/get-ratings-by-provider/${idProvider}`);
+  }
 };

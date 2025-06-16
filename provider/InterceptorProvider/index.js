@@ -1,5 +1,5 @@
 import axiosInstance from "@/api";
-import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
+// import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import { KEY_STORE, setStoreSession } from "@/hooks/StoreDataSecure";
 import {
   createContext,
@@ -8,12 +8,15 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useNotificationProvider } from "../NotificationProvider";
+import { TYPE_STATUS } from "@/constants/Constants";
 
 const InterceptorAxiosProvider = createContext();
 
 const axiosInstances = [axiosInstance];
 
 const ApiRequestProvider = ({ children }) => {
+  const { handleNotification } = useNotificationProvider();
   const [token, setToken] = useState(null);
 
   useEffect(() => {
@@ -49,9 +52,19 @@ const ApiRequestProvider = ({ children }) => {
       message,
     } = error?.response ?? {};
 
+    // console.log(token);
+    console.log(
+      "🚀 ~ interceptResponseErrorHandler ~ error?.response:",
+      statusCode,
+      token
+    );
     if (statusCode === 401) {
-      ErrorAlertMessage({
-        title: "Sessión expirada",
+      // ErrorAlertMessage({
+      //   title: "Sessión expirada",
+      //   message: "Su Sessión expiro, inicie sessión nuevamente",
+      // });
+      handleNotification({
+        type: TYPE_STATUS.ERROR,
         message: "Su Sessión expiro, inicie sessión nuevamente",
       });
 
@@ -63,12 +76,20 @@ const ApiRequestProvider = ({ children }) => {
     }
     // Reject promise if usual error
     if (statusCode !== 401) {
-      return Promise.reject(error);
+      handleNotification({
+        type: TYPE_STATUS.ERROR,
+        message: "Su Sessión expiro, inicie sessión nuevamente",
+      });
+      // return Promise.reject(error);
     }
     if (statusCode === 401) {
       setToken(null);
       setStoreSession({ key: KEY_STORE.userToken, value: null });
-      return Promise.reject(error);
+      handleNotification({
+        type: TYPE_STATUS.ERROR,
+        message: "Su Sessión expiro, inicie sessión nuevamente",
+      });
+      // return Promise.reject(error);
     }
   }, []);
 

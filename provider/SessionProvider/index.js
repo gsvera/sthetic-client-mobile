@@ -14,22 +14,28 @@ const SessionProvider = ({ children }) => {
   const [storeSessionProvider, setStoreSessionProvider] = useState(null);
 
   useEffect(() => {
-    getStoreSession({ key: KEY_STORE.idUser }).then((value) => {
-      if (value) {
-        setStoreSessionProvider((prev) => ({ ...prev, idUser: value }));
-      }
-    });
-    getStoreSession({ key: KEY_STORE.defaultState }).then((value) => {
-      if (value)
-        setStoreSessionProvider((prev) => ({ ...prev, defaultState: value }));
-    });
-    getStoreSession({ key: KEY_STORE.defaultMunicipality }).then((value) => {
-      if (value)
-        setStoreSessionProvider((prev) => ({
-          ...prev,
-          defaultMunicipality: value,
-        }));
-    });
+    if (token) {
+      getStoreSession({ key: KEY_STORE.idUser }).then((value) => {
+        if (value) {
+          setStoreSessionProvider((prev) => ({ ...prev, idUser: value }));
+        }
+      });
+      getStoreSession({ key: KEY_STORE.defaultState }).then((value) => {
+        if (value)
+          setStoreSessionProvider((prev) => ({ ...prev, defaultState: value }));
+      });
+      getStoreSession({ key: KEY_STORE.defaultMunicipality }).then((value) => {
+        if (value)
+          setStoreSessionProvider((prev) => ({
+            ...prev,
+            defaultMunicipality: value,
+          }));
+      });
+    } else {
+      setStoreSession({ key: KEY_STORE.idUser, value: null });
+      setStoreSession({ key: KEY_STORE.defaultState, value: null });
+      setStoreSession({ key: KEY_STORE.defaultMunicipality, value: null });
+    }
   }, [token]);
 
   const deleteSessionStore = () => {

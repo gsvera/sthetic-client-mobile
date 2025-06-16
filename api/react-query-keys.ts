@@ -51,6 +51,7 @@ export const REACT_QUERY_KEYS = {
         findProviderByUserId: (key:string | number | undefined) => `find-provider-by-user-id-${key}`,
         getServicesByProvider: (key: string | undefined) => `get-menu-services-by-provide-${key}`,
         getLocation: (key:string) => `get-location-by-provider-${key}`,
-        pendingRating: (key: string) => `get-pending-rating-by-provider-${key}`
+        pendingRating: (key: string) => `get-pending-rating-by-provider-${key}`,
+        getRatingsByProvider: (key: string) => `get-ratings-by-provider-${key}`
     }
 }

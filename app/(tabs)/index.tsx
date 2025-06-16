@@ -91,7 +91,7 @@ export default function Home() {
         }
       }
     }
-  }, [listProvider?.pageNumber, listProvider.totalElements, force]);
+  }, [listProvider?.pageNumber, listProvider?.totalElements, force]);
 
   useEffect(() => {
     if (storeSessionProvider?.defaultState) {
@@ -230,11 +230,13 @@ export default function Home() {
         handleFilter={handleSearch}
         handleClearFilter={handleClearFilter}
       />
-      <ProfileProviderModal
-        open={openProfileProviderModal}
-        handleCloseModal={handleCloseProfileProviderModal}
-        idProvider={profileSelected}
-      />
+      {openProfileProviderModal && (
+        <ProfileProviderModal
+          open={openProfileProviderModal}
+          handleCloseModal={handleCloseProfileProviderModal}
+          idProvider={profileSelected}
+        />
+      )}
       {!!profileSelected && (
         <Schedule
           open={openSchedule}

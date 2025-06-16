@@ -55,6 +55,7 @@ export type InfoCompanyType = {
     auxState?: string;
     auxMunicipality?: string;
     userDTO?: UserDTOType;
+    auxRating?: number;
 }
 
 export type TypesServicesType = {
@@ -151,6 +152,15 @@ export type ProviderRatings = {
     idProvider: UserProviderType;
     idService: number;
     // rating?: number;
+}
+
+export type QualificationType = {
+    id: number;
+    nameClient: string;
+    rating: number;
+    comment?: string;
+    createdAt?: string;
+    
 }
 
 

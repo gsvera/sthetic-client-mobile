@@ -146,6 +146,23 @@ export const ButtonGeneralStyle = StyleSheet.create({
     },
     contentBtnSthetic: {
         marginTop: 20, paddingHorizontal: 20 
+   },
+   tabButton: {
+        backgroundColor: ThemeColorsSthetic.action,
+        paddingVertical: 5,
+        paddingHorizontal:10,
+        alignItems: 'center',
+        borderRadius: 5,
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+   },
+   tabButtonDisabled: {
+        backgroundColor: ThemeColorsSthetic.disabled,
+        paddingVertical: 5,
+        paddingHorizontal:10,
+        alignItems: 'center',
+        borderRadius: 5,
    }
 })
 

@@ -72,3 +72,8 @@ export enum STATUS_SERVICE {
     CANCEL = 2,
     FINALIZED = 3
 }
+
+export enum TAB_PROVIDER_SELECTED {
+    INFO = 'info',
+    COMMENTS = "comments"
+}

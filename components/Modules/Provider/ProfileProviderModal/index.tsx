@@ -1,10 +1,8 @@
 import apiCatalogUserService from "@/api/CatalogUserService";
 import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import { apiUser } from "@/api/User";
-import Badge from "@/components/Shared/Badge";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import LoadingView from "@/components/Shared/LoadingView";
-import { PreviewCard } from "@/components/Shared/PreviewCard";
 import ReturnArrow from "@/components/Shared/ReturnArrow";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeColorsSthetic } from "@/constants/Colors";
@@ -16,7 +14,6 @@ import {
 import {
   ButtonGeneralStyle,
   GridStyle,
-  MarginStyle,
   TextStyle,
 } from "@/constants/StyleComponents";
 import { Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -35,11 +32,11 @@ import {
 import GalleryProjectModal from "../GalleryProjectModal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResponseApi } from "@/api/responseApi";
-import { PLATFORM_TYPE } from "@/constants/Constants";
+import { PLATFORM_TYPE, TAB_PROVIDER_SELECTED } from "@/constants/Constants";
 import Schedule from "../../Schedule";
-import ButtonShowMore from "@/components/Shared/ButtonShowMore";
-import AddressProvider from "../AddressProvider";
 import { openLink } from "@/utils/GeneralUtils";
+import TabInfoProvider from "./TabInfoProvider";
+import TabCommentsProvider from "./TabCommentsProvider";
 
 const msnWhatsApp =
   "Hola! Te encontre en la app de Meredith Care, me gustaria más informacion acerca de tus servicios";
@@ -51,13 +48,15 @@ export const ProfileProviderModal = ({
 }: modalCustomProps) => {
   const insets = useSafeAreaInsets();
   const platform = Platform.OS;
-  const [showTextDescription, setShowTextDescription] = useState(false);
   const [openModalGalery, setOpenModalGalery] = useState(false);
   const [gallerySelected, setgallerySelected] = useState({
     id: 0,
     nameService: "",
   });
   const [openMakeSchedule, setOpenMakeSchedule] = useState(false);
+  const [tabSelected, setTabSelected] = useState<TAB_PROVIDER_SELECTED>(
+    TAB_PROVIDER_SELECTED.INFO
+  );
 
   const { data: dataInfo, isFetching: isFetchingDataInfo } = useQuery({
     queryKey: [REACT_QUERY_KEYS.provider.findProviderByUserId(idProvider)],
@@ -215,45 +214,51 @@ export const ProfileProviderModal = ({
                 )}
               </View>
             </View>
-            <ScrollView style={{ height: "54%" }}>
-              <View style={localStyle.contentInfoCompany}>
-                <View>
-                  <ThemedText style={localStyle.titleCompany}>
-                    {dataInfo?.infoCompanyDTO.companyName}
-                  </ThemedText>
-                  <ThemedText
-                    style={localStyle.description}
-                    numberOfLines={showTextDescription ? undefined : 2}
-                  >
-                    {dataInfo?.infoCompanyDTO.generalDescription}
-                  </ThemedText>
-                  <ButtonShowMore
-                    show={showTextDescription}
-                    handlePress={() => setShowTextDescription((v) => !v)}
-                  />
-                </View>
-                <View style={MarginStyle.marginT10}>
-                  <ThemedText style={TextStyle.label}>Categorias:</ThemedText>
-                  <View style={localStyle.contentBadge}>
-                    {dataInfo?.typeServices
-                      ?.split(",")
-                      .map((item, index: number) => (
-                        <Badge key={index} text={item} />
-                      ))}
-                  </View>
-                </View>
-                {idProvider && <AddressProvider idProvider={idProvider} />}
-              </View>
-              <View style={localStyle.contentInfoCompany}>
-                {dataListProyects?.map((item: ProjectType) => (
-                  <PreviewCard
-                    key={item.id}
-                    element={{ ...item }}
-                    handleShowGallery={handleSelectGallery}
-                  />
-                ))}
-              </View>
-            </ScrollView>
+            <View
+              style={{
+                paddingHorizontal: 5,
+                paddingVertical: 5,
+                marginBottom: 7,
+                backgroundColor: ThemeColorsSthetic.backgroundLight,
+                ...GridStyle.rowSpaceBetween,
+              }}
+            >
+              <GeneralButton
+                styleBtn={
+                  tabSelected === TAB_PROVIDER_SELECTED.INFO
+                    ? localStyle.tabSelected
+                    : localStyle.tab
+                }
+                styleText={TextStyle.fontBoldWhite}
+                textBtn="Información"
+                handleOnPress={() => setTabSelected(TAB_PROVIDER_SELECTED.INFO)}
+              />
+              <GeneralButton
+                styleBtn={
+                  tabSelected === TAB_PROVIDER_SELECTED.COMMENTS
+                    ? localStyle.tabSelected
+                    : localStyle.tab
+                }
+                styleText={TextStyle.fontBoldWhite}
+                textBtn="Calificación"
+                handleOnPress={() =>
+                  setTabSelected(TAB_PROVIDER_SELECTED.COMMENTS)
+                }
+              />
+            </View>
+            {dataInfo &&
+              idProvider &&
+              tabSelected === TAB_PROVIDER_SELECTED.INFO && (
+                <TabInfoProvider
+                  idProvider={idProvider}
+                  infoProvider={dataInfo}
+                  listProjects={dataListProyects}
+                  onSelect={handleSelectGallery}
+                />
+              )}
+            {idProvider && tabSelected === TAB_PROVIDER_SELECTED.COMMENTS && (
+              <TabCommentsProvider idProvider={idProvider} />
+            )}
           </View>
         )}
       </View>
@@ -320,22 +325,13 @@ const localStyle = StyleSheet.create({
     marginBottom: 7,
     backgroundColor: ThemeColorsSthetic.backgroundLight,
   },
-  titleCompany: {
-    fontSize: 23,
-    paddingTop: 10,
-    color: ThemeColorsSthetic.textOre,
-    fontWeight: "bold",
-    marginBottom: 5,
+  tabSelected: {
+    ...ButtonGeneralStyle.tabButton,
+    width: "49%",
   },
-  description: {
-    color: ThemeColorsSthetic.text,
-    fontSize: 15,
-  },
-  contentBadge: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginLeft: -3,
-    marginTop: 5,
+  tab: {
+    ...ButtonGeneralStyle.tabButtonDisabled,
+    width: "49%",
   },
   contentSocialMedia: {
     flexDirection: "row",

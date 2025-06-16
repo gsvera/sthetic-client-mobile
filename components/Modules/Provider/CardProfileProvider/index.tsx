@@ -1,12 +1,13 @@
 import { ThemedText } from "@/components/ThemedText";
 import { InfoCompanyType } from "@/constants/GeneralTypes";
 import { ButtonGeneralStyle, TextStyle } from "@/constants/StyleComponents";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { useMemo, useState } from "react";
 import Badge from "@/components/Shared/Badge";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import ButtonShowMore from "@/components/Shared/ButtonShowMore";
+import GlobalRating from "@/components/Shared/GlobalRating";
 
 type cardProfileProviderProps = {
   infoCompany: InfoCompanyType;
@@ -36,8 +37,19 @@ export const CardProfileProvider = ({
         />
       </View>
       <View>
-        {/* <AntDesign name="hearto" size={24} color="black" /> */}
-        {/* <AntDesign name="heart" size={24} color="black" /> */}
+        <>
+          {!!infoCompany?.auxRating && infoCompany?.auxRating > 0 && (
+            <ThemedText
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                ...localStyle.contentDescription,
+              }}
+            >
+              <GlobalRating rating={infoCompany?.auxRating} />
+            </ThemedText>
+          )}
+        </>
       </View>
       <View style={localStyle.contentDescription}>
         <ThemedText

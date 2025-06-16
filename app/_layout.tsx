@@ -59,14 +59,14 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ApiRequestProvider>
-        {/* // Este es el tema oscuro DarkTheme por el momento se pone el default */}
-        <ThemeProvider
-          value={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
-        >
-          <SessionProvider>
-            <WebSocketProvider>
-              <NotificationProvider>
+      <NotificationProvider>
+        <ApiRequestProvider>
+          {/* // Este es el tema oscuro DarkTheme por el momento se pone el default */}
+          <ThemeProvider
+            value={colorScheme === "dark" ? DefaultTheme : DefaultTheme}
+          >
+            <SessionProvider>
+              <WebSocketProvider>
                 <Stack>
                   <Stack.Screen
                     name="(tabs)"
@@ -76,11 +76,11 @@ export default function RootLayout() {
                   <Stack.Screen name="login" options={{ headerShown: false }} />
                 </Stack>
                 <StatusBar style="auto" />
-              </NotificationProvider>
-            </WebSocketProvider>
-          </SessionProvider>
-        </ThemeProvider>
-      </ApiRequestProvider>
+              </WebSocketProvider>
+            </SessionProvider>
+          </ThemeProvider>
+        </ApiRequestProvider>
+      </NotificationProvider>
     </QueryClientProvider>
   );
 }
