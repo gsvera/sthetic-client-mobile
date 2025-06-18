@@ -57,6 +57,14 @@ export const ReservationListItem = ({
             Confirmado
           </ThemedText>
         );
+      case STATUS_SERVICE.NOPRESENT:
+        return (
+          <ThemedText
+            style={{ ...TextStyle.fontBoldCancel, ...localStyle.textStatus }}
+          >
+            No se presento
+          </ThemedText>
+        );
       case STATUS_SERVICE.FINALIZED:
         return (
           <ThemedText
