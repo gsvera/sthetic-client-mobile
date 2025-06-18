@@ -12,7 +12,7 @@ import { KEY_STORE, setStoreSession } from "@/hooks/StoreDataSecure";
 import { useNavigation } from "expo-router";
 import { useApiProvider } from "@/provider/InterceptorProvider";
 import { useState } from "react";
-import { COMPONENTS_SETINGS } from "@/constants/Constants";
+import { COMPONENTS_SETINGS, PLATFORM_TYPE } from "@/constants/Constants";
 import PersonalInformation, {
   formPersonalInformation,
 } from "@/components/Modules/Settings/PersonaleInformation";
@@ -31,6 +31,7 @@ import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import LoadingView from "@/components/Shared/LoadingView";
 import MyLocation from "@/components/Modules/Settings/MyLocation";
 import { useSessionProvider } from "@/provider/SessionProvider";
+import { Platform } from "react-native";
 
 export default function More() {
   const navigation = useNavigation();
@@ -161,7 +162,11 @@ export default function More() {
               {isFetchingData ? (
                 <LoadingView />
               ) : (
-                <View style={{ width: "92%" }}>
+                <View
+                  style={{
+                    width: Platform.OS === PLATFORM_TYPE.IOS ? "92%" : "98%",
+                  }}
+                >
                   <ThemedText style={localStyle.name}>
                     {dataUser?.firstName} {dataUser?.lastName}
                   </ThemedText>
