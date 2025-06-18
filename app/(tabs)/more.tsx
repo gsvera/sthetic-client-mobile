@@ -161,9 +161,11 @@ export default function More() {
               {isFetchingData ? (
                 <LoadingView />
               ) : (
-                <ThemedText style={localStyle.name}>
-                  {dataUser?.firstName} {dataUser?.lastName}
-                </ThemedText>
+                <View style={{ width: "92%" }}>
+                  <ThemedText style={localStyle.name}>
+                    {dataUser?.firstName} {dataUser?.lastName}
+                  </ThemedText>
+                </View>
               )}
             </View>
           </View>
@@ -328,7 +330,7 @@ const localStyle = StyleSheet.create({
   },
   name: {
     ...TextStyle.bold,
-    ...TextStyle.size20,
+    fontSize: 17,
     color: ThemeColorsSthetic.textOre,
   },
 });
