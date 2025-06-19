@@ -48,4 +48,10 @@ export const apiUser = {
   findProviderByUser: function (idUser) {
     return axiosInstance.get(`${BASE_URL}/get-provider-by-id/${idUser}`);
   },
+  sendVerificationCode: function (data) {
+    return axiosInstance.post(`${BASE_URL}/send-verification-code`, data);
+  },
+  saveResetPassword: function (data) {
+    return axiosInstance.post(`${BASE_URL}/save-reset-password`, data);
+  },
 };

@@ -164,11 +164,11 @@ export default function More() {
               ) : (
                 <View
                   style={{
-                    width: Platform.OS === PLATFORM_TYPE.IOS ? "92%" : "98%",
+                    width: Platform.OS === PLATFORM_TYPE.IOS ? "89%" : "98%",
                   }}
                 >
                   <ThemedText style={localStyle.name}>
-                    {dataUser?.firstName} {dataUser?.lastName}
+                    {`${dataUser?.firstName} ${dataUser?.lastName}`}
                   </ThemedText>
                 </View>
               )}
@@ -214,7 +214,8 @@ export default function More() {
               </View>
             </Pressable>
           </View>
-          <View style={localStyle.contentDivisor}>
+          {/*  EL APARTADO DE NOTIFICACIONES SE DEJA PARA EL SIGUIENTE RELEASE */}
+          {/* <View style={localStyle.contentDivisor}>
             <Pressable style={localStyle.itemMenu} onPress={() => {}}>
               <View style={localStyle.itemMenuText}>
                 <AntDesign name="bells" style={localStyle.iconItem} />
@@ -224,7 +225,7 @@ export default function More() {
                 </ThemedText>
               </View>
             </Pressable>
-          </View>
+          </View> */}
           <View style={localStyle.contentDivisor}>
             <Pressable
               style={localStyle.itemMenu}

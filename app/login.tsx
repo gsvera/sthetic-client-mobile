@@ -209,12 +209,13 @@ export default function Login() {
                     disabledBtn={loadingSession}
                   />
                   <View style={MarginStyle.marginT20}>
-                    <ThemedText
-                      style={styles.textInteraction}
-                      onPress={() => {}}
-                    >
-                      ¿Has olvidado la contraseña?
-                    </ThemedText>
+                    <Link href="/resetpassword" asChild>
+                      <Pressable>
+                        <ThemedText style={styles.textInteraction}>
+                          ¿Has olvidado la contraseña?
+                        </ThemedText>
+                      </Pressable>
+                    </Link>
                     <Link href="/newaccount" asChild>
                       <Pressable>
                         <ThemedText style={styles.textInteraction}>
