@@ -24,9 +24,12 @@ import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import { apiScheduleService } from "@/api/ScheduleService";
 import ModalQualification from "@/components/Shared/ModalQualification";
 import { ProviderRatings } from "@/constants/GeneralTypes";
-import { Audio } from "expo-av";
+import { useAudioPlayer } from "expo-audio";
 
 export default function TabLayout() {
+  const sound = useAudioPlayer(
+    require("@/assets/sounds/short-success-sound.mp3")
+  );
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
   const { handleNotification } = useNotificationProvider();
@@ -91,11 +94,9 @@ export default function TabLayout() {
     }
   }, [token]);
 
-  const handleNotificationWs = async (data: any) => {
-    const { sound } = await Audio.Sound.createAsync(
-      require("@/assets/sounds/short-success-sound.mp3")
-    );
-    await sound.playAsync();
+  const handleNotificationWs = (data: any) => {
+    sound.seekTo(0);
+    sound.play();
     handleNotification({
       type: TYPE_STATUS.UPDATE,
       message: data.message,
