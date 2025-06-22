@@ -42,6 +42,7 @@ const schema = yup.object({
 export default function Login() {
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
+  const imageBg = require("@/assets/images/background.webp");
   const { setToken, token } = useApiProvider();
   const {
     control,
@@ -105,8 +106,6 @@ export default function Login() {
       });
     }
   }, [token]);
-
-  const imageBg = require("@/assets/images/background.webp");
 
   const onSubmit = (data: loginData) => {
     setToken(null);

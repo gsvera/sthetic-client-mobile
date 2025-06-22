@@ -57,14 +57,16 @@ export default function resetPassword() {
   });
 
   const handleSuccessGenerateToken = (data: ObjectResponse) => {
-    if (data.error)
-      return handleNotification({
+    if (data.error) {
+      handleNotification({
         type: TYPE_STATUS.ERROR,
         message: data.message,
       });
+    } else {
+      setViewNewPassword(true);
+      handleNotification({ type: TYPE_STATUS.SUCCESS, message: data.message });
+    }
     setIsLoading(false);
-    setViewNewPassword(true);
-    handleNotification({ type: TYPE_STATUS.SUCCESS, message: data.message });
   };
 
   const handleSuccessSaveResetPassword = (data: ObjectResponse) => {

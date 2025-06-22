@@ -35,7 +35,7 @@ import { Platform } from "react-native";
 
 export default function More() {
   const navigation = useNavigation();
-  const { setToken } = useApiProvider();
+  const { token, setToken } = useApiProvider();
   const { deleteSessionStore } = useSessionProvider();
   const [viewComponent, setViewComponent] = useState<string>();
   const [openModalDeleteAccount, setOpenModalDeleteAccount] = useState(false);
@@ -46,6 +46,7 @@ export default function More() {
     queryFn: () => apiUser.getDataUser(),
     ...{
       select: (data: ResponseApi) => data.data.items,
+      enabled: Boolean(token),
     },
   });
 

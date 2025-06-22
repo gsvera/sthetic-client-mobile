@@ -35,6 +35,7 @@ export default function newAccount() {
   const [showMessageSucces, setShowMessageSuccess] = useState(false);
   const [agreeConditions, setAgreeconditions] = useState(false);
   const [personalInformation, setPersonalInformation] = useState<FormInputs>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const copyDefaultValues = () => ({ ...defaultValues });
 
@@ -51,20 +52,22 @@ export default function newAccount() {
   });
 
   const handleSuccessSaveUser = (data: ObjectResponse) => {
+    setIsLoading(false);
     if (data.error) {
       ErrorAlertMessage({ message: data.message });
       return;
     }
     setShowMessageSuccess(true);
     setTimeout(() => {
-      setStoreSession({ key: KEY_STORE.userToken, value: data.items.token });
       setStoreSession({ key: KEY_STORE.idUser, value: data.items.idUser });
+      setStoreSession({ key: KEY_STORE.userToken, value: data.items.token });
       setToken(data.items.token);
       setShowMessageSuccess(false);
-    }, 3000);
+    }, 4500);
   };
 
   const handleSaveNewUser = (personalInformation: FormInputs) => {
+    setIsLoading(true);
     createUser({
       ...personalInformation,
       password: parsePasswordEncrypt(personalInformation?.password as string),
@@ -88,7 +91,10 @@ export default function newAccount() {
       }}
     >
       {showMessageSucces ? (
-        <SuccessNotification message="Su cuenta ha sido creada con éxito" />
+        <SuccessNotification
+          message="Su cuenta ha sido creada con éxito"
+          subMessage="Se ha enviado un correo electrónico de verificación de cuenta, si no verifica su cuenta en las proximas 24 horas, su cuenta podria ser eliminada."
+        />
       ) : (
         <View
           style={{
@@ -118,6 +124,7 @@ export default function newAccount() {
               handleAgreeConditions={() => setAgreeconditions((v) => !v)}
               handlePersonalInformation={handleSaveNewUser}
               personalInformation={personalInformation}
+              isLoading={isLoading}
             />
           )}
         </View>

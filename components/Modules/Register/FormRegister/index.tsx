@@ -28,6 +28,7 @@ import PoliticsAndConditionsModal from "../PoliticsAndConditions";
 import { ResponseApi } from "@/api/responseApi";
 import { LadaType } from "@/constants/GeneralTypes";
 import LadaOptionModal from "./LadaOptionModal";
+import LoadingView from "@/components/Shared/LoadingView";
 
 const schema = yup.object().shape({
   firstName: yup
@@ -79,6 +80,7 @@ type PropsFormRegister = {
   handleAgreeConditions: () => void;
   personalInformation: FormInputs | null;
   handlePersonalInformation: (data: FormInputs) => void;
+  isLoading: boolean;
 };
 
 export const FormRegister = ({
@@ -86,6 +88,7 @@ export const FormRegister = ({
   handlePersonalInformation,
   agreeConditions,
   handleAgreeConditions,
+  isLoading,
 }: PropsFormRegister) => {
   const [hiddenPass, setHiddenPass] = useState(true);
   const [hiddenConfirmPass, setHiddenConfirmPass] = useState(true);
@@ -259,7 +262,7 @@ export const FormRegister = ({
                 keyboardType="email-address"
                 onChangeText={(e) => onChange(e.toLowerCase())}
                 onBlur={onBlur}
-                value={value}
+                value={value.toLowerCase()}
               />
             )}
           />
@@ -350,7 +353,13 @@ export const FormRegister = ({
             styleText={TextStyle.fontBoldWhite}
             styleBtn={ButtonGeneralStyle.btnSaveSthetic}
             handleOnPress={handleSubmit(handleSavePersonalData)}
+            disabledBtn={isLoading}
           />
+          {isLoading && (
+            <View style={{ marginTop: 10 }}>
+              <LoadingView />
+            </View>
+          )}
         </View>
       </View>
       <PoliticsAndConditionsModal

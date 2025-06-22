@@ -5,10 +5,12 @@ import { ThemedText } from "../../ThemedText";
 
 type successNotificationProps = {
   message: string;
+  subMessage?: string;
 };
 
 export default function SuccessNotification({
   message,
+  subMessage,
 }: successNotificationProps) {
   return (
     <View style={localStyles.backgroundContent}>
@@ -21,6 +23,9 @@ export default function SuccessNotification({
         <ThemedText type="subtitle" style={localStyles.textSuccess}>
           {message}
         </ThemedText>
+        {subMessage && (
+          <ThemedText style={localStyles.subMessage}>{subMessage}</ThemedText>
+        )}
       </View>
     </View>
   );
@@ -50,5 +55,11 @@ const localStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 15,
+  },
+  subMessage: {
+    color: ThemeColorsSthetic.textLight,
+    fontSize: 13,
+    marginTop: 15,
+    textAlign: "justify",
   },
 });
