@@ -118,7 +118,11 @@ export const ModalQualification = ({
               {providerRatings?.idProvider?.infoCompanyDTO?.companyName}{" "}
             </ThemedText>
             <View style={localStyle.contentStart}>
-              <StartRating rating={rating} onRaitingChange={setRaiting} />
+              <StartRating
+                rating={rating}
+                onRaitingChange={setRaiting}
+                enabled
+              />
             </View>
             <View>
               <TextInput

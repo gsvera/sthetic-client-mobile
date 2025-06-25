@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { GridStyle } from "@/constants/StyleComponents";
@@ -9,6 +9,7 @@ type startRatingProps = {
   rating: number;
   sizeStart?: number;
   onRaitingChange?: (value: number) => void;
+  enabled?: boolean;
 };
 
 export const StartRating = ({
@@ -16,12 +17,15 @@ export const StartRating = ({
   rating,
   sizeStart = 32,
   onRaitingChange,
+  enabled,
 }: startRatingProps) => {
   const [localRating, setLocalRating] = useState(rating ?? 0);
 
   const handlePress = (value: number) => {
-    setLocalRating(value);
-    onRaitingChange?.(value);
+    if (enabled) {
+      setLocalRating(value);
+      onRaitingChange?.(value);
+    }
   };
   return (
     <View
@@ -44,16 +48,13 @@ export const StartRating = ({
         }
 
         return (
-          <TouchableOpacity
-            key={starValue}
-            onPress={() => handlePress(starValue)}
-          >
+          <Pressable key={starValue} onPress={() => handlePress(starValue)}>
             <Ionicons
               name={iconName}
               size={sizeStart}
               style={localStyle.star}
             />
-          </TouchableOpacity>
+          </Pressable>
         );
       })}
     </View>
