@@ -60,7 +60,7 @@ export default function Login() {
     onError: (error: any) => handleError(error),
   });
 
-  const handleSuccessLogin = (data: ObjectResponse) => {
+  const handleSuccessLogin = async (data: ObjectResponse) => {
     if (data.error) {
       setLoadingSession(false);
       ErrorAlertMessage({ message: data.message });
@@ -77,6 +77,10 @@ export default function Login() {
     setStoreSession({
       key: KEY_STORE.defaultMunicipality,
       value: data.items?.defaultMunicipality,
+    });
+    setStoreSession({
+      key: KEY_STORE.accountVerification,
+      value: JSON.stringify(data.items?.accountVerification),
     });
     setToken(data.items?.token);
     setTimeout(() => {

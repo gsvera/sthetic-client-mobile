@@ -54,4 +54,14 @@ export const apiUser = {
   saveResetPassword: function (data) {
     return axiosInstance.post(`${BASE_URL}/save-reset-password`, data);
   },
+  getAccountVerification: function (idUser) {
+    return axiosInstance.get(
+      `${AUTH_BASE_URL}/get-verification-account/${idUser}`
+    );
+  },
+  resendRequestVerification: function (idUser) {
+    return axiosInstance.post(
+      `${AUTH_BASE_URL}/resend-verification-account/${idUser}`
+    );
+  },
 };

@@ -85,6 +85,10 @@ export default function More() {
     await setStoreSession({ key: KEY_STORE.idUser, value: "" });
     await setStoreSession({ key: KEY_STORE.defaultState, value: "" });
     await setStoreSession({ key: KEY_STORE.defaultMunicipality, value: "" });
+    await setStoreSession({
+      key: KEY_STORE.accountVerification,
+      value: JSON.stringify(true),
+    });
     deleteSessionStore();
     navigation.navigate("login" as never);
   };

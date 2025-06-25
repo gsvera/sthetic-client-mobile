@@ -6,7 +6,8 @@ export const KEY_STORE = {
     userData: 'userData',
     profilePicture: 'profilePicture',
     defaultState: 'defaultState',
-    defaultMunicipality: 'defaultMunicipality'
+    defaultMunicipality: 'defaultMunicipality',
+    accountVerification: 'accountVerification'
 }
 
 type keyGetProps={

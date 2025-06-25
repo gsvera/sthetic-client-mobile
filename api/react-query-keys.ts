@@ -2,7 +2,8 @@ export const REACT_QUERY_KEYS = {
     user: {
         findDuplicatedUser: (key:string) => `get-plan-filter-data-${key}`,
         getDataUser: (key: string) => `get-data-user-${key}`,
-        getMyReservation: (key: string) => `get-data-my-reservation-${key}`
+        getMyReservation: (key: string) => `get-data-my-reservation-${key}`,
+        getVerificationAccount: (key: string) => `get-data-verification-account-${key}`
     },
     userConfig: {
         getLocationByProvider: (key:string) => `get-location-by-provider`,

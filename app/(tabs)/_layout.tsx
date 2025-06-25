@@ -5,9 +5,18 @@ import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { getStoreSession, KEY_STORE } from "@/hooks/StoreDataSecure";
+import {
+  getStoreSession,
+  KEY_STORE,
+  setStoreSession,
+} from "@/hooks/StoreDataSecure";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { FontAwesome, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  FontAwesome,
+  FontAwesome6,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { useApiProvider } from "@/provider/InterceptorProvider";
 import { SOCKET_CHANNELS_TOPICS } from "@/constants/socket-channels";
 import { TYPE_STATUS } from "@/constants/Constants";
@@ -25,6 +34,8 @@ import { apiScheduleService } from "@/api/ScheduleService";
 import ModalQualification from "@/components/Shared/ModalQualification";
 import { ProviderRatings } from "@/constants/GeneralTypes";
 import { useAudioPlayer } from "expo-audio";
+import ModalConfirm from "@/components/Shared/ModalConfirm";
+import { apiUser } from "@/api/User";
 
 export default function TabLayout() {
   const sound = useAudioPlayer(
@@ -43,6 +54,8 @@ export default function TabLayout() {
   );
   const responseListener = useRef<Notifications.EventSubscription | null>(null);
   const [openQualificationModal, setOpenQualificationModal] = useState(false);
+  const [accountVerification, setAccountVerification] = useState(true);
+  const [openResendVerification, setOpenResendVerification] = useState(false);
 
   const { data: pendingRating } = useQuery({
     queryKey: [REACT_QUERY_KEYS.provider.pendingRating("rating")],
@@ -54,10 +67,42 @@ export default function TabLayout() {
     },
   });
 
+  const { data: statusAccountVerification } = useQuery({
+    queryKey: [
+      REACT_QUERY_KEYS.user.getVerificationAccount(
+        storeSessionProvider?.idUser
+      ),
+    ],
+    queryFn: () => apiUser.getAccountVerification(storeSessionProvider?.idUser),
+    ...{
+      select: (data: ResponseApi) => data.data,
+      enabled:
+        Boolean(token) &&
+        Boolean(storeSessionProvider?.idUser) &&
+        Boolean(!accountVerification),
+    },
+  });
+  useEffect(() => {
+    if (statusAccountVerification && !statusAccountVerification?.error) {
+      setAccountVerification(statusAccountVerification?.items);
+      setStoreSession({
+        key: KEY_STORE.accountVerification,
+        value: JSON.stringify(statusAccountVerification?.items),
+      });
+    }
+  }, [statusAccountVerification]);
+
   const { mutate: saveTokenNotification } = useMutation({
     mutationFn: (data: any) => apiUserConfig.saveTokenNotification(data),
     onSuccess: (data: ResponseApi) =>
       handleSuccessSaveTokenNotification(data.data),
+    onError: ErrorAlertMessage,
+  });
+
+  const { mutate: resendRequestVerification } = useMutation({
+    mutationFn: (id: string) => apiUser.resendRequestVerification(id),
+    onSuccess: (data: ResponseApi) =>
+      handleSuccessResenRequestVerification(data.data),
     onError: ErrorAlertMessage,
   });
 
@@ -67,6 +112,14 @@ export default function TabLayout() {
         type: TYPE_STATUS.ERROR,
         message: data.message,
       });
+  };
+
+  const handleSuccessResenRequestVerification = (data: ObjectResponse) => {
+    if (data.error) {
+      handleNotification({ type: TYPE_STATUS.ERROR, message: data.message });
+    } else {
+      handleNotification({ type: TYPE_STATUS.SUCCESS, message: data.message });
+    }
   };
 
   useEffect(() => {
@@ -80,7 +133,14 @@ export default function TabLayout() {
       if (!value) return navigation.navigate("login" as never);
       else setToken(value);
     });
+    getStoreSession({ key: KEY_STORE.accountVerification }).then((value) => {
+      if (value) setAccountVerification(JSON.parse(value));
+    });
   }, [token]);
+
+  useEffect(() => {
+    setOpenResendVerification(!accountVerification);
+  }, [accountVerification]);
 
   useEffect(() => {
     if (token) {
@@ -133,6 +193,11 @@ export default function TabLayout() {
       };
     }
   }, [token, storeSessionProvider]);
+
+  const resendConfirmation = () => {
+    setOpenResendVerification(false);
+    resendRequestVerification(storeSessionProvider?.idUser);
+  };
 
   if (!token) return <></>;
 
@@ -233,6 +298,24 @@ export default function TabLayout() {
           open={openQualificationModal}
           handleCloseModal={() => setOpenQualificationModal(false)}
           providerRatings={pendingRating?.items as ProviderRatings}
+        />
+      )}
+      {openResendVerification && (
+        <ModalConfirm
+          open={openResendVerification}
+          textBtnConfirm="Enviar"
+          message="Aun no ha confirmdo su cuenta, ¿desea reenviar el correo de confirmación?"
+          handleClose={() => {
+            setOpenResendVerification(false);
+          }}
+          handleConfirm={resendConfirmation}
+          IconModal={
+            <AntDesign
+              name="warning"
+              size={35}
+              color={ThemeColorsSthetic.dangerColor}
+            />
+          }
         />
       )}
     </View>
