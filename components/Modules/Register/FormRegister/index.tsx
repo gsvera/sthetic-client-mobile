@@ -122,17 +122,6 @@ export const FormRegister = ({
     },
   });
 
-  useEffect(() => {
-    if (personalInformation !== null) {
-      setValue("firstName", personalInformation.firstName);
-      setValue("lastName", personalInformation.lastName);
-      setValue("phone", personalInformation.phone);
-      setValue("email", personalInformation.email);
-      setValue("password", personalInformation.password);
-      setValue("confirmPassword", personalInformation.confirmPassword);
-    }
-  }, [personalInformation]);
-
   const handleSavePersonalData = async (data: FormInputs) => {
     try {
       if (!agreeConditions) {
@@ -262,7 +251,6 @@ export const FormRegister = ({
                 keyboardType="email-address"
                 onChangeText={(e) => onChange(e.toLowerCase())}
                 onBlur={onBlur}
-                value={value.toLowerCase()}
               />
             )}
           />

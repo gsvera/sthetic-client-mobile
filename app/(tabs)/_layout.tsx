@@ -82,6 +82,7 @@ export default function TabLayout() {
         Boolean(!accountVerification),
     },
   });
+
   useEffect(() => {
     if (statusAccountVerification && !statusAccountVerification?.error) {
       setAccountVerification(statusAccountVerification?.items);

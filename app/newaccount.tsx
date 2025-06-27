@@ -17,6 +17,7 @@ import { KEY_STORE, setStoreSession } from "@/hooks/StoreDataSecure";
 import { useApiProvider } from "@/provider/InterceptorProvider";
 import { parsePasswordEncrypt } from "@/utils/GeneralUtils";
 import { ObjectResponse, ResponseApi } from "@/api/responseApi";
+import dayjs from "dayjs";
 
 const defaultValues = {
   firstName: "",
@@ -61,6 +62,10 @@ export default function newAccount() {
     setTimeout(() => {
       setStoreSession({ key: KEY_STORE.idUser, value: data.items.idUser });
       setStoreSession({ key: KEY_STORE.userToken, value: data.items.token });
+      setStoreSession({
+        key: KEY_STORE.accountVerification,
+        value: JSON.stringify(false),
+      });
       setToken(data.items.token);
       setShowMessageSuccess(false);
     }, 4500);
@@ -71,6 +76,7 @@ export default function newAccount() {
     createUser({
       ...personalInformation,
       password: parsePasswordEncrypt(personalInformation?.password as string),
+      createdAt: dayjs().toISOString(),
     });
   };
 
