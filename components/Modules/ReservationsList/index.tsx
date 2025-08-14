@@ -68,7 +68,7 @@ export const ReservationList = ({ idUser, day }: reservationListProps) => {
         </View>
       ) : (
         <ScrollView>
-          {listSchedule.length > 0 ? (
+          {listSchedule?.length > 0 ? (
             listSchedule?.map((item) => (
               <ReservationListItem
                 key={item.id}

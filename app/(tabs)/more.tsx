@@ -150,7 +150,7 @@ export default function More() {
               <Image
                 source={
                   !dataUser?.profilePictureB64
-                    ? require("@/assets/images/me-logo.png")
+                    ? require("@/assets/images/profile-default.png")
                     : { uri: dataUser?.profilePictureB64 }
                 }
                 style={

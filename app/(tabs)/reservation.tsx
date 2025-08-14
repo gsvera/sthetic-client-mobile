@@ -31,7 +31,7 @@ export default function Reservation() {
     <View style={Container.container}>
       <View style={localStyle.header}>
         <Image
-          source={require("@/assets/images/me-text-logo.png")}
+          source={require("@/assets/images/meraesthetic-white-simple-logo.png")}
           style={localStyle.logo}
         />
       </View>
@@ -73,8 +73,8 @@ export default function Reservation() {
 
 const localStyle = StyleSheet.create({
   logo: {
-    width: 150,
-    height: 50,
+    width: 130,
+    height: 60,
   },
   header: {
     paddingVertical: 10,
