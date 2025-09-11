@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Meredith",
+    "name": "MerAesthetic",
     "slug": "sthetic--client-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -36,14 +36,14 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/images/meraesthetic.png"
+          "icon": "./assets/images/meraesthetic-logo.png"
         }
       ],
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/meraesthetic.png",
+          "image": "./assets/images/meraesthetic-logo.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
