@@ -156,7 +156,7 @@ export default function TabLayout() {
   }, [token]);
 
   const handleNotificationWs = (data: any) => {
-    sound.seekTo(0);
+    sound.seekTo(2);
     sound.play();
     handleNotification({
       type: TYPE_STATUS.UPDATE,

@@ -70,7 +70,7 @@ export const GalleryProjectModal = ({
                 <View key={index} style={localStyle.contentImg}>
                   <Image
                     style={localStyle.imgDetail}
-                    source={{ uri: item.fileBase64 }}
+                    source={{ uri: item.fileUrl }}
                     resizeMode="contain"
                   />
                 </View>

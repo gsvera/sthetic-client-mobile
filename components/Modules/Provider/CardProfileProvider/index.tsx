@@ -33,7 +33,7 @@ export const CardProfileProvider = ({
       <View style={localStyle.contentImg}>
         <Image
           style={localStyle.image}
-          source={{ uri: infoCompany.companyPicture }}
+          source={{ uri: infoCompany.companyPictureUrl }}
         />
       </View>
       <View>

@@ -54,14 +54,14 @@ export default function PoliticsAndConditionsModal({
               </ThemedText>
             </View>
             <ThemedText style={localStyles.textDate}>
-              Fecha de última actualización: 30 de junio de 2025
+              Fecha de última actualización: 27 de Septiembre de 2025
             </ThemedText>
             <ThemedText style={localStyles.text}>
-              En MeCare, la privacidad de nuestros usuarios es una prioridad.
-              Esta Política de Privacidad describe cómo recolectamos, usamos,
-              almacenamos y protegemos tus datos personales, conforme a lo
-              establecido en la Ley Federal de Protección de Datos Personales en
-              Posesión de los Particulares (LFPDPPP).
+              En Meredith Aesthetic, la privacidad de nuestros usuarios es una
+              prioridad. Esta Política de Privacidad describe cómo recolectamos,
+              usamos, almacenamos y protegemos tus datos personales, conforme a
+              lo establecido en la Ley Federal de Protección de Datos Personales
+              en Posesión de los Particulares (LFPDPPP).
             </ThemedText>
             <View>
               <ThemedText style={localStyles.subtitle}>
@@ -69,7 +69,7 @@ export default function PoliticsAndConditionsModal({
               </ThemedText>
               <ThemedText style={localStyles.text}>
                 Meredith es responsable del uso y protección de tus datos
-                personales. Puedes contactarnos en: mecare@gmail.com
+                personales. Puedes contactarnos en: meredith.abasotech@gmail.com
               </ThemedText>
             </View>
             <View>
@@ -158,7 +158,7 @@ export default function PoliticsAndConditionsModal({
               <ThemedText style={localStyles.text}>
                 Tienes derecho a acceder, rectificar, cancelar u oponerte al uso
                 de tus datos personales (derechos ARCO). Para ejercerlos, envía
-                una solicitud a: mecare@gmail.com
+                una solicitud a: meredith.abasotech@gmail.com
               </ThemedText>
             </View>
             <View>
@@ -209,8 +209,10 @@ export default function PoliticsAndConditionsModal({
               </ThemedText>
               <ThemedText style={localStyles.text}>
                 Los pagos son procesados mediante plataformas externas como{" "}
-                <ThemedText style={TextStyle.fontBoldDark}>PayPal</ThemedText>.{" "}
-                <ThemedText style={TextStyle.fontBoldDark}>MeCare</ThemedText>{" "}
+                <ThemedText style={TextStyle.fontBoldDark}>Stripe</ThemedText>.{" "}
+                <ThemedText style={TextStyle.fontBoldDark}>
+                  Meredith Aesthetic
+                </ThemedText>{" "}
                 no almacena información de tarjetas de crédito, cuentas
                 bancarias ni otros datos financieros sensibles.
               </ThemedText>
@@ -237,7 +239,7 @@ export default function PoliticsAndConditionsModal({
             </View>
             <View>
               <ThemedText style={localStyles.textDate}>
-                Fecha de última actualización: 30 de junio de 2025
+                Fecha de última actualización: 27 de Septiembre de 2025
               </ThemedText>
             </View>
             <View>
@@ -245,8 +247,8 @@ export default function PoliticsAndConditionsModal({
                 1. Aceptación
               </ThemedText>
               <ThemedText style={localStyles.text}>
-                Al utilizar MeCare, aceptas estos términos y condiciones. Si no
-                estás de acuerdo, no uses la aplicación.
+                Al utilizar Meredith Aesthetic, aceptas estos términos y
+                condiciones. Si no estás de acuerdo, no uses la aplicación.
               </ThemedText>
             </View>
             <View>
@@ -255,7 +257,7 @@ export default function PoliticsAndConditionsModal({
               </ThemedText>
               <ThemedText style={localStyles.text}>
                 La app sirve como plataforma de contacto entre profesionales y
-                clientes. MeCare{" "}
+                clientes. Meredith Aesthetic{" "}
                 <ThemedText style={TextStyle.fontBoldDark}>
                   no garantiza:
                 </ThemedText>
@@ -292,9 +294,10 @@ export default function PoliticsAndConditionsModal({
                 4. Propiedad intelectual
               </ThemedText>
               <ThemedText style={localStyles.text}>
-                Todos los contenidos, marcas, logos y software de MeCare son
-                propiedad de sus respectivos dueños. Está prohibido copiar,
-                distribuir o modificar sin autorización expresa.
+                Todos los contenidos, marcas, logos y software de Meredith
+                Aesthetic son propiedad de sus respectivos dueños. Está
+                prohibido copiar, distribuir o modificar sin autorización
+                expresa.
               </ThemedText>
             </View>
             <View>
@@ -302,7 +305,7 @@ export default function PoliticsAndConditionsModal({
                 5. Limitación de responsabilidad
               </ThemedText>
               <ThemedText style={localStyles.text}>
-                MeCare no se hace responsable por:
+                Meredith Aesthetic no se hace responsable por:
               </ThemedText>
               <ThemedText style={localStyles.textList}>
                 * Acuerdos o conflictos entre usuarios
@@ -320,10 +323,10 @@ export default function PoliticsAndConditionsModal({
                 Los usuarios tipo proveedor deberán pagar una suscripción
                 mensualpara acceder a funciones avanzadas. Los pagos se realizan
                 mediante servicios de terceros como{" "}
-                <ThemedText style={TextStyle.fontBoldDark}>PayPal</ThemedText>.
+                <ThemedText style={TextStyle.fontBoldDark}>Stripe</ThemedText>.
               </ThemedText>
               <ThemedText style={localStyles.text}>
-                MeCare{" "}
+                Meredith Aesthetic{" "}
                 <ThemedText style={TextStyle.fontBoldDark}>
                   no almacena ni procesa directamente información bancaria o de
                   tarjetas.
@@ -339,7 +342,7 @@ export default function PoliticsAndConditionsModal({
               <ThemedText style={localStyles.text}>
                 Las suscripciones no son reembolsables, salvo en casos
                 excepcionales evaluados individualmente. Para solicitar
-                revisión, escríbenos a: mecare@gmail.com
+                revisión, escríbenos a: meredith.abasotech@gmail.com
               </ThemedText>
             </View>
             <View>

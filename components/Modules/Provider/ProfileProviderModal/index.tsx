@@ -108,7 +108,7 @@ export const ProfileProviderModal = ({
             <View style={localStyle.contentBanner}>
               <Image
                 style={{ width: "100%", height: 200 }}
-                source={{ uri: dataInfo?.infoCompanyDTO?.companyPicture }}
+                source={{ uri: dataInfo?.infoCompanyDTO?.companyPictureUrl }}
               />
               <View style={localStyle.contentImgProfile}>
                 <View style={localStyle.nameProvider}>
@@ -121,10 +121,10 @@ export const ProfileProviderModal = ({
                 <Image
                   style={localStyle.profilePicture}
                   source={
-                    !dataInfo?.profilePictureB64
+                    !dataInfo?.profilePicture
                       ? require("@/assets/images/me-logo.png")
                       : {
-                          uri: dataInfo?.profilePictureB64,
+                          uri: dataInfo?.profilePicture,
                         }
                   }
                 />

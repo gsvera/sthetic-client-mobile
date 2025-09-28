@@ -14,7 +14,11 @@ export const apiUserConfig = {
     );
   },
   saveProfilePicture: function (data) {
-    return axiosInstance.put(`${BASE_URL}/save-profile-picture`, data);
+    return axiosInstance.put(`${BASE_URL}/save-profile-picture`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   },
   saveDefaultLocation: function (data) {
     const { idUser, defaultState, defaultMunicipality } = data;

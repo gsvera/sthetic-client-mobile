@@ -33,6 +33,7 @@ import GeneralButton from "@/components/Shared/GeneralButton";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import LoadingView from "@/components/Shared/LoadingView";
+import { VERSION } from "@/constants/Constants";
 
 const schema = yup.object({
   username: yup.string().required("Ingrese un usuario valid"),
@@ -140,7 +141,7 @@ export default function Login() {
               <View>
                 <View style={styles.imgContainer}>
                   <Image
-                    source={require("@/assets/images/meraesthetic-logo.png")}
+                    source={require("@/assets/images/meredith-aesthetic-logo.png")}
                     style={styles.logo}
                   />
                 </View>
@@ -227,6 +228,13 @@ export default function Login() {
                       </Pressable>
                     </Link>
                   </View>
+                </View>
+                <View style={{ marginTop: 100 }}>
+                  <ThemedText
+                    style={{ ...TextStyle.fontBoldCancel, ...TextStyle.center }}
+                  >
+                    {VERSION}
+                  </ThemedText>
                 </View>
               </View>
             </View>

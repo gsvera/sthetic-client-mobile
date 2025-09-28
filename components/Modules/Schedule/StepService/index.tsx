@@ -35,12 +35,19 @@ export const StepService = ({ idProvider, onSelect }: stepServiceProps) => {
     <View>
       <View>
         <ThemedText style={localStyle.title}>Seleccione un servicio</ThemedText>
+        <View style={{ width: "90%", marginHorizontal: "auto" }}>
+          <ThemedText style={localStyle.textWarning}>
+            Los precios son aproximados, sirven como referencia y podrían
+            variar, Meredith Aesthetic no realiza cobros por el momento, los
+            servicios se pagan directamente con el proveedor del servicio.
+          </ThemedText>
+        </View>
       </View>
       {isLoadingListServices ? (
         <LoadingView />
       ) : (
         <ScrollView
-          style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "84%" : "85%" }}
+          style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "74%" : "75%" }}
         >
           {listServices.length > 0 ? (
             listServices?.map((item: MenuServiceType, index: number) => (
@@ -68,6 +75,11 @@ const localStyle = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 15,
     marginBottom: 10,
+  },
+  textWarning: {
+    ...TextStyle.fontBoldCancel,
+    textAlign: "justify",
+    fontSize: 14,
   },
 });
 

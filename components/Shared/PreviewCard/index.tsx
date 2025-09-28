@@ -22,11 +22,12 @@ export const PreviewCard = ({
   const handleShowMore = () => {
     handleShowGallery(element);
   };
+
   return (
     <View style={localStyle.previewCard}>
       <Image
         style={localStyle.previewCardImage}
-        source={{ uri: element?.catalogUserServiceDetailDTO?.fileBase64 }}
+        source={{ uri: element?.catalogUserServiceDetailDTO?.fileUrl }}
       />
       <ThemedText style={localStyle.titlePreviewCard}>
         {element.nameService}

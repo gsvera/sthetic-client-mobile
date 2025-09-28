@@ -47,7 +47,7 @@ export type InfoCompanyType = {
     idUser: string;
     companyName: string;
     generalDescription: string;
-    companyPicture: string;
+    companyPictureUrl: string;
     typesServices: string;
     facebook?: string;
     instagram?: string;
@@ -80,7 +80,7 @@ export type ProviderType = {
     email: string;
     lada: string;
     phone: string;
-    profilePictureB64?: string;
+    profilePicture?: string;
     infoCompanyDTO: InfoCompanyType;
     userLocationDTO: UserLocationType;
     typeServices?: string
@@ -89,7 +89,7 @@ export type ProviderType = {
 
 export type DetailProjectType = {
   id: number;
-  fileBase64: string;
+  fileUrl: string;
 };
 
 export type ProjectType = {

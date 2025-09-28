@@ -1,5 +1,7 @@
 import { weekDays } from "./GeneralTypes";
 
+export const VERSION = "v.1.0.0";
+
 export enum ROUTES {
     LOGIN = 'login'
 } ;

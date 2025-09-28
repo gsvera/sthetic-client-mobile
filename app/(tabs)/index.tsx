@@ -169,7 +169,7 @@ export default function Home() {
     <View>
       <View style={localStyle.header}>
         <Image
-          source={require("@/assets/images/meraesthetic-white-simple-logo.png")}
+          source={require("@/assets/images/me-logo-header.png")}
           style={localStyle.logo}
         />
         <Pressable
@@ -257,8 +257,9 @@ export default function Home() {
 
 const localStyle = StyleSheet.create({
   logo: {
-    width: 130,
+    width: 60,
     height: 60,
+    borderRadius: 50,
   },
   header: {
     paddingVertical: 10,
