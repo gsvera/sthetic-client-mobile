@@ -4,7 +4,7 @@
     "slug": "sthetic--client-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/meredith-aesthetic-logo.png",
+    "icon": "./assets/images/meredith-aesthetic-logo-icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -23,7 +23,7 @@
       "versionCode": 1,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/meredith-aesthetic-logo.png",
+        "foregroundImage": "./assets/images/meredith-aesthetic-logo-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.abasotech.meredithcare"
@@ -31,20 +31,20 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/meredith-aesthetic-logo.png"
+      "favicon": "./assets/images/meredith-aesthetic-logo-icon.png"
     },
     "plugins": [
       [
         "expo-notifications",
         {
-          "icon": "./assets/images/meredith-aesthetic-logo.png"
+          "icon": "./assets/images/meredith-aesthetic-logo-icon.png"
         }
       ],
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/meredith-aesthetic-logo.png",
+          "image": "./assets/images/meredith-aesthetic-logo-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
@@ -52,7 +52,9 @@
       ],
       "expo-secure-store",
       "expo-audio",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-font",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true

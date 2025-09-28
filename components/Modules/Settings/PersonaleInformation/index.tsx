@@ -2,6 +2,7 @@ import { apiLada } from "@/api/Lada";
 import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import { ResponseApi } from "@/api/responseApi";
 import { apiUser } from "@/api/User";
+import ContentKeyboardAutoScroll from "@/components/Shared/ContentKeyboardAutoScroll";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import { SubHeaderReturn } from "@/components/Shared/SubHeaderReturn";
@@ -141,7 +142,7 @@ export const PersonalInformation = ({
         subtitle="Mis datos personales"
         handleReturn={returnBack}
       />
-      <ScrollView>
+      <ContentKeyboardAutoScroll>
         <View style={localStyle.contentForm}>
           <View style={{ width: "80%", paddingTop: 20 }}>
             <View style={{ marginVertical: 10 }}>
@@ -271,7 +272,7 @@ export const PersonalInformation = ({
             </View>
           </View>
         </View>
-      </ScrollView>
+      </ContentKeyboardAutoScroll>
     </View>
   );
 };
