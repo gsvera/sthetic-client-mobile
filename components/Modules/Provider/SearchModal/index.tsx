@@ -154,7 +154,7 @@ export const SearchModal = ({
           <View
             style={{
               ...localStyle.contentModal,
-              top: Platform.OS === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+              top: insets.top,
             }}
           >
             <ButtonCloseModal handleOnPress={handleCloseModal} />

@@ -5,6 +5,7 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { ThemeColorsSthetic } from "@/constants/Colors";
@@ -12,6 +13,7 @@ import { modalCustomProps } from "@/constants/GeneralTypes";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TextStyle } from "@/constants/StyleComponents";
+import { openLink } from "@/utils/GeneralUtils";
 
 export default function PoliticsAndConditionsModal({
   open,
@@ -69,7 +71,7 @@ export default function PoliticsAndConditionsModal({
               </ThemedText>
               <ThemedText style={localStyles.text}>
                 Meredith es responsable del uso y protección de tus datos
-                personales. Puedes contactarnos en: meredith.abasotech@gmail.com
+                personales. Puedes contactarnos en: hola@meredith-aesthetic.com
               </ThemedText>
             </View>
             <View>
@@ -158,7 +160,7 @@ export default function PoliticsAndConditionsModal({
               <ThemedText style={localStyles.text}>
                 Tienes derecho a acceder, rectificar, cancelar u oponerte al uso
                 de tus datos personales (derechos ARCO). Para ejercerlos, envía
-                una solicitud a: meredith.abasotech@gmail.com
+                una solicitud a: hola@meredith-aesthetic.com
               </ThemedText>
             </View>
             <View>
@@ -342,7 +344,7 @@ export default function PoliticsAndConditionsModal({
               <ThemedText style={localStyles.text}>
                 Las suscripciones no son reembolsables, salvo en casos
                 excepcionales evaluados individualmente. Para solicitar
-                revisión, escríbenos a: meredith.abasotech@gmail.com
+                revisión, escríbenos a: hola@meredith-aesthetic.com
               </ThemedText>
             </View>
             <View>
@@ -364,6 +366,21 @@ export default function PoliticsAndConditionsModal({
                 Unidos Mexicanos. Cualquier disputa será resuelta en los
                 tribunales competentes de Cancún, Quintana Roo.
               </ThemedText>
+            </View>
+            <View>
+              <ThemedText style={localStyles.text}>
+                También puedes verificar nuestras políticas de aviso y
+                privacidad en el siguiente link:
+              </ThemedText>
+              <TouchableOpacity
+                onPress={() =>
+                  openLink("https://meredith-aesthetic.com/privacidad")
+                }
+              >
+                <ThemedText style={localStyles.text}>
+                  https://meredith-aesthetic.com/privacidad
+                </ThemedText>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </View>

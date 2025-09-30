@@ -52,7 +52,7 @@ export const GalleryProjectModal = ({
       <View
         style={{
           ...localStyle.modal,
-          top: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+          top: insets.top,
         }}
       >
         <ReturnArrow handleReturn={handleCloseModal} />

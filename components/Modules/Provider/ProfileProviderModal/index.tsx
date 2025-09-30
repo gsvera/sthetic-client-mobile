@@ -39,7 +39,7 @@ import TabInfoProvider from "./TabInfoProvider";
 import TabCommentsProvider from "./TabCommentsProvider";
 
 const msnWhatsApp =
-  "Hola! Te encontre en la app de Meredith Care, me gustaria más informacion acerca de tus servicios";
+  "Hola! Te encontre en la app de Meredith Aesthetic, me gustaria más informacion acerca de tus servicios";
 
 export const ProfileProviderModal = ({
   open,
@@ -97,7 +97,7 @@ export const ProfileProviderModal = ({
       <View
         style={{
           ...localStyle.modal,
-          marginTop: platform === PLATFORM_TYPE.ANDROID ? 0 : insets.top,
+          marginTop: insets.top,
         }}
       >
         <ReturnArrow handleReturn={handleCloseModal} />
