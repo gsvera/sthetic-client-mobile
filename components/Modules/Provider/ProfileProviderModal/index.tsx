@@ -87,6 +87,7 @@ export const ProfileProviderModal = ({
     setgallerySelected({ id: 0, nameService: "" });
     setOpenModalGalery(false);
   };
+
   return (
     <Modal
       animationType="slide"
@@ -189,7 +190,7 @@ export const ProfileProviderModal = ({
                     style={localStyle.touchIcon}
                     onPress={() =>
                       openLink(
-                        `https://wa.me/${dataInfo.lada.substring(0, 1)}${
+                        `https://wa.me/${dataInfo.lada.replace("+", "")}${
                           dataInfo.phone
                         }?text=${encodeURIComponent(msnWhatsApp)}`
                       )
@@ -197,7 +198,7 @@ export const ProfileProviderModal = ({
                   >
                     <MaterialCommunityIcons
                       name="whatsapp"
-                      style={localStyle.iconSocialMedia}
+                      style={localStyle.iconSocialWhatsapp}
                     />
                   </TouchableOpacity>
                 )}
@@ -343,6 +344,9 @@ const localStyle = StyleSheet.create({
   iconSocialMedia: {
     fontSize: 25,
     color: ThemeColorsSthetic.action,
+  },
+  iconSocialWhatsapp: {
+    fontSize: 27,
   },
   btnSchedule: {
     ...ButtonGeneralStyle.btnSaveSthetic,

@@ -123,7 +123,7 @@ export const ReservationListItem = ({
           <TouchableOpacity
             onPress={() =>
               openLink(
-                `https://wa.me/${item?.idProvider?.lada.substring(0, 1)}${
+                `https://wa.me/${item?.idProvider?.lada.replace("+", "")}${
                   item?.idProvider?.phone
                 }`
               )
