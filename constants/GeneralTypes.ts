@@ -4,6 +4,13 @@ export type loginData = {
     isClient?: boolean;
 }
 
+export type CurrentVersionType = {
+    id: number;
+    versionAndroid: string;
+    versionIos: string;
+    slugName: string;
+}
+
 export type UserType = {
     firstName: string;
     lastName: string;

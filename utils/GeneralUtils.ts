@@ -3,6 +3,7 @@ import CryptoJS from "crypto-js";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat"; 
 import { Linking, Platform } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 
 const secretKeyPass = process.env.EXPO_PUBLIC_SECRET_KEY;
 dayjs.extend(customParseFormat);
@@ -52,7 +53,7 @@ export const convertCurrency = (n:number | undefined, digits: number = 2) => {
  * @returns 
  */
 export const getBase64FromVideo = async (uri:any) => {
-    return await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+    // return await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
   };
 
   /**
@@ -110,3 +111,20 @@ export const openMap = (
     console.error("Error abriendo mapa", err)
   );
 };
+
+export async function openWhatsApp(phone: string, message?: string) {
+  const text = message ? `?text=${encodeURIComponent(message)}` : '';
+  const whatsappUrl = `whatsapp://send?phone=${phone}${text}`;
+  const waMeUrl = `https://wa.me/${phone}${text}`;
+
+  try {
+    const supported = await Linking.canOpenURL(whatsappUrl);
+    if (supported) {
+      await Linking.openURL(whatsappUrl);
+    } else {
+      await WebBrowser.openBrowserAsync(waMeUrl);
+    }
+  } catch (e) {
+    await WebBrowser.openBrowserAsync(waMeUrl);
+  }
+}

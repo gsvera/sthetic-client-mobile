@@ -8,6 +8,7 @@ export const REACT_QUERY_KEYS = {
     userConfig: {
         getLocationByProvider: (key:string) => `get-location-by-provider`,
         getDefaultLocationByUser: (key:string) => `get-location-by-user${key}`,
+        configVersion: (key:string) => `get-current-version-${key}`
     },
     plan: {
         getFilterData: (key:string) => `get-plan-filter-data-${key}`,

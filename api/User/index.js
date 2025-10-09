@@ -64,4 +64,9 @@ export const apiUser = {
       `${AUTH_BASE_URL}/resend-verification-account/${idUser}`
     );
   },
+  getCurrentVersion: function (slugName) {
+    return axiosInstance.get(
+      `${BASE_URL}/get-current-version?slug-name=${slugName}`
+    );
+  },
 };

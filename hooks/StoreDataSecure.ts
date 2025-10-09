@@ -27,5 +27,7 @@ type keySetProps = {
 }
 
 export const setStoreSession = async ({key, value}: keySetProps) => {
-    await SecureStore.setItemAsync(key, value);
+    if (typeof value === 'string') {
+        await SecureStore.setItemAsync(key, value);
+    }
 }

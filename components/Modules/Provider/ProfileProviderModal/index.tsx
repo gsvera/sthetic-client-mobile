@@ -34,7 +34,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ResponseApi } from "@/api/responseApi";
 import { PLATFORM_TYPE, TAB_PROVIDER_SELECTED } from "@/constants/Constants";
 import Schedule from "../../Schedule";
-import { openLink } from "@/utils/GeneralUtils";
+import { openLink, openWhatsApp } from "@/utils/GeneralUtils";
 import TabInfoProvider from "./TabInfoProvider";
 import TabCommentsProvider from "./TabCommentsProvider";
 
@@ -189,10 +189,9 @@ export const ProfileProviderModal = ({
                   <TouchableOpacity
                     style={localStyle.touchIcon}
                     onPress={() =>
-                      openLink(
-                        `https://wa.me/${dataInfo.lada.replace("+", "")}${
-                          dataInfo.phone
-                        }?text=${encodeURIComponent(msnWhatsApp)}`
+                      openWhatsApp(
+                        `${dataInfo.lada.replace("+", "")}${dataInfo.phone}`,
+                        msnWhatsApp
                       )
                     }
                   >

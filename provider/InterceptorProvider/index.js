@@ -59,10 +59,6 @@ const ApiRequestProvider = ({ children }) => {
       token
     );
     if (statusCode === 401) {
-      // ErrorAlertMessage({
-      //   title: "Sessión expirada",
-      //   message: "Su Sessión expiro, inicie sessión nuevamente",
-      // });
       handleNotification({
         type: TYPE_STATUS.ERROR,
         message: "Su Sessión expiro, inicie sessión nuevamente",
@@ -76,20 +72,12 @@ const ApiRequestProvider = ({ children }) => {
     }
     // Reject promise if usual error
     if (statusCode !== 401) {
-      handleNotification({
-        type: TYPE_STATUS.ERROR,
-        message: "Su Sessión expiro, inicie sessión nuevamente",
-      });
-      // return Promise.reject(error);
+      return Promise.reject(error);
     }
     if (statusCode === 401) {
       setToken(null);
       setStoreSession({ key: KEY_STORE.userToken, value: null });
-      handleNotification({
-        type: TYPE_STATUS.ERROR,
-        message: "Su Sessión expiro, inicie sessión nuevamente",
-      });
-      // return Promise.reject(error);
+      return Promise.reject(error);
     }
   }, []);
 

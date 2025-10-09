@@ -8,7 +8,12 @@ import {
   GridStyle,
   TextStyle,
 } from "@/constants/StyleComponents";
-import { convertHourToAMorPM, openLink, openMap } from "@/utils/GeneralUtils";
+import {
+  convertHourToAMorPM,
+  openLink,
+  openMap,
+  openWhatsApp,
+} from "@/utils/GeneralUtils";
 import { Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Platform, StyleSheet, TouchableOpacity, View } from "react-native";
 
@@ -122,8 +127,8 @@ export const ReservationListItem = ({
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>
-              openLink(
-                `https://wa.me/${item?.idProvider?.lada.replace("+", "")}${
+              openWhatsApp(
+                `${item?.idProvider?.lada.replace("+", "")}${
                   item?.idProvider?.phone
                 }`
               )

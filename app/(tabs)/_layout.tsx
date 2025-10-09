@@ -19,7 +19,12 @@ import {
 } from "@expo/vector-icons";
 import { useApiProvider } from "@/provider/InterceptorProvider";
 import { SOCKET_CHANNELS_TOPICS } from "@/constants/socket-channels";
-import { TYPE_STATUS } from "@/constants/Constants";
+import {
+  APP_NAME_SLUG,
+  PLATFORM_TYPE,
+  TYPE_STATUS,
+  VERSION,
+} from "@/constants/Constants";
 import { useNotificationProvider } from "@/provider/NotificationProvider";
 import { useWebSocketProvider } from "@/provider/WebSocketProvider";
 import { useSessionProvider } from "@/provider/SessionProvider";
@@ -32,10 +37,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import { apiScheduleService } from "@/api/ScheduleService";
 import ModalQualification from "@/components/Shared/ModalQualification";
-import { ProviderRatings } from "@/constants/GeneralTypes";
+import { CurrentVersionType, ProviderRatings } from "@/constants/GeneralTypes";
 import { useAudioPlayer } from "expo-audio";
 import ModalConfirm from "@/components/Shared/ModalConfirm";
 import { apiUser } from "@/api/User";
+import ModalUpdateVersion from "@/components/Shared/ModalUpdateVersion";
 
 export default function TabLayout() {
   const sound = useAudioPlayer(
@@ -56,6 +62,16 @@ export default function TabLayout() {
   const [openQualificationModal, setOpenQualificationModal] = useState(false);
   const [accountVerification, setAccountVerification] = useState(true);
   const [openResendVerification, setOpenResendVerification] = useState(false);
+  const [showUpdateVersion, setShowUpdateVersion] = useState(false);
+
+  const { data: currentVersion } = useQuery({
+    queryKey: [REACT_QUERY_KEYS.userConfig.configVersion("version")],
+    queryFn: () => apiUser.getCurrentVersion(APP_NAME_SLUG),
+    ...{
+      select: (data: ResponseApi) => data.data,
+      enabled: !!Boolean(token),
+    },
+  });
 
   const { data: pendingRating } = useQuery({
     queryKey: [REACT_QUERY_KEYS.provider.pendingRating("rating")],
@@ -122,6 +138,24 @@ export default function TabLayout() {
       handleNotification({ type: TYPE_STATUS.SUCCESS, message: data.message });
     }
   };
+
+  useEffect(() => {
+    if (!currentVersion?.error && currentVersion?.items) {
+      const dataVersion: CurrentVersionType = currentVersion?.items;
+      if (
+        Platform.OS === PLATFORM_TYPE.IOS &&
+        dataVersion.versionIos !== VERSION
+      ) {
+        setShowUpdateVersion(true);
+      }
+      if (
+        Platform.OS === PLATFORM_TYPE.ANDROID &&
+        dataVersion.versionAndroid !== VERSION
+      ) {
+        setShowUpdateVersion(true);
+      }
+    }
+  }, [currentVersion]);
 
   useEffect(() => {
     if (pendingRating?.items) {
@@ -319,6 +353,7 @@ export default function TabLayout() {
           }
         />
       )}
+      {showUpdateVersion && <ModalUpdateVersion open={showUpdateVersion} />}
     </View>
   );
 }

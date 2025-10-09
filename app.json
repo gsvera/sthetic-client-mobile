@@ -2,7 +2,7 @@
   "expo": {
     "name": "Meredith Aesthetic",
     "slug": "sthetic--client-mobile",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/images/meredith-aesthetic-logo-icon.png",
     "scheme": "myapp",
@@ -20,13 +20,25 @@
       }
     },
     "android": {
-      "versionCode": 4,
+      "versionCode": 5,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/meredith-aesthetic-logo-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.abasotech.meredithcare"
+      "package": "com.abasotech.meredithcare",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "wa.me"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "web": {
       "bundler": "metro",
