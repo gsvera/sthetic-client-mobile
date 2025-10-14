@@ -214,3 +214,9 @@ export type DefaultLocationType = {
     idMunicipality?: number;
     defaultMunicipality?: string;
 }
+
+export type FavoriteProviderType = {
+    id?: number;
+    idClient: string;
+    idProvider: string;
+}

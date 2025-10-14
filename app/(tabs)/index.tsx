@@ -2,27 +2,24 @@ import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import { ResponseApi } from "@/api/responseApi";
 import apiTypeService from "@/api/TypeService";
 import { apiUser } from "@/api/User";
-import CardProfileProvider from "@/components/Modules/Provider/CardProfileProvider";
 import { ProfileProviderModal } from "@/components/Modules/Provider/ProfileProviderModal";
 import SearchModal from "@/components/Modules/Provider/SearchModal";
 import Schedule from "@/components/Modules/Schedule";
 import LoadingView from "@/components/Shared/LoadingView";
-import { ThemedText } from "@/components/ThemedText";
 
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { PLATFORM_TYPE } from "@/constants/Constants";
 import { TypesServicesType } from "@/constants/GeneralTypes";
-import { TextStyle } from "@/constants/StyleComponents";
+import { GridStyle, TextStyle } from "@/constants/StyleComponents";
 import { getStoreSession, KEY_STORE } from "@/hooks/StoreDataSecure";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Fontisto } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Image, Platform } from "react-native";
-import { FlatList } from "react-native";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Image, Platform, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useSessionProvider } from "@/provider/SessionProvider";
 import { MyLocationModal } from "@/components/Modules/Settings/MyLocation/MyLocationModal";
-import EmptyView from "@/components/Shared/EmptyView";
+import ListProvider from "@/components/Modules/Provider/ListProvider";
 
 type FilterSearchParamsType = {
   page: number;
@@ -43,7 +40,11 @@ export default function Home() {
     defaultMunicipality: storeSessionProvider?.defaultMunicipality,
   });
   const [dataListProvider, setDataListProvider] = useState<any[]>([]);
+  const [dataListFavoriteProvider, setDataListFavoriteProvider] = useState<
+    any[]
+  >([]);
   const [page, setPage] = useState(0);
+  const [pageFavorite, setPageFavorite] = useState(0);
   const [openSearchModal, setOpenSearchModal] = useState(false);
   const [openProfileProviderModal, setOpenProfileProviderModal] =
     useState(false);
@@ -52,6 +53,8 @@ export default function Home() {
   const [openModalDefaultLocation, setOpenModalDefaultLocation] =
     useState(false);
   const [force, setForce] = useState(false); // auxiliar para refrescar useEffect para rellenar items
+  const [findFavorite, setFindFavorite] = useState(false);
+  const [listKeysFavorites, setListKeyFavorites] = useState<string[]>([]);
 
   const {
     data: listProvider = [],
@@ -62,6 +65,41 @@ export default function Home() {
     queryFn: () => apiUser.searchProvider({ ...filterParams }),
     ...{
       select: (data: ResponseApi) => data.data.items,
+    },
+  });
+
+  const {
+    data: listFavoriteProvider,
+    refetch: refetchListFavoriteProvider,
+    isFetching: isFetchingListFavoriteProvider,
+  } = useQuery({
+    queryKey: [
+      REACT_QUERY_KEYS.provider.getFavoriteProvider(
+        storeSessionProvider?.idUser
+      ),
+    ],
+    queryFn: () =>
+      apiUser.getFavoritesProvider({
+        idClient: storeSessionProvider?.idUser,
+        page: pageFavorite,
+      }),
+    ...{
+      select: (data: ResponseApi) => data.data.items,
+      enabled: findFavorite,
+    },
+  });
+
+  const { data: keysFavoritesProvider = [] } = useQuery({
+    queryKey: [
+      REACT_QUERY_KEYS.provider.getListKeysFavoritesProvider(
+        storeSessionProvider?.idUser
+      ),
+    ],
+    queryFn: () =>
+      apiUser.getFavoritesKeysProvider(storeSessionProvider?.idUser),
+    ...{
+      select: (data: ResponseApi) => data.data.items,
+      enabled: Boolean(storeSessionProvider?.idUser),
     },
   });
 
@@ -115,7 +153,62 @@ export default function Home() {
     }, 3000);
   }, [storeSessionProvider?.idUser]);
 
+  useEffect(() => {
+    if (keysFavoritesProvider.length > 0)
+      setListKeyFavorites(keysFavoritesProvider);
+    if (findFavorite) {
+      setDataListFavoriteProvider((prev: any) => {
+        const existingIds = new Set(
+          keysFavoritesProvider.map((key: string) => key)
+        );
+
+        const filterdUpdate = prev.filter((item: any) =>
+          existingIds.has(item.idUser)
+        );
+
+        return [...filterdUpdate];
+      });
+    }
+  }, [keysFavoritesProvider]);
+
+  useEffect(() => {
+    if (
+      findFavorite &&
+      listFavoriteProvider?.items &&
+      Array.isArray(listFavoriteProvider?.items)
+    ) {
+      if (listFavoriteProvider?.pageNumber === 0) {
+        setDataListFavoriteProvider(listFavoriteProvider?.items);
+        setPageFavorite(1);
+      } else {
+        setDataListFavoriteProvider((prev: any) => {
+          const existingIds = new Set(prev.map((item: any) => item.id));
+
+          const filterdNew = listFavoriteProvider?.items.filter(
+            (item: any) => !existingIds.has(item.id)
+          );
+          return [...prev, ...filterdNew];
+        });
+        if (listFavoriteProvider?.totalPages >= pageFavorite + 1) {
+          setPageFavorite((n) => n + 1);
+        }
+      }
+    }
+  }, [
+    findFavorite,
+    listFavoriteProvider?.pageNumber,
+    listFavoriteProvider?.totalElements,
+  ]);
+
+  useEffect(() => {
+    if (!findFavorite) {
+      setPageFavorite(0);
+      setDataListFavoriteProvider([]);
+    }
+  }, [findFavorite]);
+
   const handleSearch = (data: any) => {
+    setFindFavorite(false);
     setFilterParams({
       ...data,
       page: 0,
@@ -130,7 +223,7 @@ export default function Home() {
   };
 
   const handleClearFilter = (data: any) => {
-    setPage(0);
+    setFindFavorite(false);
     handleSearch(data);
   };
 
@@ -139,6 +232,12 @@ export default function Home() {
     setTimeout(() => {
       refetchListprovider();
     }, 1000);
+  };
+
+  const fetchDataFavorite = () => {
+    setTimeout(() => {
+      refetchListFavoriteProvider();
+    });
   };
 
   const handleOnSelectProfile = (idUser: string) => {
@@ -165,6 +264,10 @@ export default function Home() {
     setOpenModalDefaultLocation(false);
   };
 
+  const searchFavorite = () => {
+    setFindFavorite((v) => !v);
+  };
+
   return (
     <View>
       <View style={localStyle.header}>
@@ -172,49 +275,56 @@ export default function Home() {
           source={require("@/assets/images/me-logo-header.png")}
           style={localStyle.logo}
         />
-        <Pressable
-          style={localStyle.inputSearch}
-          onPress={() => setOpenSearchModal((v) => !v)}
-        >
-          <ThemedText style={{ color: ThemeColorsSthetic.text }}>
-            Buscar
-          </ThemedText>
-          <Feather
-            name="search"
-            size={20}
-            color={ThemeColorsSthetic.accentReverse}
-          />
-        </Pressable>
+        <View style={GridStyle.rowSpaceBetween}>
+          <TouchableOpacity
+            style={localStyle.inputSearch}
+            onPress={() => setOpenSearchModal((v) => !v)}
+          >
+            <Feather
+              name="search"
+              size={25}
+              color={ThemeColorsSthetic.textLight}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={localStyle.inputSearch}
+            onPress={searchFavorite}
+          >
+            <Fontisto
+              name="favorite"
+              style={{
+                color: findFavorite
+                  ? ThemeColorsSthetic.accent
+                  : ThemeColorsSthetic.textLight,
+                fontSize: 25,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <View
         style={{ height: platform === PLATFORM_TYPE.ANDROID ? "90%" : "87%" }}
       >
-        {dataListProvider.length > 0 ? (
-          <FlatList
-            data={Array.isArray(dataListProvider) ? dataListProvider : []}
-            keyExtractor={(item, index) =>
-              item?.id?.toString?.() || index.toString()
-            }
-            renderItem={({ item }) => {
-              if (!item) return null;
-              return (
-                <CardProfileProvider
-                  key={item.id}
-                  infoCompany={item}
-                  handleSelectProfile={handleOnSelectProfile}
-                  handleMakeSchedule={handleMakeSchedule}
-                />
-              );
-            }}
-            onEndReached={fetchData}
-            onEndReachedThreshold={0.5}
+        {findFavorite ? (
+          <ListProvider
+            dataListProvider={dataListFavoriteProvider}
+            selectProfile={handleOnSelectProfile}
+            makeSchedule={handleMakeSchedule}
+            isFetchingList={isFetchingListFavoriteProvider}
+            fetchData={fetchDataFavorite}
+            listKeysFavorite={listKeysFavorites}
           />
         ) : (
-          <View style={{ marginTop: 100 }}>
-            {!isFetchingListProvider && <EmptyView />}
-          </View>
+          <ListProvider
+            dataListProvider={dataListProvider}
+            selectProfile={handleOnSelectProfile}
+            makeSchedule={handleMakeSchedule}
+            isFetchingList={isFetchingListProvider}
+            fetchData={fetchData}
+            listKeysFavorite={listKeysFavorites}
+          />
         )}
-        {isFetchingListProvider && (
+        {(isFetchingListProvider || isFetchingListFavoriteProvider) && (
           <LoadingView
             styleProps={{
               ...localStyle.loader,
@@ -281,13 +391,9 @@ const localStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: ThemeColorsSthetic.muted,
-    borderRadius: 5,
     paddingHorizontal: 10,
-    height: 30,
-    width: 100,
-    backgroundColor: ThemeColorsSthetic.backgroundLight,
+    paddingVertical: 5,
+    marginHorizontal: 5,
   },
   loader: {
     left: 0,

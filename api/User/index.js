@@ -41,7 +41,7 @@ export const apiUser = {
     return axiosInstance.get(`${BASE_URL}/get-provider-available`, {
       params: {
         ...data,
-        size: 3,
+        size: 5,
       },
     });
   },
@@ -68,5 +68,26 @@ export const apiUser = {
     return axiosInstance.get(
       `${BASE_URL}/get-current-version?slug-name=${slugName}`
     );
+  },
+  getFavoritesKeysProvider: function (idclient) {
+    return axiosInstance.get(
+      `${AUTH_BASE_URL}/get-keys-favorites-providers/${idclient}`
+    );
+  },
+  getFavoritesProvider: function (data) {
+    return axiosInstance.get(`${AUTH_BASE_URL}/get-my-favorites-providers`, {
+      params: {
+        ...data,
+        size: 5,
+      },
+    });
+  },
+  saveFavoriteProvider: function (data) {
+    return axiosInstance.post(`${AUTH_BASE_URL}/save-favorite-provider`, data);
+  },
+  deleteFavoriteProvider: function (data) {
+    return axiosInstance.delete(`${AUTH_BASE_URL}/delete-favorite-provider`, {
+      data: data,
+    });
   },
 };

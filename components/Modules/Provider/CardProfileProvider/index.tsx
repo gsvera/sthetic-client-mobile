@@ -1,29 +1,99 @@
 import { ThemedText } from "@/components/ThemedText";
-import { InfoCompanyType } from "@/constants/GeneralTypes";
-import { ButtonGeneralStyle, TextStyle } from "@/constants/StyleComponents";
-import { Image, StyleSheet, View } from "react-native";
+import {
+  FavoriteProviderType,
+  InfoCompanyType,
+} from "@/constants/GeneralTypes";
+import {
+  ButtonGeneralStyle,
+  GridStyle,
+  TextStyle,
+} from "@/constants/StyleComponents";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ThemeColorsSthetic } from "@/constants/Colors";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Badge from "@/components/Shared/Badge";
 import GeneralButton from "@/components/Shared/GeneralButton";
 import ButtonShowMore from "@/components/Shared/ButtonShowMore";
 import GlobalRating from "@/components/Shared/GlobalRating";
+import Fontisto from "@expo/vector-icons/Fontisto";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiUser } from "@/api/User";
+import { ObjectResponse, ResponseApi } from "@/api/responseApi";
+import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
+import { useNotificationProvider } from "@/provider/NotificationProvider";
+import { TYPE_STATUS } from "@/constants/Constants";
+import { useSessionProvider } from "@/provider/SessionProvider";
+import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 
 type cardProfileProviderProps = {
   infoCompany: InfoCompanyType;
   handleSelectProfile: (id: string) => void;
   handleMakeSchedule: (id: string) => void;
+  listKeysFavorite: string[];
 };
 export const CardProfileProvider = ({
   infoCompany,
   handleSelectProfile,
   handleMakeSchedule,
+  listKeysFavorite,
 }: cardProfileProviderProps) => {
+  const queryClient = useQueryClient();
+  const { storeSessionProvider } = useSessionProvider();
+  const { handleNotification } = useNotificationProvider();
   const [showText, setShowText] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const { mutate: saveFavoriteProvider } = useMutation({
+    mutationFn: (data: FavoriteProviderType) =>
+      apiUser.saveFavoriteProvider(data),
+    onSuccess: (data: ResponseApi) => handleSaveFavoriteProdider(data.data),
+    onError: ErrorAlertMessage,
+  });
+
+  const { mutate: deleteFavoriteProvider } = useMutation({
+    mutationFn: (data: FavoriteProviderType) =>
+      apiUser.deleteFavoriteProvider(data),
+    onSuccess: (data: ResponseApi) => handleSaveFavoriteProdider(data.data),
+    onError: ErrorAlertMessage,
+  });
+
+  const handleSaveFavoriteProdider = (data: ObjectResponse) => {
+    if (!data.error) {
+      queryClient.invalidateQueries({
+        queryKey: [
+          REACT_QUERY_KEYS.provider.getListKeysFavoritesProvider(
+            storeSessionProvider?.idUser
+          ),
+        ],
+      });
+      handleNotification({ type: TYPE_STATUS.INFO, message: data.message });
+    }
+  };
+
+  useEffect(() => {
+    const keyFavorite = listKeysFavorite.filter(
+      (key) => key === infoCompany.idUser
+    );
+    if (keyFavorite.length > 0) setIsFavorite(true);
+  }, []);
+
   const typeServicesArr = useMemo(
     () => infoCompany.typesServices?.split(","),
     [infoCompany.typesServices]
   );
+
+  const handleSaveFavorite = () => {
+    const myFavorite = {
+      id: 0,
+      idClient: storeSessionProvider?.idUser,
+      idProvider: infoCompany.idUser,
+    };
+    if (storeSessionProvider?.idUser) {
+      if (!isFavorite) saveFavoriteProvider(myFavorite);
+      else deleteFavoriteProvider(myFavorite);
+      setIsFavorite((v) => !v);
+    }
+  };
 
   return (
     <View style={localStyle.card}>
@@ -36,9 +106,9 @@ export const CardProfileProvider = ({
           source={{ uri: infoCompany.companyPictureUrl }}
         />
       </View>
-      <View>
+      <View style={{ ...GridStyle.rowSpaceBetween, paddingRight: 15 }}>
         <>
-          {!!infoCompany?.auxRating && infoCompany?.auxRating > 0 && (
+          {!!infoCompany?.auxRating && infoCompany?.auxRating > 0 ? (
             <ThemedText
               style={{
                 flexDirection: "row",
@@ -48,8 +118,23 @@ export const CardProfileProvider = ({
             >
               <GlobalRating rating={infoCompany?.auxRating} />
             </ThemedText>
+          ) : (
+            <View></View>
           )}
         </>
+        <View style={{ paddingLeft: 10 }}>
+          <TouchableOpacity onPress={handleSaveFavorite}>
+            <Fontisto
+              name="favorite"
+              style={{
+                color: isFavorite
+                  ? ThemeColorsSthetic.accent
+                  : ThemeColorsSthetic.accentReverse,
+                fontSize: 35,
+              }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={localStyle.contentDescription}>
         <ThemedText

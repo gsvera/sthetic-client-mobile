@@ -54,6 +54,8 @@ export const REACT_QUERY_KEYS = {
         getServicesByProvider: (key: string | undefined) => `get-menu-services-by-provide-${key}`,
         getLocation: (key:string) => `get-location-by-provider-${key}`,
         pendingRating: (key: string) => `get-pending-rating-by-provider-${key}`,
-        getRatingsByProvider: (key: string) => `get-ratings-by-provider-${key}`
+        getRatingsByProvider: (key: string) => `get-ratings-by-provider-${key}`,
+        getFavoriteProvider: (key: string) => `get-favorite-provider-${key}`,
+        getListKeysFavoritesProvider: (key: string) => `get-list-keys-favorites-provider-${key}`
     }
 }

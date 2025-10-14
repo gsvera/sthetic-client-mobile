@@ -14,7 +14,7 @@ import {
 
 export type miniNotificationProps = {
   open: boolean;
-  type: TYPE_STATUS.SUCCESS | TYPE_STATUS.UPDATE | TYPE_STATUS.ERROR;
+  type: TYPE_STATUS;
   message?: string;
 };
 
@@ -67,6 +67,10 @@ export default function MiniNotification({
         setBgColor(ThemeColorsSthetic.errorNotification);
         setIcon(<AntDesign name="close-circle" size={20} color="white" />);
         break;
+      }
+      case TYPE_STATUS.INFO: {
+        setBgColor(ThemeColorsSthetic.muted);
+        setIcon(<AntDesign name="info-circle" size={24} color="black" />);
       }
     }
   }, [type]);

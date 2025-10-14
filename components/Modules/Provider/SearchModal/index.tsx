@@ -162,7 +162,8 @@ export const SearchModal = ({
               <View style={localStyle.contentComponent}>
                 <ThemedText style={TextStyle.label}>Negocio:</ThemedText>
                 <TextInput
-                  placeholder="Buscar"
+                  placeholder="Ejem: Meredith Aesthetic..."
+                  placeholderTextColor={ThemeColorsSthetic.muted}
                   style={localStyle.inputSearch}
                   value={textSearch}
                   onChangeText={setTextSearch}
