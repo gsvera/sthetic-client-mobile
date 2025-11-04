@@ -63,7 +63,7 @@ export default function TabLayout() {
   const [openQualificationModal, setOpenQualificationModal] = useState(false);
   const [accountVerification, setAccountVerification] = useState(true);
   const [openResendVerification, setOpenResendVerification] = useState(false);
-  const [showUpdateVersion, setShowUpdateVersion] = useState(true);
+  const [showUpdateVersion, setShowUpdateVersion] = useState(false);
 
   const { data: currentVersion } = useQuery({
     queryKey: [REACT_QUERY_KEYS.userConfig.configVersion("version")],

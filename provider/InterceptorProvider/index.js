@@ -1,5 +1,4 @@
 import axiosInstance from "@/api";
-// import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import { KEY_STORE, setStoreSession } from "@/hooks/StoreDataSecure";
 import {
   createContext,
@@ -8,17 +7,14 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useNotificationProvider } from "../NotificationProvider";
-import { TYPE_STATUS } from "@/constants/Constants";
+import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 
 const InterceptorAxiosProvider = createContext();
 
 const axiosInstances = [axiosInstance];
 
 const ApiRequestProvider = ({ children }) => {
-  const { handleNotification } = useNotificationProvider();
   const [token, setToken] = useState(null);
-
   useEffect(() => {
     if (token)
       setStoreSession({
@@ -45,26 +41,16 @@ const ApiRequestProvider = ({ children }) => {
   };
 
   const interceptResponseErrorHandler = useCallback((error) => {
-    const {
-      status: statusCode,
-      data,
-      headers,
-      message,
-    } = error?.response ?? {};
+    const { status: statusCode, data, headers } = error?.response ?? {};
 
-    // console.log(token);
-    console.log(
-      "🚀 ~ interceptResponseErrorHandler ~ error?.response:",
-      statusCode,
-      token
-    );
     if (statusCode === 401) {
-      handleNotification({
-        type: TYPE_STATUS.ERROR,
+      ErrorAlertMessage({
+        title: "Sessión expirada",
         message: "Su Sessión expiro, inicie sessión nuevamente",
       });
 
       clearToken();
+      return;
     }
 
     if (statusCode === 403 && !token) {

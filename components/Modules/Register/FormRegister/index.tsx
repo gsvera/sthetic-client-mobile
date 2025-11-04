@@ -258,6 +258,7 @@ export const FormRegister = ({
                     onChangeText={onChange}
                     value={value}
                     maxLength={13}
+                    keyboardType="numeric"
                   />
                 )}
               />
