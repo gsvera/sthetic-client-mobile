@@ -14,13 +14,7 @@ import {
   SelectedDateCalendarType,
 } from "@/constants/GeneralTypes";
 import { useEffect, useState } from "react";
-import {
-  Modal,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 import StepCalendar from "./StepCalendar";
 import StepService from "./StepService";
 import StepConfirm from "./StepConfirm";
@@ -31,7 +25,7 @@ import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import SuccessNotification from "@/components/Shared/Notifications/SuccessNotification";
 import { convertDateToGeneralFormat } from "@/utils/GeneralUtils";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import MiniNotification from "@/components/Shared/Notifications/MiniNotification";
 
 type scheduleProps = Omit<modalCustomProps, "idProvider"> & {
@@ -43,7 +37,6 @@ export const Schedule = ({
   handleCloseModal,
   idProvider,
 }: scheduleProps) => {
-  const insets = useSafeAreaInsets();
   const [openSuccessNotification, setOpenSuccessNotification] = useState(false);
   const [miniNotificationState, setMiniNotificationState] = useState({
     open: false,
@@ -173,19 +166,19 @@ export const Schedule = ({
       transparent={true}
       animationType="fade"
       onRequestClose={onPressCloseModal}
+      supportedOrientations={["portrait", "landscape"]}
     >
-      <View
+      <SafeAreaView
         style={{
-          backgroundColor: ThemeColorsSthetic.backgroundStrong,
-          height: "100%",
+          flex: 1,
+          backgroundColor: ThemeColorsSthetic.shadowBackground,
+          zIndex: 1500,
         }}
       >
         <View
           style={{
-            paddingTop: insets.top,
-            paddingBottom: insets.bottom,
+            flex: 1,
             backgroundColor: ThemeColorsSthetic.backgroundLight,
-            zIndex: 1500,
           }}
         >
           {openSuccessNotification && (
@@ -232,7 +225,7 @@ export const Schedule = ({
           </View>
           <View
             style={{
-              height: Platform.OS === PLATFORM_TYPE.ANDROID ? "90%" : "87%",
+              flex: 1,
             }}
           >
             {stepSelected === STEP_RESERVATION.SELECT_DATE && (
@@ -257,7 +250,8 @@ export const Schedule = ({
             )}
           </View>
         </View>
-      </View>
+      </SafeAreaView>
+
       {miniNotificationState.open && (
         <MiniNotification
           open={miniNotificationState.open}

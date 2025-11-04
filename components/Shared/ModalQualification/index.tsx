@@ -10,6 +10,7 @@ import {
   Image,
   Keyboard,
   Modal,
+  ScrollView,
   StyleSheet,
   TextInput,
   TouchableWithoutFeedback,
@@ -92,77 +93,82 @@ export const ModalQualification = ({
       animationType="fade"
       transparent={true}
       onRequestClose={handleCloseModal}
+      supportedOrientations={["portrait", "landscape"]}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={ModalStyle.modalView}>
-          <View style={localStyle.modalContent}>
-            <ButtonCloseModal
-              handleOnPress={handleCloseModal}
-              styleContentHeader={localStyle.btnClose}
-            />
-            <View>
-              <Image
-                style={localStyle.imgProvider}
-                source={{
-                  uri: providerRatings?.idProvider?.infoCompanyDTO
-                    ?.companyPicture,
-                }}
+        <View style={{ flex: 1 }}>
+          <View style={ModalStyle.modalView}>
+            <View style={{ ...localStyle.modalContent, marginVertical: 10 }}>
+              <ButtonCloseModal
+                handleOnPress={handleCloseModal}
+                styleContentHeader={localStyle.btnClose}
               />
-            </View>
-            <ThemedText style={{ ...TextStyle.value, ...TextStyle.center }}>
-              Califica el servicio de
-            </ThemedText>
-            <ThemedText
-              style={{ ...TextStyle.fontBoldDark, ...TextStyle.center }}
-            >
-              {providerRatings?.idProvider?.infoCompanyDTO?.companyName}{" "}
-            </ThemedText>
-            <View style={localStyle.contentStart}>
-              <StartRating
-                rating={rating}
-                onRaitingChange={setRaiting}
-                enabled
-              />
-            </View>
-            <View>
-              <TextInput
-                style={localStyle.inputComments}
-                multiline
-                maxLength={350}
-                onChangeText={(e) => setCommet(e)}
-              />
-            </View>
-            <View>
-              <GeneralButton
-                styleText={TextStyle.fontBoldWhite}
-                textBtn="Calificar"
-                styleBtn={{
-                  ...ButtonGeneralStyle.btnSaveSthetic,
-                  marginTop: 20,
-                }}
-                styleBtndisable={{
-                  ...ButtonGeneralStyle.btnDisabledSthetic,
-                  marginTop: 20,
-                }}
-                handleOnPress={handleUpdateCalification}
-                disabledBtn={loading}
-              />
-              <GeneralButton
-                styleText={TextStyle.fontBoldWhite}
-                textBtn="En otro momento"
-                styleBtn={{
-                  ...ButtonGeneralStyle.btnCancelSthetic,
-                  marginTop: 15,
-                  marginBottom: 5,
-                }}
-                styleBtndisable={{
-                  ...ButtonGeneralStyle.btnDisabledSthetic,
-                  marginTop: 15,
-                  marginBottom: 5,
-                }}
-                handleOnPress={handleDeleteQualification}
-                disabledBtn={loading}
-              />
+              <ScrollView style={{ flexGrow: 1 }}>
+                <View>
+                  <Image
+                    style={localStyle.imgProvider}
+                    source={{
+                      uri: providerRatings?.idProvider?.infoCompanyDTO
+                        ?.companyPictureUrl,
+                    }}
+                  />
+                </View>
+                <ThemedText style={{ ...TextStyle.value, ...TextStyle.center }}>
+                  Califica el servicio de
+                </ThemedText>
+                <ThemedText
+                  style={{ ...TextStyle.fontBoldDark, ...TextStyle.center }}
+                >
+                  {providerRatings?.idProvider?.infoCompanyDTO?.companyName}{" "}
+                </ThemedText>
+                <View style={localStyle.contentStart}>
+                  <StartRating
+                    rating={rating}
+                    onRaitingChange={setRaiting}
+                    enabled
+                  />
+                </View>
+                <View>
+                  <TextInput
+                    style={localStyle.inputComments}
+                    multiline
+                    maxLength={350}
+                    onChangeText={(e) => setCommet(e)}
+                  />
+                </View>
+                <View>
+                  <GeneralButton
+                    styleText={TextStyle.fontBoldWhite}
+                    textBtn="Calificar"
+                    styleBtn={{
+                      ...ButtonGeneralStyle.btnSaveSthetic,
+                      marginTop: 20,
+                    }}
+                    styleBtndisable={{
+                      ...ButtonGeneralStyle.btnDisabledSthetic,
+                      marginTop: 20,
+                    }}
+                    handleOnPress={handleUpdateCalification}
+                    disabledBtn={loading}
+                  />
+                  <GeneralButton
+                    styleText={TextStyle.fontBoldWhite}
+                    textBtn="En otro momento"
+                    styleBtn={{
+                      ...ButtonGeneralStyle.btnCancelSthetic,
+                      marginTop: 15,
+                      marginBottom: 5,
+                    }}
+                    styleBtndisable={{
+                      ...ButtonGeneralStyle.btnDisabledSthetic,
+                      marginTop: 15,
+                      marginBottom: 5,
+                    }}
+                    handleOnPress={handleDeleteQualification}
+                    disabledBtn={loading}
+                  />
+                </View>
+              </ScrollView>
             </View>
           </View>
         </View>

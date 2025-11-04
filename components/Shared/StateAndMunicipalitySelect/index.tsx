@@ -117,7 +117,7 @@ export const StateAndMunicipalitySelect = ({
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={MarginStyle.marginT10}>
         <ButtonSelect
           isLoadingData={isLoadingStates}

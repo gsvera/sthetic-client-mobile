@@ -7,12 +7,13 @@ import {
   Image,
   ImageBackground,
   Pressable,
+  ScrollView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
@@ -20,7 +21,6 @@ import { apiUser } from "@/api/User";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import { KEY_STORE, setStoreSession } from "@/hooks/StoreDataSecure";
 import { useApiProvider } from "@/provider/InterceptorProvider";
-import ContentKeyboardAutoScroll from "@/components/Shared/ContentKeyboardAutoScroll";
 import { parsePasswordEncrypt } from "@/utils/GeneralUtils";
 import { loginData } from "@/constants/GeneralTypes";
 import { Ionicons } from "@expo/vector-icons";
@@ -33,7 +33,13 @@ import GeneralButton from "@/components/Shared/GeneralButton";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import LoadingView from "@/components/Shared/LoadingView";
-import { VERSION } from "@/constants/Constants";
+import {
+  PLATFORM_TYPE,
+  VERSION_ANDROID,
+  VERSION_IOS,
+} from "@/constants/Constants";
+import { Platform } from "react-native";
+import { Keyboard } from "react-native";
 
 const schema = yup.object({
   username: yup.string().required("Ingrese un usuario valid"),
@@ -43,6 +49,7 @@ const schema = yup.object({
 export default function Login() {
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
   const imageBg = require("@/assets/images/background.webp");
   const { setToken, token } = useApiProvider();
   const {
@@ -54,6 +61,7 @@ export default function Login() {
   });
   const [hiddenPass, setHiddenPass] = useState(true);
   const [loadingSession, setLoadingSession] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const { mutate: login } = useMutation({
     mutationFn: (data: loginData) => apiUser.login(data),
@@ -112,6 +120,22 @@ export default function Login() {
     }
   }, [token]);
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => setIsKeyboardVisible(true)
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => setIsKeyboardVisible(false)
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   const onSubmit = (data: loginData) => {
     setToken(null);
     const passwordEncrypt = parsePasswordEncrypt(data.password);
@@ -121,16 +145,22 @@ export default function Login() {
   return (
     <View
       style={{
-        ...styles.container,
+        flex: 1,
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
         backgroundColor:
           colorScheme === "dark"
             ? ThemeColorsSthetic.backgroundStrong
             : ThemeColorsSthetic.backgroundLight,
       }}
     >
-      <SafeAreaView style={Container.containerLogin}>
-        <ImageBackground source={imageBg} style={styles.imgBg}>
-          <ContentKeyboardAutoScroll>
+      <ImageBackground source={imageBg} style={styles.imgBg}>
+        <View
+          style={
+            isKeyboardVisible ? styles.withKeyboard : styles.withoutKeyboard
+          }
+        >
+          <ScrollView style={{ flexGrow: 1 }}>
             <View
               style={{
                 justifyContent: "center",
@@ -154,6 +184,7 @@ export default function Login() {
                       <TextInput
                         style={{ ...loginStyle.input, ...TextStyle.value }}
                         placeholder="Ingrese su usuario"
+                        placeholderTextColor={ThemeColorsSthetic.muted}
                         keyboardType="email-address"
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -179,6 +210,7 @@ export default function Login() {
                         <TextInput
                           style={{ ...loginStyle.input, ...TextStyle.value }}
                           placeholder="Ingrese su password"
+                          placeholderTextColor={ThemeColorsSthetic.muted}
                           onBlur={onBlur}
                           onChangeText={onChange}
                           value={value}
@@ -231,24 +263,26 @@ export default function Login() {
                 </View>
                 <View style={{ marginTop: 100 }}>
                   <ThemedText
-                    style={{ ...TextStyle.fontBoldCancel, ...TextStyle.center }}
+                    style={{
+                      ...TextStyle.fontBoldCancel,
+                      ...TextStyle.center,
+                    }}
                   >
-                    {VERSION}
+                    {Platform.OS === PLATFORM_TYPE.IOS
+                      ? VERSION_IOS
+                      : VERSION_ANDROID}
                   </ThemedText>
                 </View>
               </View>
             </View>
-          </ContentKeyboardAutoScroll>
-        </ImageBackground>
-      </SafeAreaView>
+          </ScrollView>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   imgContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -290,4 +324,6 @@ const styles = StyleSheet.create({
     color: ThemeColorsSthetic.primary,
     marginBottom: 10,
   },
+  withKeyboard: { height: Platform.OS === PLATFORM_TYPE.IOS ? "70%" : "60%" },
+  withoutKeyboard: { flex: 1 },
 });

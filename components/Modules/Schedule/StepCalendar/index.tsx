@@ -18,6 +18,7 @@ import LoadingView from "@/components/Shared/LoadingView";
 import { ResponseApi } from "@/api/responseApi";
 import EmptyView from "@/components/Shared/EmptyView";
 import { FORMAT_DATE } from "@/constants/Constants";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 dayjs.locale("es"); // Esta config se debera establecer a futuro para ingles tambien
 
@@ -30,6 +31,7 @@ export const StepCalendar = ({
   idProvider,
   handleSelectAvailableTime,
 }: stepCalendarProps) => {
+  const insets = useSafeAreaInsets();
   const [showCalendar, setShowCalendar] = useState(true);
   const [blockTime, setBlockTime] = useState<TimeScheduleType[]>([]);
   const [selectedDate, setSelectedDate] = useState<SelectedDateCalendarType>({
@@ -83,7 +85,7 @@ export const StepCalendar = ({
         ...localStyle.stepCalendar,
       }}
     >
-      <View>
+      <View style={{ flex: 1 }}>
         <Pressable
           style={localStyle.dateLabel}
           onPress={() => setShowCalendar((v) => !v)}
@@ -136,7 +138,7 @@ export const StepCalendar = ({
 export const localStyle = StyleSheet.create({
   stepCalendar: {
     marginTop: 15,
-    height: "100%",
+    flex: 1,
   },
   dateLabel: {
     flexDirection: "row",
@@ -148,8 +150,8 @@ export const localStyle = StyleSheet.create({
     fontWeight: "bold",
   },
   contentScheduleTime: {
+    flexGrow: 1,
     paddingHorizontal: 15,
-    height: "84%",
   },
 });
 

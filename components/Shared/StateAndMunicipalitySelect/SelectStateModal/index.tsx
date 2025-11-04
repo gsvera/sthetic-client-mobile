@@ -22,10 +22,12 @@ export const SelectStateModal = ({
 }: selectStateModalProps) => {
   return (
     <Modal
+      style={{ flex: 1 }}
       visible={open}
       animationType="fade"
       transparent={true}
       onRequestClose={handleCloseModal}
+      supportedOrientations={["portrait", "landscape"]}
     >
       <View
         style={ModalStyle.modalView}

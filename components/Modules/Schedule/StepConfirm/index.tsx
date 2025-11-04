@@ -53,8 +53,8 @@ export const StepConfirm = ({
   });
 
   return (
-    <View style={{ height: "98%" }}>
-      <ScrollView>
+    <View style={{ flex: 1 }}>
+      <ScrollView style={{ flexGrow: 1 }}>
         <View style={localStyle.section}>
           <View style={localStyle.titleContent}>
             <ThemedText style={TextStyle.titleRegister}>
@@ -183,7 +183,7 @@ const localStyle = StyleSheet.create({
 
   contentBtn: {
     width: "90%",
-    marginHorizontal: "auto",
+    alignSelf: "center",
     marginTop: 20,
     marginBottom: 20,
   },

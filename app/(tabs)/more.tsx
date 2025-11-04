@@ -1,4 +1,10 @@
-import { View, StyleSheet, Pressable, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { GlobalColors, ThemeColorsSthetic } from "@/constants/Colors";
 import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons";
@@ -140,11 +146,11 @@ export default function More() {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {viewComponent ? (
         renderViewComponent(viewComponent)
       ) : (
-        <View>
+        <View style={{ flex: 1 }}>
           <View style={localStyle.contentHeader}>
             <TouchableOpacity onPress={activeCamera}>
               <Image
@@ -169,7 +175,7 @@ export default function More() {
               ) : (
                 <View
                   style={{
-                    width: Platform.OS === PLATFORM_TYPE.IOS ? "89%" : "98%",
+                    width: Platform.OS === PLATFORM_TYPE.IOS ? "92%" : "98%",
                   }}
                 >
                   <ThemedText style={localStyle.name}>
@@ -179,97 +185,102 @@ export default function More() {
               )}
             </View>
           </View>
-          <View style={localStyle.contentDivisor}>
-            <Pressable
-              style={localStyle.itemMenu}
-              onPress={() =>
-                handleView(COMPONENTS_SETINGS.PERSONAL_INFORMATION)
-              }
-            >
-              <View style={localStyle.itemMenuText}>
-                <AntDesign name="user" style={localStyle.iconItem} />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Mis datos
-                </ThemedText>
-              </View>
-            </Pressable>
-            <Pressable
-              style={localStyle.itemMenu}
-              onPress={() => handleView(COMPONENTS_SETINGS.CHANGE_PASSWORD)}
-            >
-              <View style={localStyle.itemMenuText}>
-                <MaterialIcons name="password" style={localStyle.iconItem} />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Cambio de contraseña
-                </ThemedText>
-              </View>
-            </Pressable>
-            <Pressable
-              style={localStyle.itemMenu}
-              onPress={() => handleView(COMPONENTS_SETINGS.MY_LOCATION)}
-            >
-              <View style={localStyle.itemMenuText}>
-                <Entypo name="location" style={localStyle.iconItem} />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Mi ubicación pretederminada
-                </ThemedText>
-              </View>
-            </Pressable>
-          </View>
-          {/*  EL APARTADO DE NOTIFICACIONES SE DEJA PARA EL SIGUIENTE RELEASE */}
-          {/* <View style={localStyle.contentDivisor}>
-            <Pressable style={localStyle.itemMenu} onPress={() => {}}>
-              <View style={localStyle.itemMenuText}>
-                <AntDesign name="bells" style={localStyle.iconItem} />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Notificaciones xxxx
-                </ThemedText>
-              </View>
-            </Pressable>
-          </View> */}
-          <View style={localStyle.contentDivisor}>
-            <Pressable
-              style={localStyle.itemMenu}
-              onPress={() => setOpenModalLogout(true)}
-            >
-              <View style={localStyle.itemMenuText}>
-                <MaterialIcons name="logout" style={localStyle.iconItem} />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Cerrar sesion
-                </ThemedText>
-              </View>
-            </Pressable>
-          </View>
-          <View style={localStyle.contentDivisor}>
-            <Pressable
-              style={localStyle.itemMenu}
-              onPress={() => setOpenModalDeleteAccount((v) => !v)}
-            >
-              <View style={localStyle.itemMenuText}>
-                <AntDesign
-                  name="delete"
-                  style={{
-                    ...localStyle.iconItem,
-                    color: ThemeColorsSthetic.dangerColor,
-                  }}
-                />
-                <ThemedText darkColor="black">
-                  {"    "}
-                  Eliminar cuenta
-                </ThemedText>
-              </View>
-            </Pressable>
-          </View>
-          {/* <UploadOptionPictureModal
-            activeCamera={activeCamera}
-            open={openModal}
-            handleCloseModal={handleOpenModal}
-          /> */}
+          <ScrollView
+            style={localStyle.contentMore}
+            contentContainerStyle={{ flexGrow: 1 }}
+          >
+            <View style={localStyle.contentDivisor}>
+              <Pressable
+                style={localStyle.itemMenu}
+                onPress={() =>
+                  handleView(COMPONENTS_SETINGS.PERSONAL_INFORMATION)
+                }
+              >
+                <View style={localStyle.itemMenuText}>
+                  <AntDesign name="user" style={localStyle.iconItem} />
+                  <ThemedText darkColor="black">
+                    {"    "}
+                    Mis datos
+                  </ThemedText>
+                </View>
+              </Pressable>
+              <Pressable
+                style={localStyle.itemMenu}
+                onPress={() => handleView(COMPONENTS_SETINGS.CHANGE_PASSWORD)}
+              >
+                <View style={localStyle.itemMenuText}>
+                  <MaterialIcons name="password" style={localStyle.iconItem} />
+                  <ThemedText darkColor="black">
+                    {"    "}
+                    Cambio de contraseña
+                  </ThemedText>
+                </View>
+              </Pressable>
+              <Pressable
+                style={localStyle.itemMenu}
+                onPress={() => handleView(COMPONENTS_SETINGS.MY_LOCATION)}
+              >
+                <View style={localStyle.itemMenuText}>
+                  <Entypo name="location" style={localStyle.iconItem} />
+                  <ThemedText darkColor="black">
+                    {"    "}
+                    Mi ubicación pretederminada
+                  </ThemedText>
+                </View>
+              </Pressable>
+            </View>
+            {/*  EL APARTADO DE NOTIFICACIONES SE DEJA PARA EL SIGUIENTE RELEASE */}
+            {/* <View style={localStyle.contentDivisor}>
+              <Pressable style={localStyle.itemMenu} onPress={() => {}}>
+                <View style={localStyle.itemMenuText}>
+                  <AntDesign name="bells" style={localStyle.iconItem} />
+                  <ThemedText darkColor="black">
+                    {"    "}
+                    Notificaciones xxxx
+                  </ThemedText>
+                </View>
+              </Pressable>
+            </View> */}
+            <View style={localStyle.contentDivisor}>
+              <Pressable
+                style={localStyle.itemMenu}
+                onPress={() => setOpenModalLogout(true)}
+              >
+                <View style={localStyle.itemMenuText}>
+                  <MaterialIcons name="logout" style={localStyle.iconItem} />
+                  <ThemedText darkColor="black">
+                    {"    "}
+                    Cerrar sesion
+                  </ThemedText>
+                </View>
+              </Pressable>
+            </View>
+            <View style={localStyle.contentDivisor}>
+              <Pressable
+                style={localStyle.itemMenu}
+                onPress={() => setOpenModalDeleteAccount((v) => !v)}
+              >
+                <View style={localStyle.itemMenuText}>
+                  <AntDesign
+                    name="delete"
+                    style={{
+                      ...localStyle.iconItem,
+                      color: ThemeColorsSthetic.dangerColor,
+                    }}
+                  />
+                  <ThemedText darkColor="black">
+                    {"    "}
+                    Eliminar cuenta
+                  </ThemedText>
+                </View>
+              </Pressable>
+            </View>
+            {/* <UploadOptionPictureModal
+              activeCamera={activeCamera}
+              open={openModal}
+              handleCloseModal={handleOpenModal}
+            /> */}
+          </ScrollView>
           <ModalConfirm
             open={openModalDeleteAccount}
             title="¿Estás seguro de querer eliminar tu cuenta?"
@@ -307,6 +318,9 @@ export default function More() {
 }
 
 const localStyle = StyleSheet.create({
+  contentMore: {
+    flex: 1,
+  },
   contentDivisor: {
     borderTopColor: GlobalColors.grayLigthColor,
     borderTopWidth: 1,

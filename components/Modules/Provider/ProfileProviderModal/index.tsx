@@ -21,7 +21,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import {
   Image,
-  Linking,
   Modal,
   Platform,
   ScrollView,
@@ -30,7 +29,10 @@ import {
   View,
 } from "react-native";
 import GalleryProjectModal from "../GalleryProjectModal";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { ResponseApi } from "@/api/responseApi";
 import { PLATFORM_TYPE, TAB_PROVIDER_SELECTED } from "@/constants/Constants";
 import Schedule from "../../Schedule";
@@ -94,174 +96,186 @@ export const ProfileProviderModal = ({
       transparent={true}
       visible={open}
       onRequestClose={handleCloseModal}
+      supportedOrientations={["portrait", "landscape"]}
     >
-      <View
-        style={{
-          ...localStyle.modal,
-          marginTop: insets.top,
-        }}
-      >
-        <ReturnArrow handleReturn={handleCloseModal} />
-        {isLoading ? (
-          <LoadingView />
-        ) : (
-          <View>
-            <View style={localStyle.contentBanner}>
-              <Image
-                style={{ width: "100%", height: 200 }}
-                source={{ uri: dataInfo?.infoCompanyDTO?.companyPictureUrl }}
-              />
-              <View style={localStyle.contentImgProfile}>
-                <View style={localStyle.nameProvider}>
-                  <ThemedText
-                    style={{ ...TextStyle.fontGoldTitle, fontSize: 14 }}
-                  >
-                    {dataInfo?.firstName} {dataInfo?.lastName}
-                  </ThemedText>
+      <SafeAreaView style={localStyle.modal}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: ThemeColorsSthetic.backgroundLight,
+          }}
+        >
+          <ReturnArrow handleReturn={handleCloseModal} />
+          {isLoading ? (
+            <LoadingView />
+          ) : (
+            <ScrollView style={{ flexGrow: 1 }}>
+              <View style={{ flex: 1 }}>
+                <View style={localStyle.contentBanner}>
+                  <Image
+                    style={{ width: "100%", height: 200 }}
+                    source={{
+                      uri: dataInfo?.infoCompanyDTO?.companyPictureUrl,
+                    }}
+                  />
+                  <View style={localStyle.contentImgProfile}>
+                    <View style={localStyle.nameProvider}>
+                      <ThemedText
+                        style={{ ...TextStyle.fontGoldTitle, fontSize: 14 }}
+                      >
+                        {dataInfo?.firstName} {dataInfo?.lastName}
+                      </ThemedText>
+                    </View>
+                    <Image
+                      style={localStyle.profilePicture}
+                      source={
+                        !dataInfo?.profilePicture
+                          ? require("@/assets/images/me-logo.png")
+                          : {
+                              uri: dataInfo?.profilePicture,
+                            }
+                      }
+                    />
+                  </View>
                 </View>
-                <Image
-                  style={localStyle.profilePicture}
-                  source={
-                    !dataInfo?.profilePicture
-                      ? require("@/assets/images/me-logo.png")
-                      : {
-                          uri: dataInfo?.profilePicture,
+                <View
+                  style={{
+                    ...localStyle.contentInfoCompany,
+                    ...GridStyle.rowSpaceBetween,
+                  }}
+                >
+                  <View>
+                    <GeneralButton
+                      textBtn="Agendar cita"
+                      styleText={TextStyle.fontBoldWhite}
+                      styleBtn={localStyle.btnSchedule}
+                      handleOnPress={() => setOpenMakeSchedule(true)}
+                    />
+                  </View>
+                  <View style={localStyle.contentSocialMedia}>
+                    {dataInfo?.infoCompanyDTO.facebook && (
+                      <TouchableOpacity
+                        style={localStyle.touchIcon}
+                        onPress={() =>
+                          openLink(dataInfo?.infoCompanyDTO?.facebook ?? "")
                         }
-                  }
-                />
+                      >
+                        <Entypo
+                          name="facebook"
+                          style={localStyle.iconSocialMedia}
+                        />
+                      </TouchableOpacity>
+                    )}
+                    {dataInfo?.infoCompanyDTO.instagram && (
+                      <TouchableOpacity
+                        style={localStyle.touchIcon}
+                        onPress={() =>
+                          openLink(dataInfo.infoCompanyDTO.instagram ?? "")
+                        }
+                      >
+                        <Entypo
+                          name="instagram"
+                          style={localStyle.iconSocialMedia}
+                        />
+                      </TouchableOpacity>
+                    )}
+                    {dataInfo?.infoCompanyDTO.webPage && (
+                      <TouchableOpacity
+                        style={localStyle.touchIcon}
+                        onPress={() =>
+                          openLink(dataInfo.infoCompanyDTO.webPage ?? "")
+                        }
+                      >
+                        <MaterialCommunityIcons
+                          name="web-check"
+                          style={localStyle.iconSocialMedia}
+                        />
+                      </TouchableOpacity>
+                    )}
+                    {dataInfo?.phone && dataInfo.lada && (
+                      <TouchableOpacity
+                        style={localStyle.touchIcon}
+                        onPress={() =>
+                          openWhatsApp(
+                            `${dataInfo.lada.replace("+", "")}${
+                              dataInfo.phone
+                            }`,
+                            msnWhatsApp
+                          )
+                        }
+                      >
+                        <MaterialCommunityIcons
+                          name="whatsapp"
+                          style={localStyle.iconSocialWhatsapp}
+                        />
+                      </TouchableOpacity>
+                    )}
+                    {dataInfo?.phone && (
+                      <TouchableOpacity
+                        style={localStyle.touchIcon}
+                        onPress={() => openLink(`tel:${dataInfo.phone}`)}
+                      >
+                        <Feather
+                          name="phone-outgoing"
+                          style={localStyle.iconSocialMedia}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+                <View
+                  style={{
+                    paddingHorizontal: 5,
+                    paddingVertical: 5,
+                    marginBottom: 7,
+                    backgroundColor: ThemeColorsSthetic.backgroundLight,
+                    ...GridStyle.rowSpaceBetween,
+                  }}
+                >
+                  <GeneralButton
+                    styleBtn={
+                      tabSelected === TAB_PROVIDER_SELECTED.INFO
+                        ? localStyle.tabSelected
+                        : localStyle.tab
+                    }
+                    styleText={TextStyle.fontBoldWhite}
+                    textBtn="Información"
+                    handleOnPress={() =>
+                      setTabSelected(TAB_PROVIDER_SELECTED.INFO)
+                    }
+                  />
+                  <GeneralButton
+                    styleBtn={
+                      tabSelected === TAB_PROVIDER_SELECTED.COMMENTS
+                        ? localStyle.tabSelected
+                        : localStyle.tab
+                    }
+                    styleText={TextStyle.fontBoldWhite}
+                    textBtn="Calificación"
+                    handleOnPress={() =>
+                      setTabSelected(TAB_PROVIDER_SELECTED.COMMENTS)
+                    }
+                  />
+                </View>
+                {dataInfo &&
+                  idProvider &&
+                  tabSelected === TAB_PROVIDER_SELECTED.INFO && (
+                    <TabInfoProvider
+                      idProvider={idProvider}
+                      infoProvider={dataInfo}
+                      listProjects={dataListProyects}
+                      onSelect={handleSelectGallery}
+                    />
+                  )}
+                {idProvider &&
+                  tabSelected === TAB_PROVIDER_SELECTED.COMMENTS && (
+                    <TabCommentsProvider idProvider={idProvider} />
+                  )}
               </View>
-            </View>
-            <View
-              style={{
-                ...localStyle.contentInfoCompany,
-                ...GridStyle.rowSpaceBetween,
-              }}
-            >
-              <View>
-                <GeneralButton
-                  textBtn="Agendar cita"
-                  styleText={TextStyle.fontBoldWhite}
-                  styleBtn={localStyle.btnSchedule}
-                  handleOnPress={() => setOpenMakeSchedule(true)}
-                />
-              </View>
-              <View style={localStyle.contentSocialMedia}>
-                {dataInfo?.infoCompanyDTO.facebook && (
-                  <TouchableOpacity
-                    style={localStyle.touchIcon}
-                    onPress={() =>
-                      openLink(dataInfo?.infoCompanyDTO?.facebook ?? "")
-                    }
-                  >
-                    <Entypo
-                      name="facebook"
-                      style={localStyle.iconSocialMedia}
-                    />
-                  </TouchableOpacity>
-                )}
-                {dataInfo?.infoCompanyDTO.instagram && (
-                  <TouchableOpacity
-                    style={localStyle.touchIcon}
-                    onPress={() =>
-                      openLink(dataInfo.infoCompanyDTO.instagram ?? "")
-                    }
-                  >
-                    <Entypo
-                      name="instagram"
-                      style={localStyle.iconSocialMedia}
-                    />
-                  </TouchableOpacity>
-                )}
-                {dataInfo?.infoCompanyDTO.webPage && (
-                  <TouchableOpacity
-                    style={localStyle.touchIcon}
-                    onPress={() =>
-                      openLink(dataInfo.infoCompanyDTO.webPage ?? "")
-                    }
-                  >
-                    <MaterialCommunityIcons
-                      name="web-check"
-                      style={localStyle.iconSocialMedia}
-                    />
-                  </TouchableOpacity>
-                )}
-                {dataInfo?.phone && dataInfo.lada && (
-                  <TouchableOpacity
-                    style={localStyle.touchIcon}
-                    onPress={() =>
-                      openWhatsApp(
-                        `${dataInfo.lada.replace("+", "")}${dataInfo.phone}`,
-                        msnWhatsApp
-                      )
-                    }
-                  >
-                    <MaterialCommunityIcons
-                      name="whatsapp"
-                      style={localStyle.iconSocialWhatsapp}
-                    />
-                  </TouchableOpacity>
-                )}
-                {dataInfo?.phone && (
-                  <TouchableOpacity
-                    style={localStyle.touchIcon}
-                    onPress={() => openLink(`tel:${dataInfo.phone}`)}
-                  >
-                    <Feather
-                      name="phone-outgoing"
-                      style={localStyle.iconSocialMedia}
-                    />
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-            <View
-              style={{
-                paddingHorizontal: 5,
-                paddingVertical: 5,
-                marginBottom: 7,
-                backgroundColor: ThemeColorsSthetic.backgroundLight,
-                ...GridStyle.rowSpaceBetween,
-              }}
-            >
-              <GeneralButton
-                styleBtn={
-                  tabSelected === TAB_PROVIDER_SELECTED.INFO
-                    ? localStyle.tabSelected
-                    : localStyle.tab
-                }
-                styleText={TextStyle.fontBoldWhite}
-                textBtn="Información"
-                handleOnPress={() => setTabSelected(TAB_PROVIDER_SELECTED.INFO)}
-              />
-              <GeneralButton
-                styleBtn={
-                  tabSelected === TAB_PROVIDER_SELECTED.COMMENTS
-                    ? localStyle.tabSelected
-                    : localStyle.tab
-                }
-                styleText={TextStyle.fontBoldWhite}
-                textBtn="Calificación"
-                handleOnPress={() =>
-                  setTabSelected(TAB_PROVIDER_SELECTED.COMMENTS)
-                }
-              />
-            </View>
-            {dataInfo &&
-              idProvider &&
-              tabSelected === TAB_PROVIDER_SELECTED.INFO && (
-                <TabInfoProvider
-                  idProvider={idProvider}
-                  infoProvider={dataInfo}
-                  listProjects={dataListProyects}
-                  onSelect={handleSelectGallery}
-                />
-              )}
-            {idProvider && tabSelected === TAB_PROVIDER_SELECTED.COMMENTS && (
-              <TabCommentsProvider idProvider={idProvider} />
-            )}
-          </View>
-        )}
-      </View>
+            </ScrollView>
+          )}
+        </View>
+      </SafeAreaView>
       {gallerySelected && (
         <GalleryProjectModal
           open={openModalGalery}
@@ -282,8 +296,8 @@ export const ProfileProviderModal = ({
 
 const localStyle = StyleSheet.create({
   modal: {
-    backgroundColor: "white",
-    height: "100%",
+    backgroundColor: ThemeColorsSthetic.shadowBackground,
+    flex: 1,
   },
   contentHeader: {
     flexDirection: "row",

@@ -1,6 +1,7 @@
-import { FlatList, View } from "react-native";
+import { Dimensions, FlatList, Platform, View } from "react-native";
 import CardProfileProvider from "../CardProfileProvider";
 import EmptyView from "@/components/Shared/EmptyView";
+import { PLATFORM_TYPE } from "@/constants/Constants";
 
 type listProviderProps = {
   dataListProvider: any[];
@@ -19,10 +20,17 @@ export const ListProvider = ({
   isFetchingList,
   listKeysFavorite,
 }: listProviderProps) => {
+  const { height } = Dimensions.get("window");
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        marginBottom: Platform.OS === PLATFORM_TYPE.IOS ? height * 0.06 : 0,
+      }}
+    >
       {dataListProvider.length > 0 ? (
         <FlatList
+          style={{ flexGrow: 1 }}
           data={Array.isArray(dataListProvider) ? dataListProvider : []}
           keyExtractor={(item, index) =>
             item?.id?.toString?.() || index.toString()

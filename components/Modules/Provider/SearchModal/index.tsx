@@ -3,7 +3,6 @@ import GeneralButton from "@/components/Shared/GeneralButton";
 import StateAndMunicipalitySelect from "@/components/Shared/StateAndMunicipalitySelect";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeColorsSthetic } from "@/constants/Colors";
-import { PLATFORM_TYPE } from "@/constants/Constants";
 import {
   DefaultLocationType,
   modalCustomProps,
@@ -19,9 +18,9 @@ import { useSessionProvider } from "@/provider/SessionProvider";
 import Checkbox from "expo-checkbox";
 import { useEffect, useMemo, useState } from "react";
 import {
+  Dimensions,
   Keyboard,
   Modal,
-  Platform,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -29,7 +28,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type searchModalProps = modalCustomProps & {
   listType: TypesServicesType[];
@@ -44,7 +43,7 @@ export const SearchModal = ({
   handleFilter,
   handleClearFilter,
 }: searchModalProps) => {
-  const insets = useSafeAreaInsets();
+  const { height } = Dimensions.get("window");
   const { storeSessionProvider } = useSessionProvider();
   const [textSearch, setTextSearch] = useState("");
   const [locationSelected, setLocationSelect] = useState<DefaultLocationType>({
@@ -144,92 +143,98 @@ export const SearchModal = ({
 
   return (
     <Modal
+      style={{ flex: 1 }}
       animationType="fade"
       transparent={true}
       visible={open}
       onRequestClose={handleCloseModal}
+      supportedOrientations={["portrait", "landscape"]}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={localStyle.modalSearch}>
-          <View
-            style={{
-              ...localStyle.contentModal,
-              top: insets.top,
-            }}
-          >
-            <ButtonCloseModal handleOnPress={handleCloseModal} />
-            <View style={localStyle.contentFilter}>
-              <View style={localStyle.contentComponent}>
-                <ThemedText style={TextStyle.label}>Negocio:</ThemedText>
-                <TextInput
-                  placeholder="Ejem: Meredith Aesthetic..."
-                  placeholderTextColor={ThemeColorsSthetic.muted}
-                  style={localStyle.inputSearch}
-                  value={textSearch}
-                  onChangeText={setTextSearch}
-                />
+      <SafeAreaView style={{ ...localStyle.modalSearch }}>
+        <View style={{ ...localStyle.modalSearch, height: height * 0.6 }}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView style={{ flexGrow: 1 }}>
+              <View
+                style={{
+                  ...localStyle.contentModal,
+                }}
+              >
+                <ButtonCloseModal handleOnPress={handleCloseModal} />
+                <View style={localStyle.contentFilter}>
+                  <View style={localStyle.contentComponent}>
+                    <ThemedText style={TextStyle.label}>Negocio:</ThemedText>
+                    <TextInput
+                      placeholder="Ejem: Meredith Aesthetic..."
+                      placeholderTextColor={ThemeColorsSthetic.muted}
+                      style={localStyle.inputSearch}
+                      value={textSearch}
+                      onChangeText={setTextSearch}
+                    />
+                  </View>
+                  <View>
+                    <StateAndMunicipalitySelect
+                      defaultValues={locationSelected}
+                      handleSelectData={handleSelectLocation}
+                      clearData={clearSelect}
+                    />
+                  </View>
+                  <View style={localStyle.contentScroll}>
+                    <ThemedText style={TextStyle.label}>
+                      Tipo servicio:
+                    </ThemedText>
+                    <ScrollView style={localStyle.contentComponent}>
+                      {listItemTypeService.map((item) => (
+                        <TouchableOpacity
+                          onPress={() => handleSelectItem(item.key)}
+                          key={item.key}
+                          style={localStyle.contentElement}
+                        >
+                          <Checkbox value={item.checked} />
+                          <ThemedText style={localStyle.listValue}>
+                            {"   "}
+                            {item.value}
+                          </ThemedText>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                  </View>
+                  <View style={localStyle.contentBtn}>
+                    <GeneralButton
+                      textBtn="Limpiar filtros"
+                      styleText={TextStyle.fontBoldWhite}
+                      styleBtn={{
+                        ...ButtonGeneralStyle.btnCancelSthetic,
+                        ...localStyle.btn,
+                      }}
+                      handleOnPress={handleOnClearFilter}
+                    />
+                    <GeneralButton
+                      textBtn="Buscar"
+                      styleText={TextStyle.fontBoldWhite}
+                      styleBtn={{
+                        ...ButtonGeneralStyle.btnSaveSthetic,
+                        ...localStyle.btn,
+                      }}
+                      handleOnPress={handleOnPressFilter}
+                    />
+                  </View>
+                </View>
               </View>
-              <View>
-                <StateAndMunicipalitySelect
-                  defaultValues={locationSelected}
-                  handleSelectData={handleSelectLocation}
-                  clearData={clearSelect}
-                />
-              </View>
-              <View style={localStyle.contentScroll}>
-                <ThemedText style={TextStyle.label}>Tipo servicio:</ThemedText>
-                <ScrollView style={localStyle.contentComponent}>
-                  {listItemTypeService.map((item) => (
-                    <TouchableOpacity
-                      onPress={() => handleSelectItem(item.key)}
-                      key={item.key}
-                      style={localStyle.contentElement}
-                    >
-                      <Checkbox value={item.checked} />
-                      <ThemedText style={localStyle.listValue}>
-                        {"   "}
-                        {item.value}
-                      </ThemedText>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
-              </View>
-              <View style={localStyle.contentBtn}>
-                <GeneralButton
-                  textBtn="Limpiar filtros"
-                  styleText={TextStyle.fontBoldWhite}
-                  styleBtn={{
-                    ...ButtonGeneralStyle.btnCancelSthetic,
-                    ...localStyle.btn,
-                  }}
-                  handleOnPress={handleOnClearFilter}
-                />
-                <GeneralButton
-                  textBtn="Buscar"
-                  styleText={TextStyle.fontBoldWhite}
-                  styleBtn={{
-                    ...ButtonGeneralStyle.btnSaveSthetic,
-                    ...localStyle.btn,
-                  }}
-                  handleOnPress={handleOnPressFilter}
-                />
-              </View>
-            </View>
-          </View>
+            </ScrollView>
+          </TouchableWithoutFeedback>
         </View>
-      </TouchableWithoutFeedback>
+      </SafeAreaView>
     </Modal>
   );
 };
 
 const localStyle = StyleSheet.create({
   modalSearch: {
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // <-- fondo negro con opacidad
+    flex: 1,
+    backgroundColor: ThemeColorsSthetic.shadowBackground,
     justifyContent: "center",
   },
   contentModal: {
-    position: "absolute",
     width: "100%",
     backgroundColor: ThemeColorsSthetic.backgroundLight,
   },

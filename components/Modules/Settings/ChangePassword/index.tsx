@@ -16,7 +16,13 @@ import { parsePasswordEncrypt } from "@/utils/GeneralUtils";
 import { Ionicons } from "@expo/vector-icons";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 type changePasswordProps = {
   returnBack: () => void;
@@ -67,66 +73,68 @@ export const ChangePassword = ({ returnBack }: changePasswordProps) => {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <SubHeaderReturn
         subtitle="Cambiar de contraseña"
         handleReturn={returnBack}
       />
       <View style={localStyle.contentSingleInput}>
-        <ThemedText style={TextStyle.label}>
-          Ingrese su nueva contraseña
-        </ThemedText>
-        <View style={{ flexDirection: "row" }}>
-          <TextInput
-            style={{ ...GeneralStyle.simpleInput, width: "100%" }}
-            secureTextEntry={hiddenPass}
-            onChangeText={(evt) => handleOnChangePassword(evt)}
-          />
-          <TouchableOpacity
-            style={localStyle.icon}
-            onPress={() => setHiddenPass((prev) => !prev)}
-          >
-            <Ionicons
-              name={hiddenPass ? "eye-off" : "eye"}
-              size={24}
-              color={ThemeColorsSthetic.accentReverse}
+        <ScrollView style={{ flexGrow: 1 }}>
+          <ThemedText style={TextStyle.label}>
+            Ingrese su nueva contraseña
+          </ThemedText>
+          <View style={{ flexDirection: "row" }}>
+            <TextInput
+              style={{ ...GeneralStyle.simpleInput, width: "100%" }}
+              secureTextEntry={hiddenPass}
+              onChangeText={(evt) => handleOnChangePassword(evt)}
             />
-          </TouchableOpacity>
-        </View>
-        <View style={{ marginTop: 15 }}>
-          <ThemedText style={localStyle.textObservation}>
-            Tu contraseña debe tener al menos:
-          </ThemedText>
-          <ThemedText style={localStyle.textObservation}>
-            8 caracteres, (20 máx.)
-          </ThemedText>
-          <ThemedText style={localStyle.textObservation}>
-            1 letra y 1 número
-          </ThemedText>
-          <ThemedText style={localStyle.textObservation}>
-            1 mayúscula
-          </ThemedText>
-          <ThemedText style={localStyle.textObservation}>
-            1 carácter especial
-          </ThemedText>
-        </View>
-        <View style={{ marginTop: 20 }}>
-          <GeneralButton
-            styleBtn={
-              !enableBtn
-                ? ButtonGeneralStyle.btnUpdateSthetic
-                : ButtonGeneralStyle.btnDisabledSthetic
-            }
-            textBtn="Actualizar contraseña"
-            styleText={{
-              color: !enableBtn
-                ? ThemeColorsSthetic.textLight
-                : ThemeColorsSthetic.muted,
-            }}
-            handleOnPress={handleSubmitUpdate}
-            disabledBtn={enableBtn}
-          />
-        </View>
+            <TouchableOpacity
+              style={localStyle.icon}
+              onPress={() => setHiddenPass((prev) => !prev)}
+            >
+              <Ionicons
+                name={hiddenPass ? "eye-off" : "eye"}
+                size={24}
+                color={ThemeColorsSthetic.accentReverse}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ marginTop: 15 }}>
+            <ThemedText style={localStyle.textObservation}>
+              Tu contraseña debe tener al menos:
+            </ThemedText>
+            <ThemedText style={localStyle.textObservation}>
+              8 caracteres, (20 máx.)
+            </ThemedText>
+            <ThemedText style={localStyle.textObservation}>
+              1 letra y 1 número
+            </ThemedText>
+            <ThemedText style={localStyle.textObservation}>
+              1 mayúscula
+            </ThemedText>
+            <ThemedText style={localStyle.textObservation}>
+              1 carácter especial
+            </ThemedText>
+          </View>
+          <View style={{ marginTop: 20 }}>
+            <GeneralButton
+              styleBtn={
+                !enableBtn
+                  ? ButtonGeneralStyle.btnUpdateSthetic
+                  : ButtonGeneralStyle.btnDisabledSthetic
+              }
+              textBtn="Actualizar contraseña"
+              styleText={{
+                color: !enableBtn
+                  ? ThemeColorsSthetic.textLight
+                  : ThemeColorsSthetic.muted,
+              }}
+              handleOnPress={handleSubmitUpdate}
+              disabledBtn={enableBtn}
+            />
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -134,8 +142,9 @@ export const ChangePassword = ({ returnBack }: changePasswordProps) => {
 
 const localStyle = StyleSheet.create({
   contentSingleInput: {
-    marginTop: "10%",
+    marginTop: 20,
     paddingHorizontal: "10%",
+    flex: 1,
   },
   textObservation: {
     color: ThemeColorsSthetic.muted,

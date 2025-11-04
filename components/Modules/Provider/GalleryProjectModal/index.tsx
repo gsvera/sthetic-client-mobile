@@ -5,22 +5,14 @@ import LoadingView from "@/components/Shared/LoadingView";
 import ReturnArrow from "@/components/Shared/ReturnArrow";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeColorsSthetic } from "@/constants/Colors";
-import { PLATFORM_TYPE } from "@/constants/Constants";
 import {
   DetailProjectType,
   modalCustomProps,
   ProjectType,
 } from "@/constants/GeneralTypes";
 import { useQuery } from "@tanstack/react-query";
-import {
-  Image,
-  Modal,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Image, Modal, ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type galleryProjectModalProps = modalCustomProps & {
   project: ProjectType;
@@ -31,8 +23,6 @@ export const GalleryProjectModal = ({
   handleCloseModal,
   project,
 }: galleryProjectModalProps) => {
-  const insets = useSafeAreaInsets();
-  const platform = Platform.OS;
   const { data: listImg = [], isFetching: isFetchingListImg } = useQuery({
     queryKey: [REACT_QUERY_KEYS.catalogs.services.getById],
     queryFn: () =>
@@ -48,45 +38,52 @@ export const GalleryProjectModal = ({
       transparent={true}
       visible={open}
       onRequestClose={handleCloseModal}
+      supportedOrientations={["portrait", "landscape"]}
     >
-      <View
+      <SafeAreaView
         style={{
           ...localStyle.modal,
-          top: insets.top,
         }}
       >
-        <ReturnArrow handleReturn={handleCloseModal} />
-        <View>
-          <ThemedText style={localStyle.title}>
-            {project.nameService}
-          </ThemedText>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: ThemeColorsSthetic.backgroundLight,
+          }}
+        >
+          <ReturnArrow handleReturn={handleCloseModal} />
+          <View>
+            <ThemedText style={localStyle.title}>
+              {project.nameService}
+            </ThemedText>
+          </View>
+          <View style={localStyle.contentImgList}>
+            {isFetchingListImg ? (
+              <LoadingView />
+            ) : (
+              <ScrollView style={{ flexGrow: 1 }}>
+                {listImg.map((item, index: number) => (
+                  <View key={index} style={localStyle.contentImg}>
+                    <Image
+                      style={localStyle.imgDetail}
+                      source={{ uri: item.fileUrl }}
+                      resizeMode="contain"
+                    />
+                  </View>
+                ))}
+              </ScrollView>
+            )}
+          </View>
         </View>
-        <View style={localStyle.contentImgList}>
-          {isFetchingListImg ? (
-            <LoadingView />
-          ) : (
-            <ScrollView>
-              {listImg.map((item, index: number) => (
-                <View key={index} style={localStyle.contentImg}>
-                  <Image
-                    style={localStyle.imgDetail}
-                    source={{ uri: item.fileUrl }}
-                    resizeMode="contain"
-                  />
-                </View>
-              ))}
-            </ScrollView>
-          )}
-        </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 };
 
 const localStyle = StyleSheet.create({
   modal: {
-    backgroundColor: ThemeColorsSthetic.backgroundLight,
-    height: "100%",
+    backgroundColor: ThemeColorsSthetic.shadowBackground,
+    flex: 1,
   },
   title: {
     paddingTop: 5,
@@ -97,7 +94,7 @@ const localStyle = StyleSheet.create({
     fontSize: 30,
   },
   contentImgList: {
-    height: Platform.OS === PLATFORM_TYPE.IOS ? "82%" : "85%",
+    flex: 1,
   },
   contentImg: {
     width: "100%",

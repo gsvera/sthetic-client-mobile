@@ -4,6 +4,7 @@ import MyLocationForm from "../MyLocationForm";
 import { ModalStyle } from "@/constants/StyleComponents";
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import ButtonCloseModal from "@/components/Shared/ButtonCloseModal";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export const MyLocationModal = ({
   idUser,
@@ -12,26 +13,38 @@ export const MyLocationModal = ({
 }: modalCustomProps) => {
   return (
     <Modal
+      style={{ flex: 1 }}
       visible={open}
       animationType="fade"
       transparent={true}
       onRequestClose={handleCloseModal}
+      supportedOrientations={["portrait", "landscape"]}
     >
-      <View style={ModalStyle.modalView}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View
           style={{
-            backgroundColor: ThemeColorsSthetic.backgroundLight,
-            marginHorizontal: 10,
-            paddingBottom: 10,
+            backgroundColor: ThemeColorsSthetic.shadowBackground,
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
           }}
         >
-          <ButtonCloseModal handleOnPress={handleCloseModal} />
-          <MyLocationForm
-            idUser={idUser as string}
-            handleClose={handleCloseModal}
-          />
+          <View
+            style={{
+              backgroundColor: ThemeColorsSthetic.backgroundLight,
+              marginHorizontal: 10,
+              paddingBottom: 10,
+            }}
+          >
+            <ButtonCloseModal handleOnPress={handleCloseModal} />
+            <MyLocationForm
+              idUser={idUser as string}
+              handleClose={handleCloseModal}
+              auxModal={true}
+            />
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 };

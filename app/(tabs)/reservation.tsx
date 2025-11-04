@@ -7,6 +7,7 @@ import { useSessionProvider } from "@/provider/SessionProvider";
 import dayjs from "dayjs";
 import { useState } from "react";
 import {
+  Dimensions,
   Image,
   Platform,
   StyleSheet,
@@ -16,6 +17,7 @@ import {
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function Reservation() {
+  const { height } = Dimensions.get("window");
   const { storeSessionProvider } = useSessionProvider();
   const [openDatePicker, setOpenDatePicker] = useState(false);
   const [dateSearch, setDateSearch] = useState(
@@ -35,31 +37,36 @@ export default function Reservation() {
           style={localStyle.logo}
         />
       </View>
-      <View style={localStyle.headerTitle}>
-        <ThemedText
-          style={{
-            ...TextStyle.titleModal,
-            fontSize: Platform.OS === PLATFORM_TYPE.IOS ? 17 : 19,
-          }}
-        >
-          Mis reservaciones del día:
-        </ThemedText>
-        <TouchableOpacity
-          style={localStyle.contentDate}
-          onPress={() => setOpenDatePicker(true)}
-        >
-          <ThemedText style={localStyle.labelDate}>{dateSearch}</ThemedText>
-        </TouchableOpacity>
-      </View>
       <View
-        style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "75%" : "80%" }}
+        style={{
+          flex: 1,
+          marginBottom: Platform.OS === PLATFORM_TYPE.IOS ? height * 0.06 : 0,
+        }}
       >
-        {storeSessionProvider?.idUser && (
-          <ReservationList
-            idUser={storeSessionProvider?.idUser}
-            day={dateSearch}
-          />
-        )}
+        <View style={localStyle.headerTitle}>
+          <ThemedText
+            style={{
+              ...TextStyle.titleModal,
+              fontSize: Platform.OS === PLATFORM_TYPE.IOS ? 17 : 19,
+            }}
+          >
+            Mis reservaciones del día:
+          </ThemedText>
+          <TouchableOpacity
+            style={localStyle.contentDate}
+            onPress={() => setOpenDatePicker(true)}
+          >
+            <ThemedText style={localStyle.labelDate}>{dateSearch}</ThemedText>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1 }}>
+          {storeSessionProvider?.idUser && (
+            <ReservationList
+              idUser={storeSessionProvider?.idUser}
+              day={dateSearch}
+            />
+          )}
+        </View>
       </View>
       <DateTimePickerModal
         isVisible={openDatePicker}

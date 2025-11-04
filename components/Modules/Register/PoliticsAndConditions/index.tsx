@@ -1,7 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import {
   Modal,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -20,19 +19,21 @@ export default function PoliticsAndConditionsModal({
   handleCloseModal,
 }: modalCustomProps) {
   const insets = useSafeAreaInsets();
-  const platform = Platform.OS;
+
   return (
     <Modal
-      style={localStyles.contentPolitics}
+      style={{ flex: 1 }}
       animationType="slide"
       transparent={false}
       visible={open}
+      supportedOrientations={["portrait", "landscape"]}
     >
       <View
         style={{
           paddingTop: insets.top,
           paddingBottom: insets.bottom,
           backgroundColor: ThemeColorsSthetic.backgroundStrong,
+          flex: 1,
         }}
       >
         <View style={localStyles.contentBody}>
@@ -390,9 +391,6 @@ export default function PoliticsAndConditionsModal({
 }
 
 export const localStyles = StyleSheet.create({
-  contentPolitics: {
-    paddingTop: 15,
-  },
   contentSubtitle: {
     width: "100%",
     flexDirection: "row",
@@ -435,7 +433,7 @@ export const localStyles = StyleSheet.create({
   },
   contentText: {
     width: "85%",
-    height: "75%",
+    flexGrow: 1,
     marginHorizontal: "auto",
     marginBottom: 15,
   },
@@ -443,7 +441,7 @@ export const localStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: "85%",
-    marginHorizontal: "auto",
+    alignSelf: "center",
   },
   contentBtnClose: {
     flexDirection: "row",
@@ -451,7 +449,7 @@ export const localStyles = StyleSheet.create({
     margin: 15,
   },
   contentBody: {
-    height: "100%",
+    flex: 1,
     backgroundColor: ThemeColorsSthetic.backgroundLight,
   },
 });

@@ -3,12 +3,11 @@ import { REACT_QUERY_KEYS } from "@/api/react-query-keys";
 import { ThemedText } from "@/components/ThemedText";
 import { TextStyle } from "@/constants/StyleComponents";
 import { useQuery } from "@tanstack/react-query";
-import { Platform, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import OptionService from "./OptionService";
 import { MenuServiceType } from "@/constants/GeneralTypes";
 import LoadingView from "@/components/Shared/LoadingView";
 import { ResponseApi } from "@/api/responseApi";
-import { PLATFORM_TYPE } from "@/constants/Constants";
 import EmptyView from "@/components/Shared/EmptyView";
 
 type stepServiceProps = {
@@ -32,7 +31,7 @@ export const StepService = ({ idProvider, onSelect }: stepServiceProps) => {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View>
         <ThemedText style={localStyle.title}>Seleccione un servicio</ThemedText>
         <View style={{ width: "90%", marginHorizontal: "auto" }}>
@@ -46,9 +45,7 @@ export const StepService = ({ idProvider, onSelect }: stepServiceProps) => {
       {isLoadingListServices ? (
         <LoadingView />
       ) : (
-        <ScrollView
-          style={{ height: Platform.OS === PLATFORM_TYPE.IOS ? "74%" : "75%" }}
-        >
+        <ScrollView style={{ flexGrow: 1 }}>
           {listServices.length > 0 ? (
             listServices?.map((item: MenuServiceType, index: number) => (
               <OptionService

@@ -1,6 +1,6 @@
 import { Tabs, useNavigation } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Dimensions, Platform, StyleSheet, View } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
 import { ThemeColorsSthetic } from "@/constants/Colors";
@@ -10,7 +10,7 @@ import {
   KEY_STORE,
   setStoreSession,
 } from "@/hooks/StoreDataSecure";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
   AntDesign,
   FontAwesome,
@@ -23,7 +23,8 @@ import {
   APP_NAME_SLUG,
   PLATFORM_TYPE,
   TYPE_STATUS,
-  VERSION,
+  VERSION_ANDROID,
+  VERSION_IOS,
 } from "@/constants/Constants";
 import { useNotificationProvider } from "@/provider/NotificationProvider";
 import { useWebSocketProvider } from "@/provider/WebSocketProvider";
@@ -54,7 +55,7 @@ export default function TabLayout() {
     useWebSocketProvider();
   const { storeSessionProvider } = useSessionProvider();
   const { token, setToken } = useApiProvider();
-  const insets = useSafeAreaInsets();
+  const { height } = Dimensions.get("window");
   const notificationListener = useRef<Notifications.EventSubscription | null>(
     null
   );
@@ -62,7 +63,7 @@ export default function TabLayout() {
   const [openQualificationModal, setOpenQualificationModal] = useState(false);
   const [accountVerification, setAccountVerification] = useState(true);
   const [openResendVerification, setOpenResendVerification] = useState(false);
-  const [showUpdateVersion, setShowUpdateVersion] = useState(false);
+  const [showUpdateVersion, setShowUpdateVersion] = useState(true);
 
   const { data: currentVersion } = useQuery({
     queryKey: [REACT_QUERY_KEYS.userConfig.configVersion("version")],
@@ -144,13 +145,13 @@ export default function TabLayout() {
       const dataVersion: CurrentVersionType = currentVersion?.items;
       if (
         Platform.OS === PLATFORM_TYPE.IOS &&
-        dataVersion.versionIos !== VERSION
+        dataVersion.versionIos !== VERSION_IOS
       ) {
         setShowUpdateVersion(true);
       }
       if (
         Platform.OS === PLATFORM_TYPE.ANDROID &&
-        dataVersion.versionAndroid !== VERSION
+        dataVersion.versionAndroid !== VERSION_ANDROID
       ) {
         setShowUpdateVersion(true);
       }
@@ -237,11 +238,9 @@ export default function TabLayout() {
   if (!token) return <></>;
 
   return (
-    <View
+    <SafeAreaView
       style={{
         ...localStyle.container,
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
         backgroundColor:
           colorScheme === "dark"
             ? ThemeColorsSthetic.backgroundStrong
@@ -257,6 +256,7 @@ export default function TabLayout() {
             headerShown: false,
             tabBarButton: HapticTab,
             tabBarBackground: TabBarBackground,
+            tabBarHideOnKeyboard: true,
             tabBarStyle: {
               ...Platform.select({
                 ios: {
@@ -265,7 +265,7 @@ export default function TabLayout() {
                 },
                 default: {},
               }),
-              height: 50,
+              height: height * 0.06,
               paddingBottom: 0,
               borderTopWidth: 0,
               backgroundColor: ThemeColorsSthetic.backgroundLight,
@@ -354,7 +354,7 @@ export default function TabLayout() {
         />
       )}
       {showUpdateVersion && <ModalUpdateVersion open={showUpdateVersion} />}
-    </View>
+    </SafeAreaView>
   );
 }
 

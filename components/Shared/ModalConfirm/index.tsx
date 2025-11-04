@@ -24,7 +24,13 @@ export const ModalConfirm = ({
   textBtnConfirm,
 }: modalConfirmProps) => {
   return (
-    <Modal animationType="fade" transparent={true} visible={open}>
+    <Modal
+      style={{ flex: 1 }}
+      animationType="fade"
+      transparent={true}
+      visible={open}
+      supportedOrientations={["portrait", "landscape"]}
+    >
       <View
         style={localStyle.modalView}
         onStartShouldSetResponder={() => {

@@ -61,13 +61,13 @@ export const ReservationList = ({ idUser, day }: reservationListProps) => {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {isLoadingListSchedule ? (
         <View style={{ marginTop: 100 }}>
           <LoadingView />
         </View>
       ) : (
-        <ScrollView>
+        <ScrollView style={{ flexGrow: 1 }}>
           {listSchedule?.length > 0 ? (
             listSchedule?.map((item) => (
               <ReservationListItem

@@ -269,7 +269,7 @@ export default function Home() {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={localStyle.header}>
         <Image
           source={require("@/assets/images/me-logo-header.png")}
@@ -302,9 +302,7 @@ export default function Home() {
           </TouchableOpacity>
         </View>
       </View>
-      <View
-        style={{ height: platform === PLATFORM_TYPE.ANDROID ? "90%" : "87%" }}
-      >
+      <View style={{ flex: 1 }}>
         {findFavorite ? (
           <ListProvider
             dataListProvider={dataListFavoriteProvider}

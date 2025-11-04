@@ -6,25 +6,34 @@ import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessag
 import StateAndMunicipalitySelect from "@/components/Shared/StateAndMunicipalitySelect";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeColorsSthetic } from "@/constants/Colors";
-import { TYPE_STATUS } from "@/constants/Constants";
+import { PLATFORM_TYPE, TYPE_STATUS } from "@/constants/Constants";
 import { DefaultLocationType } from "@/constants/GeneralTypes";
 import { ButtonGeneralStyle } from "@/constants/StyleComponents";
 import { useNotificationProvider } from "@/provider/NotificationProvider";
 import { useSessionProvider } from "@/provider/SessionProvider";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from "react-native";
 
 type myLocationFormProps = {
   idUser: string;
   handleClose?: () => void; // Solo para cuando se anida a un modal
+  auxModal?: boolean;
 };
 
 export const MyLocationForm = ({
   idUser,
   handleClose,
+  auxModal,
 }: myLocationFormProps) => {
   const queryClient = useQueryClient();
+  const { height } = useWindowDimensions();
   const { handleNotification } = useNotificationProvider();
   const { storeSessionProvider, setDefaultLocationStore } =
     useSessionProvider();
@@ -69,30 +78,49 @@ export const MyLocationForm = ({
   };
 
   return (
-    <View style={localStyle.contentBody}>
-      <ThemedText style={localStyle.textDescription}>
-        Estos configuración sirven para realizar busquedas mas precisas cerca de
-        su ubicación
-      </ThemedText>
-      <StateAndMunicipalitySelect
-        handleSelectData={onSelectOption}
-        defaultValues={defaultLocation}
-      />
-      <View style={localStyle.contentBtn}>
-        <GeneralButton
-          styleBtn={ButtonGeneralStyle.btnUpdateSthetic}
-          textBtn="Guardar mi ubicación"
-          styleText={{
-            color: ThemeColorsSthetic.textLight,
-          }}
-          handleOnPress={handleSaveDefaultLocation}
-        />
+    <View
+      style={!auxModal ? localStyle.contentBodyFlex : localStyle.contentBody}
+    >
+      <View
+        style={
+          !auxModal
+            ? {
+                height:
+                  height * (Platform.OS === PLATFORM_TYPE.IOS ? 0.6 : 0.5),
+              }
+            : { height: height * 0.4 }
+        }
+      >
+        <ScrollView style={{ flexGrow: 1 }}>
+          <ThemedText style={localStyle.textDescription}>
+            Estos configuración sirven para realizar busquedas mas precisas
+            cerca de su ubicación
+          </ThemedText>
+          <StateAndMunicipalitySelect
+            handleSelectData={onSelectOption}
+            defaultValues={defaultLocation}
+          />
+          <View style={localStyle.contentBtn}>
+            <GeneralButton
+              styleBtn={ButtonGeneralStyle.btnUpdateSthetic}
+              textBtn="Guardar mi ubicación"
+              styleText={{
+                color: ThemeColorsSthetic.textLight,
+              }}
+              handleOnPress={handleSaveDefaultLocation}
+            />
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
 };
 
 const localStyle = StyleSheet.create({
+  containt: {
+    flex: 1,
+  },
+  contentBodyFlex: { width: "auto", padding: 10, flex: 1 },
   contentBody: { width: "auto", padding: 10 },
   textDescription: {
     textAlign: "center",
@@ -104,6 +132,7 @@ const localStyle = StyleSheet.create({
     width: "90%",
     marginHorizontal: "auto",
   },
+  none: {},
 });
 
 export default MyLocationForm;

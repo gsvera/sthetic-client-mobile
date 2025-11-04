@@ -9,7 +9,7 @@ type myLocationProps = {
 
 export const MyLocation = ({ idUser, returnBack }: myLocationProps) => {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <SubHeaderReturn subtitle="Mi Ubicación" handleReturn={returnBack} />
       <MyLocationForm idUser={idUser} handleClose={returnBack} />
     </View>

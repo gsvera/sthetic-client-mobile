@@ -2,8 +2,8 @@
   "expo": {
     "name": "Meredith Aesthetic",
     "slug": "sthetic--client-mobile",
-    "version": "1.0.6",
-    "orientation": "portrait",
+    "version": "1.0.7",
+    "orientation": "default",
     "icon": "./assets/images/meredith-aesthetic-logo-icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
@@ -20,7 +20,7 @@
       }
     },
     "android": {
-      "versionCode": 6,
+      "versionCode": 7,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/meredith-aesthetic-logo-icon.png",
