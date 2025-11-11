@@ -113,7 +113,7 @@ export const StepCalendar = ({
                 }}
               />
             )}
-            <View>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
               {blockTime.length > 0
                 ? blockTime?.map((time, index: number) => (
                     <OptionSchedule
@@ -123,7 +123,7 @@ export const StepCalendar = ({
                     />
                   ))
                 : selectedDate.dateString !== "" && (
-                    <View style={{ marginTop: 100 }}>
+                    <View style={localStyle.contentEmpty}>
                       <EmptyView message="No hay disponibilidad en esta fecha" />
                     </View>
                   )}
@@ -153,6 +153,7 @@ export const localStyle = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 15,
   },
+  contentEmpty: { marginTop: 100, marginHorizontal: "auto" },
 });
 
 export default StepCalendar;

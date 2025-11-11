@@ -94,12 +94,6 @@ export const StepConfirm = ({
               {convertHourToAMorPM(scheduleService.startTime)}
             </ThemedText>
           </View>
-          <View style={localStyle.row}>
-            <ThemedText style={TextStyle.label}>Hora fin:</ThemedText>
-            <ThemedText style={localStyle.value}>
-              {convertHourToAMorPM(scheduleService.endTime)}
-            </ThemedText>
-          </View>
           <View
             style={{
               ...localStyle.row,

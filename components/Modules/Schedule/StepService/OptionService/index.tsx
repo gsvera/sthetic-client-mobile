@@ -33,7 +33,7 @@ export const OptionService = ({ service, onSelect }: optionServiceProps) => {
       </View>
       <GeneralButton
         textBtn="Seleccionar"
-        styleText={TextStyle.fontBoldWhite}
+        styleText={localStyle.textBtn}
         styleBtn={localStyle.btn}
         handleOnPress={() => onSelect(service)}
       />
@@ -46,12 +46,17 @@ const localStyle = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderWidth: 0.5,
+    borderRadius: 10,
     borderColor: ThemeColorsSthetic.backgroundStrong,
   },
   btn: {
     ...ButtonGeneralStyle.btnAction,
     marginTop: 15,
     marginBottom: 5,
+  },
+  textBtn: {
+    ...TextStyle.fontBoldWhite,
+    fontSize: 15,
   },
 });
 

@@ -179,6 +179,7 @@ export const Schedule = ({
           style={{
             flex: 1,
             backgroundColor: ThemeColorsSthetic.backgroundLight,
+            paddingTop: 20,
           }}
         >
           {openSuccessNotification && (
