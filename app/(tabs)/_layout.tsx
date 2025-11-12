@@ -114,8 +114,12 @@ export default function TabLayout() {
     mutationFn: (data: any) => apiUserConfig.saveTokenNotification(data),
     onSuccess: (data: ResponseApi) =>
       handleSuccessSaveTokenNotification(data.data),
-    onError: ErrorAlertMessage,
+    onError: (err) => handleErrorMutation(err),
   });
+
+  const handleErrorMutation = (err: any) => {
+    console.log("🚀 ~ handleErrorMutation ~ err:", err);
+  };
 
   const { mutate: resendRequestVerification } = useMutation({
     mutationFn: (id: string) => apiUser.resendRequestVerification(id),
@@ -378,12 +382,8 @@ async function registerForPushNotificationsAsync() {
     finalStatus = status;
   }
 
-  if (finalStatus !== "granted") {
-    alert("No se otorgaron permisos para notificaciones push");
-    return;
-  }
-
-  const tokenData = await Notifications.getExpoPushTokenAsync();
-
-  return tokenData.data;
+  if (finalStatus === "granted") {
+    const tokenData = await Notifications.getExpoPushTokenAsync();
+    return tokenData.data;
+  } else return null;
 }
