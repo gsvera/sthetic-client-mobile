@@ -170,7 +170,7 @@ export default function TabLayout() {
 
   useEffect(() => {
     getStoreSession({ key: KEY_STORE.userToken }).then((value) => {
-      if (!value) return navigation.navigate("login" as never);
+      if (!value) return navigation.navigate("inicio" as never);
       else setToken(value);
     });
     getStoreSession({ key: KEY_STORE.accountVerification }).then((value) => {

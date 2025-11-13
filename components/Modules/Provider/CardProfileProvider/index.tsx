@@ -30,12 +30,14 @@ type cardProfileProviderProps = {
   handleSelectProfile: (id: string) => void;
   handleMakeSchedule: (id: string) => void;
   listKeysFavorite: string[];
+  requiredLogin?: () => void;
 };
 export const CardProfileProvider = ({
   infoCompany,
   handleSelectProfile,
   handleMakeSchedule,
   listKeysFavorite,
+  requiredLogin,
 }: cardProfileProviderProps) => {
   const queryClient = useQueryClient();
   const { storeSessionProvider } = useSessionProvider();
@@ -83,6 +85,8 @@ export const CardProfileProvider = ({
   );
 
   const handleSaveFavorite = () => {
+    if (requiredLogin) return requiredLogin();
+
     const myFavorite = {
       id: 0,
       idClient: storeSessionProvider?.idUser,

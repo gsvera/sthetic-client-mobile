@@ -220,3 +220,11 @@ export type FavoriteProviderType = {
     idClient: string;
     idProvider: string;
 }
+
+export type FilterSearchParamsType = {
+  page: number;
+  word: string;
+  typeService: string;
+  defaultState: string;
+  defaultMunicipality: string;
+};

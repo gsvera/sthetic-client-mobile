@@ -10,6 +10,7 @@ type listProviderProps = {
   fetchData: () => void;
   isFetchingList: boolean;
   listKeysFavorite: string[];
+  requiredLogin?: () => void;
 };
 
 export const ListProvider = ({
@@ -19,13 +20,18 @@ export const ListProvider = ({
   fetchData,
   isFetchingList,
   listKeysFavorite,
+  requiredLogin,
 }: listProviderProps) => {
   const { height } = Dimensions.get("window");
   return (
     <View
       style={{
         flex: 1,
-        marginBottom: Platform.OS === PLATFORM_TYPE.IOS ? height * 0.06 : 0,
+        marginBottom: requiredLogin
+          ? 0
+          : Platform.OS === PLATFORM_TYPE.IOS
+          ? height * 0.06
+          : 0,
       }}
     >
       {dataListProvider.length > 0 ? (
@@ -44,6 +50,7 @@ export const ListProvider = ({
                 handleSelectProfile={selectProfile}
                 handleMakeSchedule={makeSchedule}
                 listKeysFavorite={listKeysFavorite}
+                requiredLogin={requiredLogin}
               />
             );
           }}

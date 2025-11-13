@@ -9,7 +9,10 @@ import LoadingView from "@/components/Shared/LoadingView";
 
 import { ThemeColorsSthetic } from "@/constants/Colors";
 import { PLATFORM_TYPE } from "@/constants/Constants";
-import { TypesServicesType } from "@/constants/GeneralTypes";
+import {
+  FilterSearchParamsType,
+  TypesServicesType,
+} from "@/constants/GeneralTypes";
 import { GridStyle, TextStyle } from "@/constants/StyleComponents";
 import { getStoreSession, KEY_STORE } from "@/hooks/StoreDataSecure";
 import { Feather, Fontisto } from "@expo/vector-icons";
@@ -20,14 +23,6 @@ import { StyleSheet, View } from "react-native";
 import { useSessionProvider } from "@/provider/SessionProvider";
 import { MyLocationModal } from "@/components/Modules/Settings/MyLocation/MyLocationModal";
 import ListProvider from "@/components/Modules/Provider/ListProvider";
-
-type FilterSearchParamsType = {
-  page: number;
-  word: string;
-  typeService: string;
-  defaultState: string;
-  defaultMunicipality: string;
-};
 
 export default function Home() {
   const platform = Platform.OS;
