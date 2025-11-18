@@ -2,7 +2,7 @@
   "expo": {
     "name": "Meredith Aesthetic",
     "slug": "sthetic--client-mobile",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "orientation": "default",
     "icon": "./assets/images/meredith-aesthetic-logo-icon.png",
     "scheme": "com.abasotech.meredithcare",
@@ -21,7 +21,7 @@
       }
     },
     "android": {
-      "versionCode": 13,
+      "versionCode": 14,
       "googleServicesFile": "./google-services.json",
       "supportsTablet": true,
       "adaptiveIcon": {
