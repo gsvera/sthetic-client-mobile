@@ -37,7 +37,10 @@
               "host": "wa.me"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -67,7 +70,8 @@
       "expo-audio",
       "expo-web-browser",
       "expo-font",
-      "expo-video"
+      "expo-video",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true
