@@ -12,10 +12,7 @@
     },
     "production": {
       "distribution": "store",
-      "env": {},
-      "ios": {
-        "cocoapods": "1.12.1"
-      }
+      "env": {}
     }
   }
 }
