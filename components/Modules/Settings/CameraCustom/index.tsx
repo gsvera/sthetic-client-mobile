@@ -161,7 +161,7 @@ export const CameraCustom = ({ returnBack, idUser }: cameraCustomProps) => {
             <View
               style={{
                 ...localStyles.btnContainerOption,
-                bottom: platformOs === PLATFORM_TYPE.ANDROID ? 70 : 90,
+                top: "65%",
               }}
             >
               <TouchableOpacity
@@ -200,7 +200,7 @@ export const CameraCustom = ({ returnBack, idUser }: cameraCustomProps) => {
             <View
               style={{
                 ...localStyles.btnContainerOption,
-                bottom: platformOs === PLATFORM_TYPE.ANDROID ? 70 : 90,
+                top: "65%",
               }}
             >
               <TouchableOpacity
@@ -246,16 +246,19 @@ const localStyles = StyleSheet.create({
   camera: {
     flexDirection: "row",
     justifyContent: "center",
-    height: "100%",
+    // height: "100%",
+    flex: 1,
   },
   imgCaptured: {
     width: "100%",
-    height: "100%",
+    // height: "100%",
+    flex: 1,
   },
   containerImage: {
     flexDirection: "row",
     justifyContent: "center",
-    height: "100%",
+    // height: "100%",
+    flex: 1,
   },
   btnContainerOption: {
     position: "absolute",

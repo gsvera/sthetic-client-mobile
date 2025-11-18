@@ -14,7 +14,13 @@ import {
   SelectedDateCalendarType,
 } from "@/constants/GeneralTypes";
 import { useEffect, useState } from "react";
-import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Modal,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import StepCalendar from "./StepCalendar";
 import StepService from "./StepService";
 import StepConfirm from "./StepConfirm";
@@ -25,7 +31,10 @@ import { ObjectResponse, ResponseApi } from "@/api/responseApi";
 import { ErrorAlertMessage } from "@/components/Shared/Notifications/AlertMessage";
 import SuccessNotification from "@/components/Shared/Notifications/SuccessNotification";
 import { convertDateToGeneralFormat } from "@/utils/GeneralUtils";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import MiniNotification from "@/components/Shared/Notifications/MiniNotification";
 
 type scheduleProps = Omit<modalCustomProps, "idProvider"> & {
@@ -37,6 +46,7 @@ export const Schedule = ({
   handleCloseModal,
   idProvider,
 }: scheduleProps) => {
+  const insets = useSafeAreaInsets();
   const [openSuccessNotification, setOpenSuccessNotification] = useState(false);
   const [miniNotificationState, setMiniNotificationState] = useState({
     open: false,
@@ -173,6 +183,8 @@ export const Schedule = ({
           flex: 1,
           backgroundColor: ThemeColorsSthetic.shadowBackground,
           zIndex: 1500,
+          marginTop: Platform.OS === PLATFORM_TYPE.IOS ? insets.top : 0,
+          marginBottom: Platform.OS === PLATFORM_TYPE.IOS ? insets.bottom : 0,
         }}
       >
         <View

@@ -5,14 +5,25 @@ import LoadingView from "@/components/Shared/LoadingView";
 import ReturnArrow from "@/components/Shared/ReturnArrow";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemeColorsSthetic } from "@/constants/Colors";
+import { PLATFORM_TYPE } from "@/constants/Constants";
 import {
   DetailProjectType,
   modalCustomProps,
   ProjectType,
 } from "@/constants/GeneralTypes";
 import { useQuery } from "@tanstack/react-query";
-import { Image, Modal, ScrollView, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  Image,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 type galleryProjectModalProps = modalCustomProps & {
   project: ProjectType;
@@ -23,6 +34,7 @@ export const GalleryProjectModal = ({
   handleCloseModal,
   project,
 }: galleryProjectModalProps) => {
+  const insets = useSafeAreaInsets();
   const { data: listImg = [], isFetching: isFetchingListImg } = useQuery({
     queryKey: [REACT_QUERY_KEYS.catalogs.services.getById],
     queryFn: () =>
@@ -43,6 +55,8 @@ export const GalleryProjectModal = ({
       <SafeAreaView
         style={{
           ...localStyle.modal,
+          marginTop: Platform.OS === PLATFORM_TYPE.IOS ? insets.top : 0,
+          marginBottom: Platform.OS === PLATFORM_TYPE.IOS ? insets.bottom : 0,
         }}
       >
         <View

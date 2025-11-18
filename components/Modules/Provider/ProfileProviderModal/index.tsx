@@ -98,7 +98,13 @@ export const ProfileProviderModal = ({
       onRequestClose={handleCloseModal}
       supportedOrientations={["portrait", "landscape"]}
     >
-      <SafeAreaView style={localStyle.modal}>
+      <SafeAreaView
+        style={{
+          ...localStyle.modal,
+          marginTop: Platform.OS === PLATFORM_TYPE.IOS ? insets.top : 0,
+          marginBottom: Platform.OS === PLATFORM_TYPE.IOS ? insets.bottom : 0,
+        }}
+      >
         <View
           style={{
             flex: 1,

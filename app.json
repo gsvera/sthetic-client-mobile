@@ -23,7 +23,6 @@
     "android": {
       "versionCode": 14,
       "googleServicesFile": "./google-services.json",
-      "supportsTablet": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/meredith-aesthetic-logo-icon.png",
         "backgroundColor": "#ffffff"
