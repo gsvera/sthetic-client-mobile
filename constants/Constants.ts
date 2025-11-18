@@ -1,7 +1,7 @@
 import { weekDays } from "./GeneralTypes";
 
-export const VERSION_ANDROID = "v1.0.13";
-export const VERSION_IOS = "v1.0.13";
+export const VERSION_ANDROID = "v1.0.14";
+export const VERSION_IOS = "v1.0.14";
 export const APP_NAME_SLUG = 'meredith-aesthetic-client';
 export const PACKAGE_NAME_ANDROID = "com.abasotech.meredithcare";
 export const APP_STORE_ID = "6754884092";
@@ -13,7 +13,7 @@ export enum ROUTES {
 export const REGEX = {
     ONLY_TEXT: /^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/ ,
     ONLY_NUMBER: /^\d+$/ ,
-    PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/ ,
+    PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/ ,
     EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 }
 

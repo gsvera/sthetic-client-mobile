@@ -5,7 +5,7 @@
     "version": "1.0.13",
     "orientation": "default",
     "icon": "./assets/images/meredith-aesthetic-logo-icon.png",
-    "scheme": "myapp",
+    "scheme": "com.abasotech.meredithcare",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "jsEngine": "hermes",
