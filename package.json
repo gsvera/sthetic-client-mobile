@@ -85,8 +85,5 @@
     "typescript": "~5.9.2"
   },
   "private": true,
-  "overrides": {
-    "react-native-renderer": "19.1.1",
-    "react-native-safe-area-context": "5.6.1"
-  }
+  "overrides": {}
 }
